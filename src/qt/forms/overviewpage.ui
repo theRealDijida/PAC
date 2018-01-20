@@ -58,12 +58,13 @@
              <widget class="QLabel" name="label_5">
               <property name="font">
                <font>
-                <weight>75</weight>
-                <bold>true</bold>
+                <pointsize>16</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
                </font>
               </property>
               <property name="text">
-               <string>Balances</string>
+               <string>BALANCES</string>
               </property>
              </widget>
             </item>
@@ -676,7 +677,7 @@
                </font>
               </property>
               <property name="text">
-               <string>Recent transactions</string>
+               <string>RECENT TRANSACTIONS</string>
               </property>
              </widget>
             </item>
@@ -732,19 +733,6 @@
           </item>
          </layout>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </item>
