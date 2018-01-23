@@ -22,7 +22,7 @@ QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
     unitlist.append(PAC);
     unitlist.append(mPAC);
     unitlist.append(uPAC);
-    unitlist.append(duffs);
+    //unitlist.append(duffs);
     return unitlist;
 }
 

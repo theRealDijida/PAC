@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>960</width>
-    <height>585</height>
+    <height>527</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -54,20 +54,6 @@
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QLabel" name="label_5">
-              <property name="font">
-               <font>
-                <pointsize>16</pointsize>
-                <weight>50</weight>
-                <bold>false</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>BALANCES</string>
-              </property>
-             </widget>
-            </item>
             <item>
              <widget class="QLabel" name="labelWalletStatus">
               <property name="toolTip">
@@ -672,6 +658,7 @@
              <widget class="QLabel" name="label_4">
               <property name="font">
                <font>
+                <pointsize>18</pointsize>
                 <weight>75</weight>
                 <bold>true</bold>
                </font>
@@ -714,6 +701,12 @@
           </item>
           <item>
            <widget class="QListView" name="listTransactions">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="styleSheet">
              <string notr="true">QListView { background: transparent; }</string>
             </property>
@@ -730,6 +723,19 @@
              <enum>QAbstractItemView::NoSelection</enum>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>

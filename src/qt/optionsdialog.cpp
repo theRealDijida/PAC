@@ -92,11 +92,12 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     }
     
     /* Theme selector */
-    ui->theme->addItem(QString("PAC-light"), QVariant("light"));
-    ui->theme->addItem(QString("PAC-light-hires"), QVariant("light-hires"));
-    ui->theme->addItem(QString("PAC-blue"), QVariant("drkblue"));
-    ui->theme->addItem(QString("PAC-Crownium"), QVariant("crownium"));
-    ui->theme->addItem(QString("PAC-traditional"), QVariant("trad"));
+    ui->theme->addItem(QString("(default)"), QVariant("light"));
+    //ui->theme->addItem(QString("PAC-light"), QVariant("light"));
+    //ui->theme->addItem(QString("PAC-light-hires"), QVariant("light-hires"));
+    //ui->theme->addItem(QString("PAC-blue"), QVariant("drkblue"));
+    //ui->theme->addItem(QString("PAC-Crownium"), QVariant("crownium"));
+    //ui->theme->addItem(QString("PAC-traditional"), QVariant("trad"));
     
     /* Language selector */
     QDir translations(":translations");
