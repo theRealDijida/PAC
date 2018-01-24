@@ -46,9 +46,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case PAC: return QString("PAC");
-            case mPAC: return QString("mPAC");
-            case uPAC: return QString::fromUtf8("μPAC");
+            case PAC: return QString("$PAC");
+            case mPAC: return QString("m$PAC");
+            case uPAC: return QString::fromUtf8("μ$PAC");
             case duffs: return QString("duffs");
             default: return QString("???");
         }
@@ -57,9 +57,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case PAC: return QString("tPAC");
-            case mPAC: return QString("mtPAC");
-            case uPAC: return QString::fromUtf8("μtPAC");
+            case PAC: return QString("t$PAC");
+            case mPAC: return QString("mt$PAC");
+            case uPAC: return QString::fromUtf8("μt$PAC");
             case duffs: return QString("tduffs");
             default: return QString("???");
         }
@@ -72,10 +72,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case PAC: return QString("Paccoin");
-            case mPAC: return QString("Milli-Paccoin (1 / 1" THIN_SP_UTF8 "000)");
-            case uPAC: return QString("Micro-Paccoin (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-Paccoin (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case PAC: return QString("$PAC");
+            case mPAC: return QString("Milli-$PAC (1 / 1" THIN_SP_UTF8 "000)");
+            case uPAC: return QString("Micro-$PAC (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-$PAC (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -83,10 +83,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case PAC: return QString("TestPaccoins");
-            case mPAC: return QString("Milli-TestPaccoin (1 / 1" THIN_SP_UTF8 "000)");
-            case uPAC: return QString("Micro-TestPaccoin (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-TestPaccoin (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case PAC: return QString("Test$PAC");
+            case mPAC: return QString("Milli-Test$PAC (1 / 1" THIN_SP_UTF8 "000)");
+            case uPAC: return QString("Micro-Test$PAC (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-Test$PAC (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }

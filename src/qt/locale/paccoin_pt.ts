@@ -62,12 +62,12 @@
         <translation>Endereços para recepção</translation>
     </message>
     <message>
-        <source>These are your Paccoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Estes são os endereços Paccoin para envio de pagamentos. Confirme sempre a quantia e o endereço antes de enviar as moedas.</translation>
+        <source>These are your $PAC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Estes são os endereços $PAC para envio de pagamentos. Confirme sempre a quantia e o endereço antes de enviar as moedas.</translation>
     </message>
     <message>
-        <source>These are your Paccoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Estes são os seus endereços Paccoin para receber pagamentos. É recomendado que seja usado um novo endereço para cada transacção.</translation>
+        <source>These are your $PAC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Estes são os seus endereços $PAC para receber pagamentos. É recomendado que seja usado um novo endereço para cada transacção.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -188,8 +188,8 @@
         <translation>Carteira cifrada</translation>
     </message>
     <message>
-        <source>Paccoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your paccoins from being stolen by malware infecting your computer.</source>
-        <translation>O cliente Paccoin irá fechar para finalizar o processo de cifra. Lembre-se que cifrar a sua carteira não consegue proteger totalmente as suas paccoins contra roubos feitos por malware presente no seu computador.</translation>
+        <source>$PAC will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your paccoins from being stolen by malware infecting your computer.</source>
+        <translation>O cliente $PAC irá fechar para finalizar o processo de cifra. Lembre-se que cifrar a sua carteira não consegue proteger totalmente as suas paccoins contra roubos feitos por malware presente no seu computador.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -231,8 +231,8 @@
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <source>Paccoin Core</source>
-        <translation>Paccoin Core</translation>
+        <source>$PAC Core</source>
+        <translation>$PAC Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -255,16 +255,16 @@
         <translation>&amp;Enviar</translation>
     </message>
     <message>
-        <source>Send coins to a Paccoin address</source>
-        <translation>Enviar moedas para um endereço Paccoin</translation>
+        <source>Send coins to a $PAC address</source>
+        <translation>Enviar moedas para um endereço $PAC</translation>
     </message>
     <message>
         <source>&amp;Receive</source>
         <translation>&amp;Receber</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and paccoin: URIs)</source>
-        <translation>Solicitar pagamentos (gera códigos QR e paccoin: URIs)</translation>
+        <source>Request payments (generates QR codes and $PAC: URIs)</source>
+        <translation>Solicitar pagamentos (gera códigos QR e $PAC: URIs)</translation>
     </message>
     <message>
         <source>&amp;Transactions</source>
@@ -283,12 +283,12 @@
         <translation>Sair da aplicação</translation>
     </message>
     <message>
-        <source>&amp;About Paccoin Core</source>
-        <translation>&amp;Acerca do Paccoin Core</translation>
+        <source>&amp;About $PAC Core</source>
+        <translation>&amp;Acerca do $PAC Core</translation>
     </message>
     <message>
-        <source>Show information about Paccoin Core</source>
-        <translation>Mostra informação acerca do Paccoin Core</translation>
+        <source>Show information about $PAC Core</source>
+        <translation>Mostra informação acerca do $PAC Core</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
@@ -303,8 +303,8 @@
         <translation>&amp;Opções...</translation>
     </message>
     <message>
-        <source>Modify configuration options for Paccoin</source>
-        <translation>Modificar opções de configuração do Paccoin</translation>
+        <source>Modify configuration options for $PAC</source>
+        <translation>Modificar opções de configuração do $PAC</translation>
     </message>
     <message>
         <source>&amp;Show / Hide</source>
@@ -355,16 +355,16 @@
         <translation>&amp;Assinar Mensagem</translation>
     </message>
     <message>
-        <source>Sign messages with your Paccoin addresses to prove you own them</source>
-        <translation>Assine mensagens com os seus endereços Paccoin para provar que são seus</translation>
+        <source>Sign messages with your $PAC addresses to prove you own them</source>
+        <translation>Assine mensagens com os seus endereços $PAC para provar que são seus</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
         <translation>&amp;Verificar Mensagem</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Paccoin addresses</source>
-        <translation>Verifica mensagens para garantir que foram assinadas com um endereço Paccoin específico</translation>
+        <source>Verify messages to ensure they were signed with specified $PAC addresses</source>
+        <translation>Verifica mensagens para garantir que foram assinadas com um endereço $PAC específico</translation>
     </message>
     <message>
         <source>&amp;Information</source>
@@ -443,24 +443,24 @@
         <translation>Abrir &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a paccoin: URI or payment request</source>
-        <translation>Abre um paccoin: URI ou solicitação de pagamento</translation>
+        <source>Open a $PAC: URI or payment request</source>
+        <translation>Abre um $PAC: URI ou solicitação de pagamento</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Opções de linha de &amp;comandos</translation>
     </message>
     <message>
-        <source>Paccoin Core client</source>
-        <translation>Cliente Paccoin Core</translation>
+        <source>$PAC Core client</source>
+        <translation>Cliente $PAC Core</translation>
     </message>
     <message numerus="yes">
         <source>Processed %n blocks of transaction history.</source>
         <translation><numerusform>%n bloco do histórico de transacções processado.</numerusform><numerusform>%n blocos do histórico de transacções processados.</numerusform></translation>
     </message>
     <message>
-        <source>Show the Paccoin Core help message to get a list with possible Paccoin command-line options</source>
-        <translation>Mostra a mensagem de ajuda do Paccoin Core para obter a lista com as possíveis opções de linha de comandos</translation>
+        <source>Show the $PAC Core help message to get a list with possible $PAC command-line options</source>
+        <translation>Mostra a mensagem de ajuda do $PAC Core para obter a lista com as possíveis opções de linha de comandos</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -483,8 +483,8 @@
         <translation>Barra de ferramentas</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Paccoin network</source>
-        <translation><numerusform>%n ligação activa à rede Paccoin</numerusform><numerusform>%n ligações activas à rede Paccoin</numerusform></translation>
+        <source>%n active connection(s) to $PAC network</source>
+        <translation><numerusform>%n ligação activa à rede $PAC</numerusform><numerusform>%n ligações activas à rede $PAC</numerusform></translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
@@ -892,16 +892,16 @@ Endereço: %4
         <translation>Configuração Darksend</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Paccoin's configuration screen.</source>
-        <translation>Darksend foi colocado com sucesso no modo básico (%1 e 2 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Paccoin.</translation>
+        <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening $PAC's configuration screen.</source>
+        <translation>Darksend foi colocado com sucesso no modo básico (%1 e 2 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração $PAC.</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Paccoin's configuration screen.</source>
-        <translation>Darksend foi colocado com sucesso no modo alto (%1 e 8 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Paccoin.</translation>
+        <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening $PAC's configuration screen.</source>
+        <translation>Darksend foi colocado com sucesso no modo alto (%1 e 8 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração $PAC.</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Paccoin's configuration screen.</source>
-        <translation>Darksend foi colocado com sucesso no modo máximo (%1 e 16 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Paccoin.</translation>
+        <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening $PAC's configuration screen.</source>
+        <translation>Darksend foi colocado com sucesso no modo máximo (%1 e 16 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração $PAC.</translation>
     </message>
 </context>
 <context>
@@ -943,8 +943,8 @@ Endereço: %4
         <translation>Editar endereço de envio</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Paccoin address.</source>
-        <translation>O endereço introduzido "%1" não é um endereço Paccoin válido.</translation>
+        <source>The entered address "%1" is not a valid $PAC address.</source>
+        <translation>O endereço introduzido "%1" não é um endereço $PAC válido.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -985,8 +985,8 @@ Endereço: %4
 <context>
     <name>HelpMessageDialog</name>
     <message>
-        <source>Paccoin Core</source>
-        <translation>Paccoin Core</translation>
+        <source>$PAC Core</source>
+        <translation>$PAC Core</translation>
     </message>
     <message>
         <source>version</source>
@@ -997,8 +997,8 @@ Endereço: %4
         <translation>(%1-bit)</translation>
     </message>
     <message>
-        <source>About Paccoin Core</source>
-        <translation>Acerca do Paccoin Core</translation>
+        <source>About $PAC Core</source>
+        <translation>Acerca do $PAC Core</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1044,16 +1044,16 @@ Endereço: %4
         <translation>Bem-vindo</translation>
     </message>
     <message>
-        <source>Welcome to Paccoin Core.</source>
-        <translation>Bem-vindo ao Paccoin Core.</translation>
+        <source>Welcome to $PAC Core.</source>
+        <translation>Bem-vindo ao $PAC Core.</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where Paccoin Core will store its data.</source>
-        <translation>Como esta é a primeira vez que o programa é executado, pode escolher onde o cliente Paccoin Core irá guardar os seus dados.</translation>
+        <source>As this is the first time the program is launched, you can choose where $PAC Core will store its data.</source>
+        <translation>Como esta é a primeira vez que o programa é executado, pode escolher onde o cliente $PAC Core irá guardar os seus dados.</translation>
     </message>
     <message>
-        <source>Paccoin Core will download and store a copy of the Paccoin block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>O cliente Paccoin Core irá descarregar e guardar uma copia da cadeia de blocos Paccoin. Pelo menos %1GB de dados serão guardados nesta pasta e irá aumentar com o tempo. A carteira também ficará guardada nesta pasta.</translation>
+        <source>$PAC Core will download and store a copy of the $PAC block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>O cliente $PAC Core irá descarregar e guardar uma copia da cadeia de blocos $PAC. Pelo menos %1GB de dados serão guardados nesta pasta e irá aumentar com o tempo. A carteira também ficará guardada nesta pasta.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1064,8 +1064,8 @@ Endereço: %4
         <translation>Usar uma pasta de dados personalizada</translation>
     </message>
     <message>
-        <source>Paccoin Core</source>
-        <translation>Paccoin Core</translation>
+        <source>$PAC Core</source>
+        <translation>$PAC Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1118,12 +1118,12 @@ Endereço: %4
         <translation>&amp;Geral</translation>
     </message>
     <message>
-        <source>Automatically start Paccoin after logging in to the system.</source>
-        <translation>Executar automaticamente o cliente Paccoin quando entrar no sistema.</translation>
+        <source>Automatically start $PAC after logging in to the system.</source>
+        <translation>Executar automaticamente o cliente $PAC quando entrar no sistema.</translation>
     </message>
     <message>
-        <source>&amp;Start Paccoin on system login</source>
-        <translation>&amp;Iniciar o cliente Paccoin ao entrar no sistema</translation>
+        <source>&amp;Start $PAC on system login</source>
+        <translation>&amp;Iniciar o cliente $PAC ao entrar no sistema</translation>
     </message>
     <message>
         <source>Size of &amp;database cache</source>
@@ -1150,8 +1150,8 @@ Endereço: %4
         <translation>Esta quantia actua como um limite, a partir do qual o Darksend é desligado.</translation>
     </message>
     <message>
-        <source>Amount of Paccoin to keep anonymized</source>
-        <translation>Quantia de Paccoin a manter anonimizada</translation>
+        <source>Amount of $PAC to keep anonymized</source>
+        <translation>Quantia de $PAC a manter anonimizada</translation>
     </message>
     <message>
         <source>W&amp;allet</source>
@@ -1170,8 +1170,8 @@ Endereço: %4
         <translation>Aceitar ligações de entrada</translation>
     </message>
     <message>
-        <source>Connect to the Paccoin network through a SOCKS5 proxy.</source>
-        <translation>Efectuar a ligação à rede Paccoin através de um proxy SOCKS5.</translation>
+        <source>Connect to the $PAC network through a SOCKS5 proxy.</source>
+        <translation>Efectuar a ligação à rede $PAC através de um proxy SOCKS5.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1202,8 +1202,8 @@ Endereço: %4
         <translation>&amp;Rede</translation>
     </message>
     <message>
-        <source>Automatically open the Paccoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Abrir automaticamente a porta do cliente Paccoin no router. Isto só funciona quando o seu router suporta UPnP e este está activo.</translation>
+        <source>Automatically open the $PAC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Abrir automaticamente a porta do cliente $PAC no router. Isto só funciona quando o seu router suporta UPnP e este está activo.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1254,14 +1254,14 @@ Endereço: %4
         <translation>&amp;Linguagem do interface:</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting Paccoin.</source>
+        <source>The user interface language can be set here. This setting will take effect after restarting $PAC.</source>
         <translation>A linguagem do interface pode ser definida aqui. Esta definição terá efeito depois de reiniciar a aplicação.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/paccoin/</source>
+https://www.transifex.com/projects/p/$PAC/</source>
         <translation>Linguagem não encontrada ou tradução incompleta? Ajude a traduzir aqui:
-https://www.transifex.com/projects/p/paccoin/</translation>
+https://www.transifex.com/projects/p/$PAC/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1343,8 +1343,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>De</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Paccoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>A informação mostrada pode estar desactualizada. A sua carteira sincroniza automaticamente com a rede Paccoin assim que for estabelecida uma ligação, mas este processo ainda não terminou.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the $PAC network after a connection is established, but this process has not completed yet.</source>
+        <translation>A informação mostrada pode estar desactualizada. A sua carteira sincroniza automaticamente com a rede $PAC assim que for estabelecida uma ligação, mas este processo ainda não terminou.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -1564,8 +1564,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Erro na solicitação de pagamento</translation>
     </message>
     <message>
-        <source>Cannot start paccoin: click-to-pay handler</source>
-        <translation>Não é possível iniciar o paccoin: click-to-pay handler</translation>
+        <source>Cannot start $PAC: click-to-pay handler</source>
+        <translation>Não é possível iniciar o $PAC: click-to-pay handler</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -1584,8 +1584,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Endereço de pagamento inválido %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid Paccoin address or malformed URI parameters.</source>
-        <translation>O URI não pode ser carregado! Isto pode ser causado por um endereço Paccoin inválido ou parâmetros do URI incorrectos.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid $PAC address or malformed URI parameters.</source>
+        <translation>O URI não pode ser carregado! Isto pode ser causado por um endereço $PAC inválido ou parâmetros do URI incorrectos.</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -1670,8 +1670,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Quantia</translation>
     </message>
     <message>
-        <source>Enter a Paccoin address (e.g. %1)</source>
-        <translation>Insira um endereço Paccoin (ex. %1)</translation>
+        <source>Enter a $PAC address (e.g. %1)</source>
+        <translation>Insira um endereço $PAC (ex. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1760,8 +1760,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Número de ligações</translation>
     </message>
     <message>
-        <source>Open the Paccoin debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Abrir o ficheiro de registo de depuração Paccoin a partir da pasta de dados actual. Para grandes ficheiros de registo pode demorar alguns segundos.</translation>
+        <source>Open the $PAC debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Abrir o ficheiro de registo de depuração $PAC a partir da pasta de dados actual. Para grandes ficheiros de registo pode demorar alguns segundos.</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -1968,8 +1968,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Saída:</translation>
     </message>
     <message>
-        <source>Welcome to the Paccoin RPC console.</source>
-        <translation>Bem-vindo à consola RPC Paccoin</translation>
+        <source>Welcome to the $PAC RPC console.</source>
+        <translation>Bem-vindo à consola RPC $PAC</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.</source>
@@ -2031,8 +2031,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>R&amp;eutilizar um endereço de recebimento existente (não recomendado)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Paccoin network.</source>
-        <translation>Mensagem opcional para anexar à solicitação de pagamento, que será mostrada quando a solicitação for aberta. Nota: A mensagem não será enviada com o pagamento através da rede Paccoin.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the $PAC network.</source>
+        <translation>Mensagem opcional para anexar à solicitação de pagamento, que será mostrada quando a solicitação for aberta. Nota: A mensagem não será enviada com o pagamento através da rede $PAC.</translation>
     </message>
     <message>
         <source>&amp;Message:</source>
@@ -2043,8 +2043,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Rótulo opcional para associar com o novo endereço de recebimento.</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Paccoin network.</source>
-        <translation>Mensagem opcional para anexar à solicitação de pagamento, que será mostrada quando a solicitação for aberta. &lt;br&gt;Nota: A mensagem não será enviada com o pagamento através da rede Paccoin.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the $PAC network.</source>
+        <translation>Mensagem opcional para anexar à solicitação de pagamento, que será mostrada quando a solicitação for aberta. &lt;br&gt;Nota: A mensagem não será enviada com o pagamento através da rede $PAC.</translation>
     </message>
     <message>
         <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
@@ -2480,8 +2480,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Pagar somente a taxa mínima de %1</translation>
     </message>
     <message>
-        <source>Warning: Invalid Paccoin address</source>
-        <translation>Aviso: Endereço Paccoin inválido</translation>
+        <source>Warning: Invalid $PAC address</source>
+        <translation>Aviso: Endereço $PAC inválido</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2503,8 +2503,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>&amp;Pagar a:</translation>
     </message>
     <message>
-        <source>The Paccoin address to send the payment to</source>
-        <translation>O endereço Paccoin para onde enviar o pagamento</translation>
+        <source>The $PAC address to send the payment to</source>
+        <translation>O endereço $PAC para onde enviar o pagamento</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2543,8 +2543,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Mensagem:</translation>
     </message>
     <message>
-        <source>A message that was attached to the paccoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Paccoin network.</source>
-        <translation>Mensagem que foi anexada ao paccoin: URI e que será guardada com a transacção para sua referência. Nota: Esta mensagem não será enviada para a rede Paccoin.</translation>
+        <source>A message that was attached to the $PAC: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the $PAC network.</source>
+        <translation>Mensagem que foi anexada ao $PAC: URI e que será guardada com a transacção para sua referência. Nota: Esta mensagem não será enviada para a rede $PAC.</translation>
     </message>
     <message>
         <source>This is an unverified payment request.</source>
@@ -2570,8 +2570,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>Paccoin Core is shutting down...</source>
-        <translation>O Paccoin Core está a desligar...</translation>
+        <source>$PAC Core is shutting down...</source>
+        <translation>O $PAC Core está a desligar...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -2593,8 +2593,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Pode assinar mensagens com os seus endereços para provar que são seus. Tenha atenção para não assinar mensagens vagas, já que, ataques de phishing podem levá-lo a assinar a sua própria identidade para os atacantes. Apenas assine declarações detalhadas com as quais concorde.</translation>
     </message>
     <message>
-        <source>The Paccoin address to sign the message with</source>
-        <translation>Endereço Paccoin com o qual deseja assinar a mensagem</translation>
+        <source>The $PAC address to sign the message with</source>
+        <translation>Endereço $PAC com o qual deseja assinar a mensagem</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2625,8 +2625,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Copiar a assinatura actual para a área de transferência</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Paccoin address</source>
-        <translation>Assinar a mensagem para provar que é o proprietário deste endereço Paccoin</translation>
+        <source>Sign the message to prove you own this $PAC address</source>
+        <translation>Assinar a mensagem para provar que é o proprietário deste endereço $PAC</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2649,12 +2649,12 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Introduza o endereço de assinatura, mensagem (assegure-se que copia exactamente as quebras de linha, espaços, tabulações, etc) e assinatura abaixo para verificar a mensagem. Tenha atenção para não ler mais na assinatura do que o que estiver na mensagem assinada, para evitar ser enganado por um atacante que se encontre entre si e quem assinou a mensagem.</translation>
     </message>
     <message>
-        <source>The Paccoin address the message was signed with</source>
-        <translation>Endereço Paccoin com o qual a mensagem foi assinada</translation>
+        <source>The $PAC address the message was signed with</source>
+        <translation>Endereço $PAC com o qual a mensagem foi assinada</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Paccoin address</source>
-        <translation>Verificar a mensagem de forma a garantir que foi assinada com o endereço Paccoin especificado</translation>
+        <source>Verify the message to ensure it was signed with the specified $PAC address</source>
+        <translation>Verificar a mensagem de forma a garantir que foi assinada com o endereço $PAC especificado</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -2720,8 +2720,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
 <context>
     <name>SplashScreen</name>
     <message>
-        <source>Paccoin Core</source>
-        <translation>Paccoin Core</translation>
+        <source>$PAC Core</source>
+        <translation>$PAC Core</translation>
     </message>
     <message>
         <source>Version %1</source>
@@ -2732,8 +2732,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Os programadores Bitcoin Core</translation>
     </message>
     <message>
-        <source>The Paccoin Core developers</source>
-        <translation>Os programadores Paccoin Core</translation>
+        <source>The $PAC Core developers</source>
+        <translation>Os programadores $PAC Core</translation>
     </message>
     <message>
         <source>[testnet]</source>
@@ -3304,14 +3304,14 @@ https://www.transifex.com/projects/p/paccoin/</translation>
     </message>
 </context>
 <context>
-    <name>paccoin-core</name>
+    <name>$PAC-core</name>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>Vincular a um determinado endereço e ouvir sempre aí. Use a notação [endereço]:porta para IPv6</translation>
     </message>
     <message>
-        <source>Cannot obtain a lock on data directory %s. Paccoin Core is probably already running.</source>
-        <translation>Não foi possível obter acesso exclusivo à pasta de dados %s. Possivelmente o Paccoin Core já se encontra em execução.</translation>
+        <source>Cannot obtain a lock on data directory %s. $PAC Core is probably already running.</source>
+        <translation>Não foi possível obter acesso exclusivo à pasta de dados %s. Possivelmente o $PAC Core já se encontra em execução.</translation>
     </message>
     <message>
         <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
@@ -3366,8 +3366,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Esta é uma compilação prévia de teste - use por sua conta e risco - não use para minar nem em aplicações comerciais</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. Paccoin Core is probably already running.</source>
-        <translation>Não foi possível vincular a %s neste computador. Provavelmente o Paccoin Core já está a ser executado.</translation>
+        <source>Unable to bind to %s on this computer. $PAC Core is probably already running.</source>
+        <translation>Não foi possível vincular a %s neste computador. Provavelmente o $PAC Core já está a ser executado.</translation>
     </message>
     <message>
         <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
@@ -3650,8 +3650,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Aviso: -maxtxfee é demasiado alta! Taxas deste tamanho podem ser pagas em apenas uma transacção.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Paccoin Core will not work properly.</source>
-        <translation>Aviso: Por favor verifique que a data e a hora do computador está correcta! Se o relógio estiver errado o Paccoin Core não vai funcionar correctamente.</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong $PAC Core will not work properly.</source>
+        <translation>Aviso: Por favor verifique que a data e a hora do computador está correcta! Se o relógio estiver errado o $PAC Core não vai funcionar correctamente.</translation>
     </message>
     <message>
         <source>(9999 could be used only on mainnet)</source>
@@ -3696,8 +3696,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Copyright (C) 2009-%i The Bitcoin Core Developers</translation>
     </message>
     <message>
-        <source>Copyright (C) 2014-%i The Paccoin Core developers</source>
-        <translation>Copyright (C) 2014-%i Paccoin Core Developers</translation>
+        <source>Copyright (C) 2014-%i The $PAC Core developers</source>
+        <translation>Copyright (C) 2014-%i $PAC Core Developers</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>
@@ -3728,8 +3728,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Erro conectando ao Masternode</translation>
     </message>
     <message>
-        <source>Error loading wallet.dat: Wallet requires newer version of Paccoin Core</source>
-        <translation>Erro carregando wallet.dat Carteira precisa de nova versão do Paccoin Core</translation>
+        <source>Error loading wallet.dat: Wallet requires newer version of $PAC Core</source>
+        <translation>Erro carregando wallet.dat Carteira precisa de nova versão do $PAC Core</translation>
     </message>
     <message>
         <source>Error: A fatal internal error occured, see debug.log for details</source>
@@ -3800,8 +3800,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Informação</translation>
     </message>
     <message>
-        <source>Initialization sanity check failed. Paccoin Core is shutting down.</source>
-        <translation>A verificação de consistência no arranque falhou. O Paccoin Core está a encerrar.</translation>
+        <source>Initialization sanity check failed. $PAC Core is shutting down.</source>
+        <translation>A verificação de consistência no arranque falhou. O $PAC Core está a encerrar.</translation>
     </message>
     <message>
         <source>Input is not valid.</source>
@@ -4044,8 +4044,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Utilize UPNP para mapear porta de escuta (default: %u)</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart Paccoin Core to complete</source>
-        <translation>Carteira necessita de ser re-escrita: reinicie Paccoin Core para completar</translation>
+        <source>Wallet needed to be rewritten: restart $PAC Core to complete</source>
+        <translation>Carteira necessita de ser re-escrita: reinicie $PAC Core para completar</translation>
     </message>
     <message>
         <source>Warning: Unsupported argument -benchmark ignored, use -debug=bench.</source>
@@ -4185,7 +4185,7 @@ https://www.transifex.com/projects/p/paccoin/</translation>
     </message>
     <message>
         <source>RPC SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>Opções RPC SSL: (para instruções de configuração SSL dirija-se à Paccoin Wiki)</translation>
+        <translation>Opções RPC SSL: (para instruções de configuração SSL dirija-se à $PAC Wiki)</translation>
     </message>
     <message>
         <source>RPC server options:</source>
