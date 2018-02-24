@@ -2,21 +2,6 @@
 
 set -e
 
-echo'        ..........    												   '                                                  
-echo'      `............`` 												   '                                                
-echo'   `..................`   											   '                                            
-echo'  .....-yyyyyyys+-:oo-..`      ooooooo+/.    `oooo+        -/oooo+/.  ' 
-echo' ......:MMMMNNdddmMMMd-..`    `MMMMNMMMMMh.  hMMMMM+    `sNMMMMMMMM+  '
-echo'`......:MMmy..-+MNdh:.....    `MMMM: .dMMMy oMMMyMMN-  .NMMMMy/...:-  '
-echo'.......:ddmm...-hdNm......`   `MMMM+-+mMMMs:MMMs dMMm` yMMMMo         '
-echo'....:ohNMMNdoydNMMN/......`   `MMMMMMMMMmo.NMMN` -MMMd yMMMM/         '
-echo'....+dMNdddNmmdhy+-.......    `MMMM+::-` `dMMMNmmmMMMMs:MMMMm/        '
-echo' .....::MMMm.............`    `MMMM:     yMMMdoooooNMMM//mMMMMNdddN+  '
-echo' `.....:MNdo............`     `dddd-    /dddd.     /dddd. :ohdmmdhy:  '
-echo'   `...-+-.............`                                              '
-echo'     `..............``                                                '
-echo'        ```....```          										   '
-
 echo "################################################"
 echo "#   Welcome to PAC Masternode's server setup   #"		
 echo "################################################"
@@ -83,7 +68,6 @@ wget "https://github.com/PACCommunity/PAC/releases/download/v0.12.2.3/PAC-v0.12.
 tar xvf 'PAC-v0.12.2.3-ubuntu-16.04-x64.tar.gz'
 cd ~/
 rm PAC-v0.12.2.3-ubuntu-16.04-x64.tar.gz
-rm -r PAC-v0.12.2.3-ubuntu-16.04-x64
 currpath=$( pwd )
 echo "Binaries got stored on: $currpath"
 chmod +x paccoind
