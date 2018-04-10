@@ -344,6 +344,16 @@ UniValue gobject(const UniValue& params, bool fHelp)
             return returnObj;
         }
 
+        if(mn.IsWatchdogExpired()) {
+            nFailed++;
+            statusObj.push_back(Pair("result", "failed"));
+            statusObj.push_back(Pair("errorMessage", "WATCHDOG_EXPIRED nodes aren't allowed to vote."));
+            resultsObj.push_back(Pair("paccoin.conf", statusObj));
+            returnObj.push_back(Pair("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", nSuccessful, nFailed)));
+            returnObj.push_back(Pair("detail", resultsObj));
+            return returnObj;
+        }
+
         CGovernanceVote vote(mn.vin.prevout, hash, eVoteSignal, eVoteOutcome);
         if(!vote.Sign(activeMasternode.keyMasternode, activeMasternode.pubKeyMasternode)) {
             nFailed++;

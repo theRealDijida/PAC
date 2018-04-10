@@ -29,6 +29,10 @@ static const int MASTERNODE_POSE_BAN_MAX_SCORE          = 5;
 // sentinel version before sentinel ping implementation
 #define DEFAULT_SENTINEL_VERSION 0x010001
 
+// sentinel with voting fix to enable proposals
+#define MIN_SENTINEL_VERSION 0x010200
+
+
 class CMasternodePing
 {
 public:
