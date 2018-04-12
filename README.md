@@ -1,4 +1,4 @@
-$PAC Core staging tree 0.12.3
+$PAC Core staging tree 0.12.3.0
 ===============================
 
 <!-- `master:` [![Build Status](https://travis-ci.org/paccoinpay/paccoin.svg?branch=master)](https://travis-ci.org/paccoinpay/paccoin) `develop:` [![Build Status](https://travis-ci.org/paccoinpay/paccoin.svg?branch=develop)](https://travis-ci.org/paccoinpay/paccoin/branches) -->
@@ -62,16 +62,6 @@ code. This is especially important for large or high-risk changes. It is useful
 to add a test plan to the pull request description if testing the changes is
 not straightforward.
 
-Updating Linux Wallet to the latest version
--------
-Go to your VPS or local machine and execute this on the command line:
-1)    wget https://raw.githubusercontent.com/PACCommunity/PAC/master/pac-update.sh
-2)    chmod +x pac-update.sh
-3)    ./pac-update.sh
-
-Follow the instructions:
-1)Do you want to autobackup wallet.dat and continue with the process? [y/n]: Type yes to backup and continue or no to stop process 
-
 <!-- Translations
 ------------
 
@@ -92,11 +82,26 @@ Translators should also follow the [forum](https://www.paccoin.org/forum/topic/p
 Setting up a masternode on a VPS (only for Cold wallet setup)
 -------
 Go to your VPS and execute this:
-1)    wget https://raw.githubusercontent.com/PACCommunity/PAC/master/pacmn.sh
-2)    chmod +x pacmn.sh
-3)    ./pacmn.sh
+1) `wget https://raw.githubusercontent.com/PACCommunity/PAC/master/pacmn.sh`
+2) `chmod +x pacmn.sh`
+3) `./pacmn.sh`
 
 Follow the instructions and:
 Enter your external IP
 Enter your masternode genkey
 The script will setup the environment and run your masternode 
+
+Updating a masternode on a VPS to the latest verion (only for Cold wallet setup)
+-------
+Go to your VPS and execute the following commands on the command line:
+1) `wget https://raw.githubusercontent.com/PACCommunity/PAC/master/pac-update.sh`
+2) `chmod +x pac-update.sh`
+3) `./pac-update.sh`
+
+Or run this single line to execute the previous commands in one go:
+
+`wget https://raw.githubusercontent.com/PACCommunity/PAC/master/pac-update.sh && chmod +x pac-update.sh && ./pac-update.sh`
+
+
+Follow the instructions:
+1)Do you want to autobackup wallet.dat and continue with the process? [y/n]: Type yes to backup and continue or no to stop process 
