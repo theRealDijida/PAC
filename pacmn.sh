@@ -2,6 +2,31 @@
 
 set -e
 
+if [ "$1" == "--testnet" ]; then
+	pac_rpc_port=17111
+	pac_port=17112
+	is_testnet=1
+else
+	pac_rpc_port=7111
+	pac_port=7112
+	is_testnet=0
+fi
+
+arch=`uname -m`
+version="0.12.3.0"
+old_version="0.12.2.3"
+base_url="https://github.com/PACCommunity/PAC/releases/download/v${version}"
+if [ "${arch}" == "x86_64" ]; then
+	tarball_name="PAC-v${version}-linux-x86_64.tar.gz"
+	binary_url="${base_url}/${tarball_name}"
+elif [ "${arch}" == "x86_32" ]; then
+	tarball_name="PAC-v${version}-linux-x86.tar.gz"
+	binary_url="${base_url}/${tarball_name}"
+else
+	echo "PAC binary distribution not available for the architecture: ${arch}"
+	exit -1
+fi
+
 echo "################################################"
 echo "#   Welcome to PAC Masternode's server setup   #"		
 echo "################################################"
@@ -23,26 +48,10 @@ echo "###############################"
 echo "#  Installing Dependencies    #"		
 echo "###############################"
 echo ""
-echo "Running this script on Ubuntu 16.04 LTS is highly recommended (2GB RAM)"
+echo "Running this script on Ubuntu 16.04 LTS or newer is highly recommended."
 
-sudo add-apt-repository -y ppa:bitcoin/bitcoin
 sudo apt-get -y update
-sudo apt-get -y install libminiupnpc-dev
-sudo apt-get -y install libboost-all-dev 
-sudo apt-get -y install build-essential
-sudo apt-get -y install libtool
-sudo apt-get -y install autotools-dev
-sudo apt-get -y install automake pkg-config
-sudo apt-get -y install libssl-dev
-sudo apt-get -y install libevent-dev bsdmainutils
-sudo apt-get -y install git
-sudo apt-get -y install libzmq3-dev
-sudo apt-get -y install libdb4.8-dev
-sudo apt-get -y install libdb4.8++-dev
-sudo apt-get -y install virtualenv
-sudo apt-get -y install ufw
-sudo apt-get -y install pwgen
-sudo apt-get -y install jq
+sudo apt-get -y install git python virtualenv ufw pwgen 
 
 
 echo "###############################"
@@ -52,26 +61,34 @@ sudo ufw status
 sudo ufw disable
 sudo ufw allow ssh/tcp
 sudo ufw limit ssh/tcp
-sudo ufw allow 7112/tcp
+sudo ufw allow $pac_port/tcp
 sudo ufw logging on
 sudo ufw --force enable
 sudo ufw status
 
-sudo iptables -A INPUT -p tcp --dport '7112' -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport $pac_port -j ACCEPT
 
 echo ""
 echo "###############################"
 echo "#      Get/Setup binaries     #"		
 echo "###############################"
 echo ""
-wget "https://github.com/PACCommunity/PAC/releases/download/v0.12.2.3/PAC-v0.12.2.3-ubuntu-16.04-x64.tar.gz"
-tar xvf 'PAC-v0.12.2.3-ubuntu-16.04-x64.tar.gz'
-cd ~/
-rm PAC-v0.12.2.3-ubuntu-16.04-x64.tar.gz
-currpath=$( pwd )
-echo "Binaries got stored on: $currpath"
-chmod +x paccoind
-chmod +x paccoin-cli
+
+if test -e "${tarball_name}"; then
+	rm -r $tarball_name
+fi
+wget $binary_url
+if test -e "${tarball_name}"; then
+	echo "Unpacking $PAC distribution"
+	tar -xvzf $tarball_name
+	chmod +x paccoind
+	chmod +x paccoin-cli
+	echo "Binaries were saved to: $PWD/$tarball_name"
+	rm -r $tarball_name
+else
+	echo "There was a problem downloading the binaries, please try running again the script."
+	exit -1
+fi
 
 echo "###############################"
 echo "#     Configure the wallet    #"		
@@ -98,15 +115,15 @@ echo "Configuring the paccoin.conf"
 echo "rpcuser=$(pwgen -s 16 1)" > paccoin.conf
 echo "rpcpassword=$(pwgen -s 64 1)" >> paccoin.conf
 echo "rpcallowip=127.0.0.1" >> paccoin.conf
-echo "rpcport=7111" >> paccoin.conf
+echo "rpcport=$pac_rpc_port" >> paccoin.conf
 echo "externalip=$ipaddr" >> paccoin.conf
-echo "port=7112" >> paccoin.conf
+echo "port=$pac_port" >> paccoin.conf
 echo "server=1" >> paccoin.conf
 echo "daemon=1" >> paccoin.conf
 echo "listen=1" >> paccoin.conf
-echo "staking=0" >> paccoin.conf
+echo "testnet=$is_testnet" >> paccoin.conf
 echo "masternode=1" >> paccoin.conf
-echo "masternodeaddr=$ipaddr:7112" >> paccoin.conf
+echo "masternodeaddr=$ipaddr:$pac_port" >> paccoin.conf
 echo "masternodeprivkey=$mnkey" >> paccoin.conf
 
 
@@ -119,11 +136,9 @@ cd ~/
 ./paccoind
 sleep 60
 
-syncedinfo=$( ./paccoin-cli mnsync status )
-assetid=$( echo $syncedinfo | jq '.AssetID' )
-
-if [ $assetid == 'null' ]; then
-	echo "Wallet is not running or there is an issue, please restart wallet!"
+is_pac_running=`ps ax | grep -v grep | grep paccoind | wc -l`
+if [ $is_pac_running -eq 0 ]; then
+	echo "The daemon is not running or there is an issue, please restart the daemon!"
 	exit
 fi
 
