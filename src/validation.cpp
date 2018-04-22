@@ -2230,6 +2230,14 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     // the peer who sent us this block is missing some data and wasn't able
     // to recognize that block is actually invalid.
     // TODO: resync data (both ways?) and try to reprocess this block later.
+    int nInvalidMasternodePaymentsIncreaseBlock = chainparams.GetConsensus().nMasternodePaymentsIncreaseBlock;
+    if (chainparams.NetworkIDString() == CBaseChainParams::MAIN && 
+        pindex->nHeight == nInvalidMasternodePaymentsIncreaseBlock && 
+        pindex->GetBlockHash() != uint256S("0x00000000000007cdd43a784898eb9cb5be63ca7db5e5935a05a1baa01a658ca0")) {
+        InvalidateBlock(state, chainparams.GetConsensus(), pindex);
+        return state.DoS(0, error("ConnectBlock(PAC): invalid chain found on block %i", nInvalidMasternodePaymentsIncreaseBlock), REJECT_INVALID, "bad-chain-found");
+    }
+
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->pprev->nBits, pindex->pprev->nHeight, chainparams.GetConsensus());
     std::string strError = "";
     if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
