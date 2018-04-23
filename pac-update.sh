@@ -4,8 +4,8 @@ set -e
 cd ~/
 
 arch=`uname -m`
-version="0.12.3.0"
-old_version="0.12.2.3"
+version="0.12.3.1"
+old_version="0.12.3.0"
 base_url="https://github.com/PACCommunity/PAC/releases/download/v${version}"
 if [ "${arch}" == "x86_64" ]; then
 	tarball_name="PAC-v${version}-linux-x86_64.tar.gz"
@@ -89,14 +89,14 @@ if [ -e ~/paccoin-cli ] && [ -e ~/paccoind ]; then
 		rm paccoin-qt
 	fi
 
-	if [ -e ~/PAC-v0.12.2.3-ubuntu-16.04-x64.tar.gz ]; then
-		echo "Removing PAC-v0.12.2.3-ubuntu-16.04-x64.tar.gz"
-		rm PAC-v0.12.2.3-ubuntu-16.04-x64.tar.gz
+	if [ -e ~/PAC-v0.12.3.0-linux-x86_64.tar.gz ]; then
+		echo "Removing PAC-v0.12.3.0-linux-x86_64.tar.gz"
+		rm PAC-v0.12.3.0-linux-x86_64.tar.gz
 	fi
 
-	if [ -d ~/PAC-v0.12.2.3-ubuntu-16.04-x64 ]; then
-		echo "Removing PAC-v0.12.2.3-ubuntu-16.04-x64 directory"
-		rm -r PAC-v0.12.2.3-ubuntu-16.04-x64
+	if [ -d ~/PAC-v0.12.3.0-linux-x86_64 ]; then
+		echo "Removing PAC-v0.12.23.0-linux-x86_64 directory"
+		rm -r PAC-v0.12.3.0-linux-x86_64
 	fi
 else
 	is_pac_running=`ps ax | grep -v grep | grep paccoind | wc -l`
