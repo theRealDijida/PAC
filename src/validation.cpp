@@ -1239,7 +1239,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     } else {
         dDiff = ConvertBitsToDouble(nPrevBits);
     }
-    
+
     if (nPrevHeight < 100)
     {
         nSubsidyBase = 35500000;
@@ -1260,17 +1260,23 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
-CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
+CAmount GetMasternodePayment(int nHeight, CAmount blockValue, const Consensus::Params& consensusParams)
 {
-    double dMasternodePart = 9.0/16.0;
-    CAmount ret = blockValue * dMasternodePart; // 45% of the total block reward.
-    return ret;
+    double dMasternodePart;
+
+    if(nHeight < consensusParams.nMasternodePaymentsIncreaseBlock){
+        dMasternodePart = 9.0/16.0; // 56.25% of the block reward.
+    } else {
+        dMasternodePart = 15.0/16.0; // 93.75% of the block reward.
+    }
+
+    return (blockValue * dMasternodePart);
 }
 
 double GetSubsidyMultiplier(int nPrevHeight, int nSubsidyAdjustmentInterval)
 {
     double dMultiplier = 0.0;
-    
+
     if (nPrevHeight < 100) {
         dMultiplier = 1.0;
     } else if (nPrevHeight <= nSubsidyAdjustmentInterval * 1) {
@@ -1292,7 +1298,7 @@ double GetSubsidyMultiplier(int nPrevHeight, int nSubsidyAdjustmentInterval)
     } else {
         dMultiplier = 0.0;
     }
-        
+
     return dMultiplier;
 }
 
@@ -2224,6 +2230,14 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     // the peer who sent us this block is missing some data and wasn't able
     // to recognize that block is actually invalid.
     // TODO: resync data (both ways?) and try to reprocess this block later.
+    int nInvalidMasternodePaymentsIncreaseBlock = chainparams.GetConsensus().nMasternodePaymentsIncreaseBlock;
+    if (chainparams.NetworkIDString() == CBaseChainParams::MAIN && 
+        pindex->nHeight == nInvalidMasternodePaymentsIncreaseBlock && 
+        pindex->GetBlockHash() != uint256S("0x00000000000007cdd43a784898eb9cb5be63ca7db5e5935a05a1baa01a658ca0")) {
+        InvalidateBlock(state, chainparams.GetConsensus(), pindex);
+        return state.DoS(0, error("ConnectBlock(PAC): invalid chain found on block %i", nInvalidMasternodePaymentsIncreaseBlock), REJECT_INVALID, "bad-chain-found");
+    }
+
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->pprev->nBits, pindex->pprev->nHeight, chainparams.GetConsensus());
     std::string strError = "";
     if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
@@ -3959,7 +3973,7 @@ bool LoadBlockIndex()
     return true;
 }
 
-bool InitBlockIndex(const CChainParams& chainparams) 
+bool InitBlockIndex(const CChainParams& chainparams)
 {
     LOCK(cs_main);
 

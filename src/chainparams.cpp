@@ -1,6 +1,7 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 The $PAC Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -91,7 +92,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *
  * CBlock(hash=00000ffd590b14, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=e0028e, nTime=1390095618, nBits=1e0ffff0, nNonce=28917698, vtx=1)
  *   CTransaction(hash=e0028e, ver=1, vin.size=1, vout.size=1, nLockTime=0)
- *     CTxIn(COutPoint(000000, -1), coinbase 04ffff001d01044c5957697265642030392f4a616e2f3230313420546865204772616e64204578706572696d656e7420476f6573204c6976653a204f76657273746f636b2e636f6d204973204e6f7720416363657074696e6720426974636f696e73)
+ *     CTxIn(COutPoint(000000, -1), coinbase 04ffff001d01044c57426974636f696e20426c6f636b20233530373230323a2030303030303030303030303030303030303032646366383861643766656365383639346361663735313234626131383165323963653338633736623763333738)
  *     CTxOut(nValue=50.00000000, scriptPubKey=0xA9037BAC7050C479B121CF)
  *   vMerkleTree: e0028e
  */
@@ -120,8 +121,8 @@ public:
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 210240; // Note: actual number of blocks per calendar year with DGW v3 is ~200700 (for example 449750 - 249050)
         consensus.nMasternodePaymentsStartBlock = 200; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 158000; // actual historical value
-        consensus.nMasternodePaymentsIncreasePeriod = 576*30; // 17280 - actual historical value
+        consensus.nMasternodePaymentsIncreaseBlock = 50000; // 50000 height aproximately April 20th
+        consensus.nMasternodePaymentsIncreasePeriod = 576*30; // Not used
         consensus.nInstantSendKeepLock = 24;
         consensus.nBudgetPaymentsStartBlock = 200; // actual historical value
         consensus.nBudgetPaymentsCycleBlocks = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
@@ -163,10 +164,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 3226; // 80% of 4032
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000183bd5351b7866"); // 7200
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000204045f68ab84052de"); // #50620
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000000b7d73439cae777bae147b8daaee692a9e5e06fd8466749de39465"); // 7200
+        consensus.defaultAssumeValid = uint256S("0x0000000000000349685ff23a2344db4d51ae9f169cda23c8a472fb783914b071"); // #50620
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -192,6 +193,8 @@ public:
         vSeeds.clear();
         vSeeds.push_back(CDNSSeedData("paccoin.io", "dnsseed1.paccoin.io"));
         vSeeds.push_back(CDNSSeedData("paccoin.io", "dnsseed2.paccoin.io"));
+        vSeeds.push_back(CDNSSeedData("paccoin.io", "dns-seeder-next.paccoin.io"));
+        vSeeds.push_back(CDNSSeedData("paccoin.io", "dns-seeder-foxtrot.paccoin.io"));
 
         // Paccoin addresses start with 'P'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,55);
@@ -221,12 +224,15 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (  100, uint256S("0x000005065df82218140bc7c59cfd6913eaa5a88f3255ccc977c546cb0beb9ff0"))
-            (  7200, uint256S("0x00000000000b7d73439cae777bae147b8daaee692a9e5e06fd8466749de39465")),
-            1517696635, // * UNIX timestamp of last checkpoint block
-            0,    // * total number of transactions between genesis and last checkpoint
+            (  100,     uint256S("0x000005065df82218140bc7c59cfd6913eaa5a88f3255ccc977c546cb0beb9ff0"))
+            (  7200,    uint256S("0x00000000000b7d73439cae777bae147b8daaee692a9e5e06fd8466749de39465"))
+            (  43850,   uint256S("0x0000000000000be675f137fbf5cbe5e9d8cb0ea509d30252a02c30944f16970f"))
+            (  50000,   uint256S("0x00000000000007cdd43a784898eb9cb5be63ca7db5e5935a05a1baa01a658ca0"))
+            (  50620,   uint256S("0x0000000000000349685ff23a2344db4d51ae9f169cda23c8a472fb783914b071")),
+            1524414644, // * UNIX timestamp of last checkpoint block
+            167228,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            1000        // * estimated number of transactions per day after checkpoint
+            1500        // * estimated number of transactions per day after checkpoint
         };
     }
 };
@@ -241,7 +247,7 @@ public:
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 210240;
         consensus.nMasternodePaymentsStartBlock = 2; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 4030;
+        consensus.nMasternodePaymentsIncreaseBlock = 6200;
         consensus.nMasternodePaymentsIncreasePeriod = 10;
         consensus.nInstantSendKeepLock = 6;
         consensus.nBudgetPaymentsStartBlock = 2;
@@ -304,9 +310,8 @@ public:
         assert(consensus.hashGenesisBlock == uint256S(TESTNET_GENESIS_HASH));
         assert(genesis.hashMerkleRoot == uint256S(GENESIS_MERKLE_ROOT));
 
-        vFixedSeeds.clear();
         vSeeds.clear();
-        //vSeeds.push_back(CDNSSeedData("paccoin.net",  "testnet-seed.paccoin.net"));
+        vSeeds.push_back(CDNSSeedData("paccoin.io",  "testnet-static-dns.paccoin.io"));
 
         // Testnet Paccoin addresses start with 'q'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,120);
