@@ -69,6 +69,10 @@ QT_MOC_CPP = \
   qt/moc_overviewpage.cpp \
   qt/moc_peertablemodel.cpp \
   qt/moc_paymentserver.cpp \
+  qt/moc_columnalignedlayout.cpp \
+  qt/moc_proposalfilterproxy.cpp \
+  qt/moc_proposaltablemodel.cpp \
+  qt/moc_proposallist.cpp \
   qt/moc_qvalidatedlineedit.cpp \
   qt/moc_qvaluecombobox.cpp \
   qt/moc_receivecoinsdialog.cpp \
@@ -142,6 +146,11 @@ BITCOIN_QT_H = \
   qt/paymentserver.h \
   qt/peertablemodel.h \
   qt/platformstyle.h \
+  qt/columnalignedlayout.h \
+  qt/proposalfilterproxy.h \
+  qt/proposallist.h \
+  qt/proposalrecord.h \
+  qt/proposaltablemodel.h \
   qt/qvalidatedlineedit.h \
   qt/qvaluecombobox.h \
   qt/receivecoinsdialog.h \
@@ -226,6 +235,7 @@ RES_ICONS = \
   qt/res/icons/drkblue/fontsmaller.png \
   qt/res/icons/drkblue/transaction_abandoned.png \
   qt/res/icons/drkblue/network_disabled.png \
+  qt/res/icons/drkblue/proposal.png \
   qt/res/icons/crownium/add.png \
   qt/res/icons/crownium/address-book.png \
   qt/res/icons/crownium/browse.png \
@@ -280,6 +290,7 @@ RES_ICONS = \
   qt/res/icons/crownium/fontsmaller.png \
   qt/res/icons/crownium/transaction_abandoned.png \
   qt/res/icons/crownium/network_disabled.png \
+  qt/res/icons/crownium/proposal.png \
   qt/res/icons/light/add.png \
   qt/res/icons/light/address-book.png \
   qt/res/icons/light/browse.png \
@@ -334,6 +345,7 @@ RES_ICONS = \
   qt/res/icons/light/fontsmaller.png \
   qt/res/icons/light/transaction_abandoned.png \
   qt/res/icons/light/network_disabled.png \
+  qt/res/icons/light/proposal.png \
   qt/res/icons/trad/add.png \
   qt/res/icons/trad/address-book.png \
   qt/res/icons/trad/browse.png \
@@ -387,7 +399,8 @@ RES_ICONS = \
   qt/res/icons/trad/fontbigger.png \
   qt/res/icons/trad/fontsmaller.png \
   qt/res/icons/trad/transaction_abandoned.png \
-  qt/res/icons/trad/network_disabled.png
+  qt/res/icons/trad/network_disabled.png \
+  qt/res/icons/trad/proposal.png
 
 BITCOIN_QT_CPP = \
   qt/bantablemodel.cpp \
@@ -432,6 +445,11 @@ BITCOIN_QT_CPP += \
   qt/overviewpage.cpp \
   qt/paymentrequestplus.cpp \
   qt/paymentserver.cpp \
+  qt/columnalignedlayout.cpp \
+  qt/proposalfilterproxy.cpp \
+  qt/proposallist.cpp \
+  qt/proposalrecord.cpp \
+  qt/proposaltablemodel.cpp \
   qt/receivecoinsdialog.cpp \
   qt/receiverequestdialog.cpp \
   qt/recentrequeststablemodel.cpp \
