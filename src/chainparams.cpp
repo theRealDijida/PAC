@@ -123,6 +123,7 @@ public:
         consensus.nMasternodePaymentsStartBlock = 200; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
         consensus.nMasternodePaymentsIncreaseBlock = 50000; // 50000 height aproximately April 20th
         consensus.nMasternodePaymentsIncreasePeriod = 576*30; // Not used
+        consensus.nFeeChangeBlock = 155000; // Aproximately October 29th 2018
         consensus.nInstantSendKeepLock = 24;
         consensus.nBudgetPaymentsStartBlock = 200; // actual historical value
         consensus.nBudgetPaymentsCycleBlocks = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
@@ -164,10 +165,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 3226; // 80% of 4032
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000204045f68ab84052de"); // #50620
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000291362006875385877"); // #151380
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0000000000000349685ff23a2344db4d51ae9f169cda23c8a472fb783914b071"); // #50620
+        consensus.defaultAssumeValid = uint256S("0x00000000000027377aa412aad9342c61c20973ac1636663b2ef06b3f7549876d"); // #151380
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -228,11 +229,12 @@ public:
             (  7200,    uint256S("0x00000000000b7d73439cae777bae147b8daaee692a9e5e06fd8466749de39465"))
             (  43850,   uint256S("0x0000000000000be675f137fbf5cbe5e9d8cb0ea509d30252a02c30944f16970f"))
             (  50000,   uint256S("0x00000000000007cdd43a784898eb9cb5be63ca7db5e5935a05a1baa01a658ca0"))
-            (  50620,   uint256S("0x0000000000000349685ff23a2344db4d51ae9f169cda23c8a472fb783914b071")),
-            1524414644, // * UNIX timestamp of last checkpoint block
-            167228,    // * total number of transactions between genesis and last checkpoint
+            (  50620,   uint256S("0x0000000000000349685ff23a2344db4d51ae9f169cda23c8a472fb783914b071"))
+            (  151380,  uint256S("0x00000000000027377aa412aad9342c61c20973ac1636663b2ef06b3f7549876d")),
+            1540326989, // * UNIX timestamp of last checkpoint block
+            704761,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            1500        // * estimated number of transactions per day after checkpoint
+            5000        // * estimated number of transactions per day after checkpoint
         };
     }
 };
@@ -249,6 +251,7 @@ public:
         consensus.nMasternodePaymentsStartBlock = 2; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
         consensus.nMasternodePaymentsIncreaseBlock = 6200;
         consensus.nMasternodePaymentsIncreasePeriod = 10;
+        consensus.nFeeChangeBlock = 99500;
         consensus.nInstantSendKeepLock = 6;
         consensus.nBudgetPaymentsStartBlock = 2;
         consensus.nBudgetPaymentsCycleBlocks = 50;
@@ -363,6 +366,7 @@ public:
         consensus.nMasternodePaymentsStartBlock = 2;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
         consensus.nMasternodePaymentsIncreasePeriod = 10;
+        consensus.nFeeChangeBlock = 500;
         consensus.nInstantSendKeepLock = 6;
         consensus.nBudgetPaymentsStartBlock = 2;
         consensus.nBudgetPaymentsCycleBlocks = 50;
