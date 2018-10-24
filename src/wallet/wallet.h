@@ -53,7 +53,7 @@ static const CAmount DEFAULT_FALLBACK_FEE = 50 * COIN;
 static const CAmount DEFAULT_LEGACY_TRANSACTION_MINFEE = 1000;
 static const CAmount DEFAULT_TRANSACTION_MINFEE = 50 * COIN;
 //! -maxtxfee default
-static const CAmount DEFAULT_TRANSACTION_MAXFEE = 500 * COIN; // "smallest denom" + X * "denom tails"
+static const CAmount DEFAULT_TRANSACTION_MAXFEE = 5000 * COIN; // "smallest denom" + X * "denom tails"
 //! minimum change amount
 static const CAmount MIN_CHANGE = CENT;
 //! Default for -spendzeroconfchange

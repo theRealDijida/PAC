@@ -41,7 +41,7 @@ void CDSNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, con
     // Update global DIP0001 activation status
     fDIP0001ActiveAtTip = (VersionBitsState(pindexNew, Params().GetConsensus(), Consensus::DEPLOYMENT_DIP0001, versionbitscache) == THRESHOLD_ACTIVE);
 
-    bool fNewFeeActiveAtTip = Params().GetConsensus().nFeeChangeBlock == pindexNew->nHeight;
+    bool fNewFeeActiveAtTip = pindexNew->nHeight > Params().GetConsensus().nFeeChangeBlock;
 
     // Update min fees
     if (fNewFeeActiveAtTip) {
