@@ -13,6 +13,7 @@
 #ifdef ENABLE_WALLET
 #include "privatesend-client.h"
 #endif // ENABLE_WALLET
+#include "txmempool.h"
 
 void CDSNotificationInterface::InitializeCurrentBlockTip()
 {
@@ -39,6 +40,24 @@ void CDSNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, con
 
     // Update global DIP0001 activation status
     fDIP0001ActiveAtTip = (VersionBitsState(pindexNew, Params().GetConsensus(), Consensus::DEPLOYMENT_DIP0001, versionbitscache) == THRESHOLD_ACTIVE);
+
+    bool fNewFeeActiveAtTip = pindexNew->nHeight > Params().GetConsensus().nFeeChangeBlock;
+
+    // Update min fees
+    if (fNewFeeActiveAtTip) {
+        if (!mapArgs.count("-minrelaytxfee")) {
+            ::minRelayTxFee = CFeeRate(DEFAULT_MIN_RELAY_TX_FEE);
+            mempool.UpdateMinFee(::minRelayTxFee);
+        }
+#ifdef ENABLE_WALLET
+        if (!mapArgs.count("-mintxfee")) {
+            CWallet::minTxFee = CFeeRate(DEFAULT_TRANSACTION_MINFEE);
+        }
+        if (!mapArgs.count("-fallbackfee")) {
+            CWallet::fallbackFee = CFeeRate(DEFAULT_FALLBACK_FEE);
+        }
+#endif // ENABLE_WALLET
+    }
 
     if (fInitialDownload)
         return;

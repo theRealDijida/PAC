@@ -91,7 +91,7 @@ std::atomic<bool> fDIP0001ActiveAtTip{false};
 uint256 hashAssumeValid;
 
 /** Fees smaller than this (in duffs) are considered zero fee (for relaying, mining and transaction creation) */
-CFeeRate minRelayTxFee = CFeeRate(DEFAULT_MIN_RELAY_TX_FEE);
+CFeeRate minRelayTxFee = CFeeRate(DEFAULT_LEGACY_MIN_RELAY_TX_FEE);
 
 CTxMemPool mempool(::minRelayTxFee);
 map<uint256, int64_t> mapRejectedBlocks GUARDED_BY(cs_main);
@@ -753,15 +753,18 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         if ((nSigOps > MAX_STANDARD_TX_SIGOPS) || (nBytesPerSigOp && nSigOps > nSize / nBytesPerSigOp))
             return state.DoS(0, false, REJECT_NONSTANDARD, "bad-txns-too-many-sigops", false,
                 strprintf("%d", nSigOps));
-
+        unsigned int minTxSizeInBytes = 182;
+        CAmount minTxFee = ::minRelayTxFee.GetFee(minTxSizeInBytes);
         CAmount mempoolRejectFee = pool.GetMinFee(GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000).GetFee(nSize);
-        if (mempoolRejectFee > 0 && nModifiedFees < mempoolRejectFee) {
+        if (nModifiedFees < minTxFee) {
+            return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "mempool minTxFee not met", false, strprintf("%d < %d", nFees, minTxFee));
+        }
+        else if (mempoolRejectFee > 0 && nModifiedFees < mempoolRejectFee) {
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "mempool min fee not met", false, strprintf("%d < %d", nFees, mempoolRejectFee));
         } else if (GetBoolArg("-relaypriority", DEFAULT_RELAYPRIORITY) && nModifiedFees < ::minRelayTxFee.GetFee(nSize) && !AllowFree(entry.GetPriority(chainActive.Height() + 1))) {
             // Require that free transactions have sufficient priority to be mined in the next block.
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "insufficient priority");
         }
-
         // Continuously rate-limit free (really, very-low-fee) transactions
         // This mitigates 'penny-flooding' -- sending thousands of free transactions just to
         // be annoying or make others' transactions take longer to confirm.
@@ -2230,14 +2233,6 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     // the peer who sent us this block is missing some data and wasn't able
     // to recognize that block is actually invalid.
     // TODO: resync data (both ways?) and try to reprocess this block later.
-    int nInvalidMasternodePaymentsIncreaseBlock = chainparams.GetConsensus().nMasternodePaymentsIncreaseBlock;
-    if (chainparams.NetworkIDString() == CBaseChainParams::MAIN && 
-        pindex->nHeight == nInvalidMasternodePaymentsIncreaseBlock && 
-        pindex->GetBlockHash() != uint256S("0x00000000000007cdd43a784898eb9cb5be63ca7db5e5935a05a1baa01a658ca0")) {
-        InvalidateBlock(state, chainparams.GetConsensus(), pindex);
-        return state.DoS(0, error("ConnectBlock(PAC): invalid chain found on block %i", nInvalidMasternodePaymentsIncreaseBlock), REJECT_INVALID, "bad-chain-found");
-    }
-
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->pprev->nBits, pindex->pprev->nHeight, chainparams.GetConsensus());
     std::string strError = "";
     if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
