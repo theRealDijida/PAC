@@ -104,7 +104,7 @@ Or run this single line to execute the previous commands in one go:
 Follow the instructions:
 1)Do you want to autobackup wallet.dat and continue with the process? [y/n]: Type yes to backup and continue or no to stop process 
 
-Updating multiple masternode on a VPS to the latest verion (only for Cold wallet setup)
+Updating multiple masternodes on a VPS to the latest verion (only for Cold wallet setup)
 -------
 1) Open your command line and run the following command:
 
