@@ -109,6 +109,7 @@ Updating multiple masternode on a VPS to the latest verion (only for Cold wallet
 1) Open your command line and run the following command:
 
 	MacOS: `curl 	https://raw.githubusercontent.com/PACCommunity/PAC/master/contrib/masternodetools/PacNodesUpdater.tar.gz -o PacNodesUpdater.tar.gz && tar -xzf PacNodesUpdater.tar.gz && cd PacNodesUpdater`
+	
 	Linux:`wget https://raw.githubusercontent.com/PACCommunity/PAC/master/contrib/masternodetools/PacNodesUpdater.tar.gz && tar -xzf PacNodesUpdater.tar.gz && cd PacNodesUpdater`
 
 2) Open and edit the nodes.csv file by adding the following data in order to login to the each node:
