@@ -107,18 +107,21 @@ Follow the instructions:
 Updating multiple masternode on a VPS to the latest verion (only for Cold wallet setup)
 -------
 1) Open your command line and run the following command:
-MacOS: `curl https://raw.githubusercontent.com/PACCommunity/PAC/master/contrib/masternodetools/PacNodesUpdater.tar.gz -o PacNodesUpdater.tar.gz && tar -xzf PacNodesUpdater.tar.gz && cd PacNodesUpdater`
-Linux:`wget https://raw.githubusercontent.com/PACCommunity/PAC/master/contrib/masternodetools/PacNodesUpdater.tar.gz && tar -xzf PacNodesUpdater.tar.gz && cd PacNodesUpdater`
+
+	MacOS: `curl 	https://raw.githubusercontent.com/PACCommunity/PAC/master/contrib/masternodetools/PacNodesUpdater.tar.gz -o PacNodesUpdater.tar.gz && tar -xzf PacNodesUpdater.tar.gz && cd PacNodesUpdater`
+	Linux:`wget https://raw.githubusercontent.com/PACCommunity/PAC/master/contrib/masternodetools/PacNodesUpdater.tar.gz && tar -xzf PacNodesUpdater.tar.gz && cd PacNodesUpdater`
 
 2) Open and edit the nodes.csv file by adding the following data in order to login to the each node:
-    -hostname: This is the user name used to login to the node (ssh user)
-    -ip: Is the address of the node, be it an url or an IP address
-    -password: It is the password used by the ssh user to authenticate in the node
-    Example in order to update 2 nodes the csv table will look like this:
-    | hostname   | ip            | password  |
-    | ---------- | ------------- | --------- |
-    | john       | 192.168.1.1   | 12345     |
-    | node2      | 198.39.0.1    | 12345     |
+    - hostname: This is the user name used to login to the node (ssh user)
+    - ip: Is the address of the node, be it an url or an IP address
+    - password: It is the password used by the ssh user to authenticate in the node
+    
+	    Example in order to update 2 nodes the csv table will look like this:
+   
+	    | hostname   | ip            | password  |
+	    | ---------- | ------------- | --------- |
+	    | john       | 192.168.1.1   | 12345     |
+	    | node2      | 198.39.0.1    | 12345     |
 
 3) Go back to the command line and run the following command:
 `chmod +x updateMNs.sh && ./updateMNs.sh`
