@@ -490,12 +490,12 @@
         <translation>%1 klient</translation>
     </message>
     <message>
-        <source>&amp;PrivateSend information</source>
-        <translation>Informácie o &amp;PrivateSend</translation>
+        <source>&amp;PrivatePAC information</source>
+        <translation>Informácie o &amp;PrivatePAC</translation>
     </message>
     <message>
-        <source>Show the PrivateSend basic information</source>
-        <translation>Ukázať základné Informácie o PrivateSend</translation>
+        <source>Show the PrivatePAC basic information</source>
+        <translation>Ukázať základné Informácie o PrivatePAC</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -794,8 +794,8 @@
         <translation>Pre použitie tejto funkcie prepnite na "Zoznamový mód".</translation>
     </message>
     <message>
-        <source>Non-anonymized input selected. &lt;b&gt;PrivateSend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use PrivateSend, please deselect all non-anonymized inputs first and then check the PrivateSend checkbox again.</source>
-        <translation>Vybratý ne-anonymizovaný vstup. &lt;b&gt;PrivateSend bude vypnutý.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Ak si stále želáte použiť PrivateSend, najskôr odznačte všetky ne-anonymizované vstupy a potom znova zaškrtnite PrivateSend políčko.</translation>
+        <source>Non-anonymized input selected. &lt;b&gt;PrivatePAC will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use PrivatePAC, please deselect all non-anonymized inputs first and then check the PrivatePAC checkbox again.</source>
+        <translation>Vybratý ne-anonymizovaný vstup. &lt;b&gt;PrivatePAC bude vypnutý.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Ak si stále želáte použiť PrivatePAC, najskôr odznačte všetky ne-anonymizované vstupy a potom znova zaškrtnite PrivatePAC políčko.</translation>
     </message>
     <message>
         <source>(%1 locked)</source>
@@ -967,12 +967,12 @@
         <translation>Zrušiť všetky zmeny v GUI</translation>
     </message>
     <message>
-        <source>PrivateSend information</source>
-        <translation>Informácie o PrivateSend</translation>
+        <source>PrivatePAC information</source>
+        <translation>Informácie o PrivatePAC</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;PrivateSend Basics&lt;/h3&gt; PrivateSend gives you true financial privacy by obscuring the origins of your funds. All the PAC in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; PrivateSend uses an innovative process to mix your inputs with the inputs of two other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The PrivateSend process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivateSend begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 PAC, 0.01 PAC, 0.1 PAC, 1 PAC and 10 PAC -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of PrivateSend makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be anonymized. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have PrivateSend disabled. &lt;hr&gt;For more information, see the &lt;a href="https://docs.paccoin.org/en/latest/wallets/paccoincore/privatesend-instantsend.html"&gt;PrivateSend documentation&lt;/a&gt;.</source>
-        <translation>&lt;h3&gt;Základy PrivateSend&lt;/h3&gt; PrivateSend Vám poskytuje skutočné finančné súkromie skrývaním pôvodu Vašich zdrojov. Všetky PAC vo vašej peňaženke pozostávajú z rôznych "vstupov", ktoré si môžete predstaviť ako rozdelené, which you can think of as separate, diskrétne mince.&lt;br&gt; PrivateSend používa zdokonalený proces pre miešanie Vašich vstupov so vstupmi iných ľudí bez toho. aby Vaše mince museli opustiť Vašu peňaženku. Počas cele doby máte kontrolu nad Vašimi peniazmi.&lt;hr&gt; &lt;b&gt;Proces PrivateSend funguje nasledovne:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivateSend začne rozdelením Vašich transakčných vstupov na štandardné časti, takzvané denominácie. Tieto denominácie sú 0.001 PAC, 0.01 PAC, 0.1 PAC, 1 PAC a 10 PAC -- v podstate niečo ako papierové peniaze, ktoré používate každý deň.&lt;/li&gt; &lt;li&gt;Vaša peňaženka potom pošle požiadavok špeciálne nastavenému softvérovému uzlu nazvaného "Masternode". Tieto masternódy sú potom informované, že máte záujem miešať určité denominácie. Masternode neobdrží žiadne informácie ktoré by Vás identifikovali, takže nikdy nevedia kto ste.&lt;/li&gt; &lt;li&gt;Keď ďalší dvaja ľudia pošlú podobnú správu hovoriacu o tom že chcú miešať rovnakú denomináciu, začne sa samotné miešanie. Masternode zamieša vstupy a povie peňaženkám všetkých troch používateľov, aby zaplatili teraz už zmiešané vstupy sami sebe. Vaša peňaženka zaplatí tieto denominácie priamo sebe, ale už na inú adresu (nazývanú "meniaca adresa").&lt;/li&gt; &lt;li&gt;Aby boli Vaše zdroje plne zakryté, Vaša peňaženka musí zopakovať tento proces niekoľko krát s každou denomináciou.  Vždy keď je tento proces dokončený, je nazvaný "kolo". Každé kolo PrivateSend exponenciálne sťažuje určiť odkiaľ pochádzajú Vaše zdroje.&lt;/li&gt; &lt;li&gt;Toto miešanie sa deje na pozadí bez nutnosti zásahov z Vašej strany. Keď si prajete uskutočniť transakciu, Vaše zdroje budú už anonymné. Nie je nutné na nič čakať.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt; &lt;b&gt;DÔLEŽITÉ:&lt;/b&gt; Vaša peňaženka obsahuje iba 1000 týchto "meniacich adries". Vždy keď prebehne miešanie, použije sa maximálne až 9 Vašich adries. To znamená, že týchto 1000 adries vystačí zhruba na 100 miešaní. Keď sa použije 900 adries, Vaša peňaženka musí vytvoriť viac adries. Toto je však možné iba vtedy, keď máte zapnuté automatické zálohovanie.&lt;br&gt; V dôsledku toho, používatelia ktorí majú zálohovanie vypnuté, budú mať vypnutý aj PrivateSend. &lt;hr&gt;&lt;a href="https://docs.paccoin.org/en/latest/wallets/paccoincore/privatesend-instantsend.html"&gt;Viac informácií nájdete v dokumentácii PrivateSend&lt;/a&gt;.</translation>
+        <source>&lt;h3&gt;PrivatePAC Basics&lt;/h3&gt; PrivatePAC gives you true financial privacy by obscuring the origins of your funds. All the PAC in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; PrivatePAC uses an innovative process to mix your inputs with the inputs of two other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The PrivatePAC process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivatePAC begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 PAC, 0.01 PAC, 0.1 PAC, 1 PAC and 10 PAC -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of PrivatePAC makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be anonymized. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have PrivatePAC disabled. &lt;hr&gt;For more information, see the &lt;a href="https://docs.paccoin.org/en/latest/wallets/paccoincore/PrivatePAC-InstantPAC.html"&gt;PrivatePAC documentation&lt;/a&gt;.</source>
+        <translation>&lt;h3&gt;Základy PrivatePAC&lt;/h3&gt; PrivatePAC Vám poskytuje skutočné finančné súkromie skrývaním pôvodu Vašich zdrojov. Všetky PAC vo vašej peňaženke pozostávajú z rôznych "vstupov", ktoré si môžete predstaviť ako rozdelené, which you can think of as separate, diskrétne mince.&lt;br&gt; PrivatePAC používa zdokonalený proces pre miešanie Vašich vstupov so vstupmi iných ľudí bez toho. aby Vaše mince museli opustiť Vašu peňaženku. Počas cele doby máte kontrolu nad Vašimi peniazmi.&lt;hr&gt; &lt;b&gt;Proces PrivatePAC funguje nasledovne:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivatePAC začne rozdelením Vašich transakčných vstupov na štandardné časti, takzvané denominácie. Tieto denominácie sú 0.001 PAC, 0.01 PAC, 0.1 PAC, 1 PAC a 10 PAC -- v podstate niečo ako papierové peniaze, ktoré používate každý deň.&lt;/li&gt; &lt;li&gt;Vaša peňaženka potom pošle požiadavok špeciálne nastavenému softvérovému uzlu nazvaného "Masternode". Tieto masternódy sú potom informované, že máte záujem miešať určité denominácie. Masternode neobdrží žiadne informácie ktoré by Vás identifikovali, takže nikdy nevedia kto ste.&lt;/li&gt; &lt;li&gt;Keď ďalší dvaja ľudia pošlú podobnú správu hovoriacu o tom že chcú miešať rovnakú denomináciu, začne sa samotné miešanie. Masternode zamieša vstupy a povie peňaženkám všetkých troch používateľov, aby zaplatili teraz už zmiešané vstupy sami sebe. Vaša peňaženka zaplatí tieto denominácie priamo sebe, ale už na inú adresu (nazývanú "meniaca adresa").&lt;/li&gt; &lt;li&gt;Aby boli Vaše zdroje plne zakryté, Vaša peňaženka musí zopakovať tento proces niekoľko krát s každou denomináciou.  Vždy keď je tento proces dokončený, je nazvaný "kolo". Každé kolo PrivatePAC exponenciálne sťažuje určiť odkiaľ pochádzajú Vaše zdroje.&lt;/li&gt; &lt;li&gt;Toto miešanie sa deje na pozadí bez nutnosti zásahov z Vašej strany. Keď si prajete uskutočniť transakciu, Vaše zdroje budú už anonymné. Nie je nutné na nič čakať.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt; &lt;b&gt;DÔLEŽITÉ:&lt;/b&gt; Vaša peňaženka obsahuje iba 1000 týchto "meniacich adries". Vždy keď prebehne miešanie, použije sa maximálne až 9 Vašich adries. To znamená, že týchto 1000 adries vystačí zhruba na 100 miešaní. Keď sa použije 900 adries, Vaša peňaženka musí vytvoriť viac adries. Toto je však možné iba vtedy, keď máte zapnuté automatické zálohovanie.&lt;br&gt; V dôsledku toho, používatelia ktorí majú zálohovanie vypnuté, budú mať vypnutý aj PrivatePAC. &lt;hr&gt;&lt;a href="https://docs.paccoin.org/en/latest/wallets/paccoincore/PrivatePAC-InstantPAC.html"&gt;Viac informácií nájdete v dokumentácii PrivatePAC&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1366,40 +1366,40 @@
         <translation>Ukázať záložku masternódov</translation>
     </message>
     <message>
-        <source>Show additional information and buttons for PrivateSend on overview screen.</source>
-        <translation>Na obrazovke s prehľadom zobraziť dodatočné informácie a tlačítka pre PrivateSend,</translation>
+        <source>Show additional information and buttons for PrivatePAC on overview screen.</source>
+        <translation>Na obrazovke s prehľadom zobraziť dodatočné informácie a tlačítka pre PrivatePAC,</translation>
     </message>
     <message>
-        <source>Enable advanced PrivateSend interface</source>
-        <translation>Zapnúť pokročilé rozhranie PrivateSend</translation>
+        <source>Enable advanced PrivatePAC interface</source>
+        <translation>Zapnúť pokročilé rozhranie PrivatePAC</translation>
     </message>
     <message>
-        <source>Show warning dialog when PrivateSend detects that wallet has very low number of keys left.</source>
-        <translation>Zobraziť dialóg s upozornením ak PrivateSend zistí, že Vaša peňaženka má veľmi málo zostávajúcich kľúčov.</translation>
+        <source>Show warning dialog when PrivatePAC detects that wallet has very low number of keys left.</source>
+        <translation>Zobraziť dialóg s upozornením ak PrivatePAC zistí, že Vaša peňaženka má veľmi málo zostávajúcich kľúčov.</translation>
     </message>
     <message>
-        <source>Warn if PrivateSend is running out of keys</source>
-        <translation>Upozorniť ak PrivateSend dochádzajú kľúče</translation>
+        <source>Warn if PrivatePAC is running out of keys</source>
+        <translation>Upozorniť ak PrivatePAC dochádzajú kľúče</translation>
     </message>
     <message>
-        <source>Whether to use experimental PrivateSend mode with multiple mixing sessions per block.&lt;br/&gt;Note: You must use this feature carefully.&lt;br/&gt;Make sure you always have recent wallet (auto)backup in a safe place!</source>
-        <translation>Použiť alebo nepoužiť experimentálny mód PrivateSend s viacerými miešaniami za jeden block.&lt;br/&gt;Poznámka: Túto funkciu používajte opatrne.&lt;br/&gt;Uistite sa, že vždy máte súčasnú peňaženku zálohovanú na bezpečnom mieste.</translation>
+        <source>Whether to use experimental PrivatePAC mode with multiple mixing sessions per block.&lt;br/&gt;Note: You must use this feature carefully.&lt;br/&gt;Make sure you always have recent wallet (auto)backup in a safe place!</source>
+        <translation>Použiť alebo nepoužiť experimentálny mód PrivatePAC s viacerými miešaniami za jeden block.&lt;br/&gt;Poznámka: Túto funkciu používajte opatrne.&lt;br/&gt;Uistite sa, že vždy máte súčasnú peňaženku zálohovanú na bezpečnom mieste.</translation>
     </message>
     <message>
-        <source>Enable PrivateSend &amp;multi-session</source>
-        <translation>Zapnúť &amp;multi-sekciové PrivateSend</translation>
+        <source>Enable PrivatePAC &amp;multi-session</source>
+        <translation>Zapnúť &amp;multi-sekciové PrivatePAC</translation>
     </message>
     <message>
         <source>If you disable the spending of unconfirmed change, the change from a transaction&lt;br/&gt;cannot be used until that transaction has at least one confirmation.&lt;br/&gt;This also affects how your balance is computed.</source>
         <translation>Ak vypnete míňanie nepotvrdeného výdavku tak výdavok z transakcie &lt;br&gt;bude možné použiť až keď daná transakcia bude mať aspoň jedno potvrdenie.&lt;br/&gt; Toto má vplyv aj na výpočet vášho zostatku.</translation>
     </message>
     <message>
-        <source>PrivateSend rounds to use</source>
-        <translation>Použiť kôl PrivateSend</translation>
+        <source>PrivatePAC rounds to use</source>
+        <translation>Použiť kôl PrivatePAC</translation>
     </message>
     <message>
-        <source>This amount acts as a threshold to turn off PrivateSend once it's reached.</source>
-        <translation>Táto suma slúži ako hranica pre vypnutie PrivateSend akonáhle je dosiahnutá.</translation>
+        <source>This amount acts as a threshold to turn off PrivatePAC once it's reached.</source>
+        <translation>Táto suma slúži ako hranica pre vypnutie PrivatePAC akonáhle je dosiahnutá.</translation>
     </message>
     <message>
         <source>Automatically open the PAC Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
@@ -1454,12 +1454,12 @@
         <translation>Povoliť možnosti "&amp;coin control"</translation>
     </message>
     <message>
-        <source>Show system popups for PrivateSend mixing transactions&lt;br/&gt;just like for all other transaction types.</source>
-        <translation>Zobraziť vyskakovacie okná pre miešacie PrivateSend transakcie,&lt;br/&gt; tak ako pre ostatné typy transakcií.</translation>
+        <source>Show system popups for PrivatePAC mixing transactions&lt;br/&gt;just like for all other transaction types.</source>
+        <translation>Zobraziť vyskakovacie okná pre miešacie PrivatePAC transakcie,&lt;br/&gt; tak ako pre ostatné typy transakcií.</translation>
     </message>
     <message>
-        <source>Show popups for PrivateSend transactions</source>
-        <translation>Zobraziť vyskakovacie okná pre PrivateSend transakcie </translation>
+        <source>Show popups for PrivatePAC transactions</source>
+        <translation>Zobraziť vyskakovacie okná pre PrivatePAC transakcie </translation>
     </message>
     <message>
         <source>&amp;Spend unconfirmed change</source>
@@ -1699,8 +1699,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Použiteľné:</translation>
     </message>
     <message>
-        <source>PrivateSend</source>
-        <translation>PrivateSend</translation>
+        <source>PrivatePAC</source>
+        <translation>PrivatePAC</translation>
     </message>
     <message>
         <source>Status:</source>
@@ -1715,16 +1715,16 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Dokončenie:</translation>
     </message>
     <message>
-        <source>Try to manually submit a PrivateSend request.</source>
-        <translation>Skúsiť manuálne odoslať PrivateSend požiadavku.</translation>
+        <source>Try to manually submit a PrivatePAC request.</source>
+        <translation>Skúsiť manuálne odoslať PrivatePAC požiadavku.</translation>
     </message>
     <message>
-        <source>Reset the current status of PrivateSend (can interrupt PrivateSend if it's in the process of Mixing, which can cost you money!)</source>
-        <translation>Vynulovať súčasný stav PrivateSend (môže prerušiť PrivateSend ak je v procese miešania, čo Vás môže stáť peniaze!)</translation>
+        <source>Reset the current status of PrivatePAC (can interrupt PrivatePAC if it's in the process of Mixing, which can cost you money!)</source>
+        <translation>Vynulovať súčasný stav PrivatePAC (môže prerušiť PrivatePAC ak je v procese miešania, čo Vás môže stáť peniaze!)</translation>
     </message>
     <message>
-        <source>Information about PrivateSend and Mixing</source>
-        <translation>Informácie o PrivateSend a miešaní</translation>
+        <source>Information about PrivatePAC and Mixing</source>
+        <translation>Informácie o PrivatePAC a miešaní</translation>
     </message>
     <message>
         <source>Info</source>
@@ -1755,8 +1755,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Začať/Zastaviť miešanie</translation>
     </message>
     <message>
-        <source>PrivateSend Balance:</source>
-        <translation>Zostatok PrivateSend:</translation>
+        <source>PrivatePAC Balance:</source>
+        <translation>Zostatok PrivatePAC:</translation>
     </message>
     <message>
         <source>The denominations you submitted to the Masternode.&lt;br&gt;To mix, other users must submit the exact same denominations.</source>
@@ -1871,27 +1871,27 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>UPOZORNENIE! Chyba pri doplňovaní zásobníku kľúčov. Pre doplnenie musíte odomknúť Vašu peňaženku.</translation>
     </message>
     <message>
-        <source>Last PrivateSend message:
+        <source>Last PrivatePAC message:
 </source>
-        <translation>Posledná PrivateSend správa:
+        <translation>Posledná PrivatePAC správa:
 
 </translation>
     </message>
     <message>
-        <source>PrivateSend was successfully reset.</source>
-        <translation>PrivateSend bol úspešne obnovený</translation>
+        <source>PrivatePAC was successfully reset.</source>
+        <translation>PrivatePAC bol úspešne obnovený</translation>
     </message>
     <message>
-        <source>If you don't want to see internal PrivateSend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
+        <source>If you don't want to see internal PrivatePAC fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
         <translation>Ak nechcete vidieť interné Darksend poplatky/transakcie, vyberte "Najčastejšie" ako typ na záložke "Transakcie".</translation>
     </message>
     <message>
-        <source>PrivateSend requires at least %1 to use.</source>
-        <translation>Pre použitie vyžaduje PrivateSend aspoň %1.</translation>
+        <source>PrivatePAC requires at least %1 to use.</source>
+        <translation>Pre použitie vyžaduje PrivatePAC aspoň %1.</translation>
     </message>
     <message>
-        <source>Wallet is locked and user declined to unlock. Disabling PrivateSend.</source>
-        <translation>Peňaženka je zamknutá a používateľ ju odmietol odomknúť. PrivateSend sa vypína.</translation>
+        <source>Wallet is locked and user declined to unlock. Disabling PrivatePAC.</source>
+        <translation>Peňaženka je zamknutá a používateľ ju odmietol odomknúť. PrivatePAC sa vypína.</translation>
     </message>
 </context>
 <context>
@@ -2585,8 +2585,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Vyčistiť</translation>
     </message>
     <message>
-        <source>Request InstantSend</source>
-        <translation>Vyžiadať InstantSend</translation>
+        <source>Request InstantPAC</source>
+        <translation>Vyžiadať InstantPAC</translation>
     </message>
     <message>
         <source>Requested payments history</source>
@@ -2672,8 +2672,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Správa</translation>
     </message>
     <message>
-        <source>InstantSend</source>
-        <translation>InstantSend</translation>
+        <source>InstantPAC</source>
+        <translation>InstantPAC</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -2806,12 +2806,12 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Cieľový čas potvrdenia:</translation>
     </message>
     <message>
-        <source>PrivateSend</source>
-        <translation>PrivateSend</translation>
+        <source>PrivatePAC</source>
+        <translation>PrivatePAC</translation>
     </message>
     <message>
-        <source>InstantSend</source>
-        <translation>InstantSend</translation>
+        <source>InstantPAC</source>
+        <translation>InstantPAC</translation>
     </message>
     <message>
         <source>If the custom fee is set to 1000 duffs and the transaction is only 250 bytes, then "per kilobyte" only pays 250 duffs in fee,&lt;br /&gt;while "at least" pays 1000 duffs. For transactions bigger than a kilobyte both pay by kilobyte.</source>
@@ -2926,16 +2926,16 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>anonymné zdroje</translation>
     </message>
     <message>
-        <source>(privatesend requires this amount to be rounded up to the nearest %1).</source>
-        <translation>(PrivateSend vyžaduje aby bola táto suma zaokrúhlená nahor k najbližšej %1).</translation>
+        <source>(PrivatePAC requires this amount to be rounded up to the nearest %1).</source>
+        <translation>(PrivatePAC vyžaduje aby bola táto suma zaokrúhlená nahor k najbližšej %1).</translation>
     </message>
     <message>
         <source>any available funds (not anonymous)</source>
         <translation>akékoľvek dostupné zdroje (nie anonýmne)</translation>
     </message>
     <message>
-        <source>and InstantSend</source>
-        <translation>a InstantSend</translation>
+        <source>and InstantPAC</source>
+        <translation>a InstantPAC</translation>
     </message>
     <message>
         <source>%1 to %2</source>
@@ -3331,16 +3331,16 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>%1 potvrdení</translation>
     </message>
     <message>
-        <source>verified via InstantSend</source>
-        <translation>overené cez InstantSend</translation>
+        <source>verified via InstantPAC</source>
+        <translation>overené cez InstantPAC</translation>
     </message>
     <message>
-        <source>InstantSend verification in progress - %1 of %2 signatures</source>
-        <translation>Prebieha overovanie InstantSend - %1 z %2 podpisov</translation>
+        <source>InstantPAC verification in progress - %1 of %2 signatures</source>
+        <translation>Prebieha overovanie InstantPAC - %1 z %2 podpisov</translation>
     </message>
     <message>
-        <source>InstantSend verification failed</source>
-        <translation>Overenie InstantSend zlyhalo</translation>
+        <source>InstantPAC verification failed</source>
+        <translation>Overenie InstantPAC zlyhalo</translation>
     </message>
     <message>
         <source>Status</source>
@@ -3553,8 +3553,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Prijaté od:</translation>
     </message>
     <message>
-        <source>Received via PrivateSend</source>
-        <translation>Prijaté cez PrivateSend</translation>
+        <source>Received via PrivatePAC</source>
+        <translation>Prijaté cez PrivatePAC</translation>
     </message>
     <message>
         <source>Sent to</source>
@@ -3569,24 +3569,24 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Vyťažené</translation>
     </message>
     <message>
-        <source>PrivateSend Denominate</source>
-        <translation>Denominácia PrivateSend</translation>
+        <source>PrivatePAC Denominate</source>
+        <translation>Denominácia PrivatePAC</translation>
     </message>
     <message>
-        <source>PrivateSend Collateral Payment</source>
-        <translation>Zaisťovacia PrivateSend platba</translation>
+        <source>PrivatePAC Collateral Payment</source>
+        <translation>Zaisťovacia PrivatePAC platba</translation>
     </message>
     <message>
-        <source>PrivateSend Make Collateral Inputs</source>
-        <translation>Uskutočnené zaisťovacie PrivateSend vstupy</translation>
+        <source>PrivatePAC Make Collateral Inputs</source>
+        <translation>Uskutočnené zaisťovacie PrivatePAC vstupy</translation>
     </message>
     <message>
-        <source>PrivateSend Create Denominations</source>
-        <translation>Vytvorené denominácie PrivateSend</translation>
+        <source>PrivatePAC Create Denominations</source>
+        <translation>Vytvorené denominácie PrivatePAC</translation>
     </message>
     <message>
-        <source>PrivateSend</source>
-        <translation>PrivateSend</translation>
+        <source>PrivatePAC</source>
+        <translation>PrivatePAC</translation>
     </message>
     <message>
         <source>watch-only</source>
@@ -3617,8 +3617,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Či sú ale nie sú, adresy iba na sledovanie zahrnuté v tejto transakcii.</translation>
     </message>
     <message>
-        <source>Whether or not this transaction was locked by InstantSend.</source>
-        <translation>Či bola, alebo nebola táto transakcia uzamknutá pomocou InstantSend.</translation>
+        <source>Whether or not this transaction was locked by InstantPAC.</source>
+        <translation>Či bola, alebo nebola táto transakcia uzamknutá pomocou InstantPAC.</translation>
     </message>
     <message>
         <source>User-defined intent/purpose of the transaction.</source>
@@ -3636,12 +3636,12 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Všetko</translation>
     </message>
     <message>
-        <source>Locked by InstantSend</source>
-        <translation>Uzamknuté cez InstantSend</translation>
+        <source>Locked by InstantPAC</source>
+        <translation>Uzamknuté cez InstantPAC</translation>
     </message>
     <message>
-        <source>Not locked by InstantSend</source>
-        <translation>Neuzamknuté cez InstantSend</translation>
+        <source>Not locked by InstantPAC</source>
+        <translation>Neuzamknuté cez InstantPAC</translation>
     </message>
     <message>
         <source>Today</source>
@@ -3680,24 +3680,24 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Odoslané na</translation>
     </message>
     <message>
-        <source>PrivateSend</source>
-        <translation>PrivateSend</translation>
+        <source>PrivatePAC</source>
+        <translation>PrivatePAC</translation>
     </message>
     <message>
-        <source>PrivateSend Make Collateral Inputs</source>
-        <translation>Uskutočnené zaisťovacie PrivateSend vstupy</translation>
+        <source>PrivatePAC Make Collateral Inputs</source>
+        <translation>Uskutočnené zaisťovacie PrivatePAC vstupy</translation>
     </message>
     <message>
-        <source>PrivateSend Create Denominations</source>
-        <translation>Vytvorené denominácie PrivateSend</translation>
+        <source>PrivatePAC Create Denominations</source>
+        <translation>Vytvorené denominácie PrivatePAC</translation>
     </message>
     <message>
-        <source>PrivateSend Denominate</source>
-        <translation>Denominácia PrivateSend</translation>
+        <source>PrivatePAC Denominate</source>
+        <translation>Denominácia PrivatePAC</translation>
     </message>
     <message>
-        <source>PrivateSend Collateral Payment</source>
-        <translation>Zaisťovacia PrivateSend platba</translation>
+        <source>PrivatePAC Collateral Payment</source>
+        <translation>Zaisťovacia PrivatePAC platba</translation>
     </message>
     <message>
         <source>To yourself</source>
@@ -3837,12 +3837,12 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Poslať Mince</translation>
     </message>
     <message>
-        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 PAC.</source>
-        <translation>InstantSend zatiaľ nepodporuje posielanie takto vysokých čiastok. Transakcie sú limitované na %1 PAC.</translation>
+        <source>InstantPAC doesn't support sending values that high yet. Transactions are currently limited to %1 PAC.</source>
+        <translation>InstantPAC zatiaľ nepodporuje posielanie takto vysokých čiastok. Transakcie sú limitované na %1 PAC.</translation>
     </message>
     <message>
-        <source>Used way too many inputs (&gt;%1) for this InstantSend transaction, fees could be huge.</source>
-        <translation>Pre InstantSend transakciu bolo použitých príliš veľa vstupov (&gt;%1), poplatok by mohol byť obrovský. </translation>
+        <source>Used way too many inputs (&gt;%1) for this InstantPAC transaction, fees could be huge.</source>
+        <translation>Pre InstantPAC transakciu bolo použitých príliš veľa vstupov (&gt;%1), poplatok by mohol byť obrovský. </translation>
     </message>
 </context>
 <context>
@@ -4067,12 +4067,12 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Vymazať všetky transakcie z peňaženky a pri spustení znova získať z blockchainu iba tie získané pomocou -rescan</translation>
     </message>
     <message>
-        <source>Enable publish raw transactions of attempted InstantSend double spend in &lt;address&gt;</source>
-        <translation>Povoliť publikovanie nespracovaných transakcií, ktoré sa pokúsili o dvojité minutie InstantSend v &lt;address&gt;</translation>
+        <source>Enable publish raw transactions of attempted InstantPAC double spend in &lt;address&gt;</source>
+        <translation>Povoliť publikovanie nespracovaných transakcií, ktoré sa pokúsili o dvojité minutie InstantPAC v &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Enable publish transaction hashes of attempted InstantSend double spend in &lt;address&gt;</source>
-        <translation>Povoliť publikovanie transakčných hashov, ktoré sa pokúsili o dvojité minutie InstantSend v </translation>
+        <source>Enable publish transaction hashes of attempted InstantPAC double spend in &lt;address&gt;</source>
+        <translation>Povoliť publikovanie transakčných hashov, ktoré sa pokúsili o dvojité minutie InstantPAC v </translation>
     </message>
     <message>
         <source>Error loading %s: You can't enable HD on a already existing non-HD wallet</source>
@@ -4535,8 +4535,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>V pamäti udržiavať najviac &lt;n&gt; nepotvrdených transakcií (predvolené: %u)</translation>
     </message>
     <message>
-        <source>Disable all PAC specific functionality (Masternodes, PrivateSend, InstantSend, Governance) (0-1, default: %u)</source>
-        <translation>Vypnúť všetky funkcie špecifické pre PAC (Masternódy, PrivateSend, InstantSend, Správu) (0-1, predvolené: %u)</translation>
+        <source>Disable all PAC specific functionality (Masternodes, PrivatePAC, InstantPAC, Governance) (0-1, default: %u)</source>
+        <translation>Vypnúť všetky funkcie špecifické pre PAC (Masternódy, PrivatePAC, InstantPAC, Správu) (0-1, predvolené: %u)</translation>
     </message>
     <message>
         <source>%s file contains all private keys from this wallet. Do not share it with anyone!</source>
@@ -4551,20 +4551,20 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Nedržať transakcie v zásobníku dlhšie ako &lt;n&gt; hodín (predvolené: %u)</translation>
     </message>
     <message>
-        <source>Enable InstantSend, show confirmations for locked transactions (0-1, default: %u)</source>
-        <translation>Zapnúť InstantSend, ukázať potvrdenia pre zamknuté transakcie (0-1, predvolené: %u)</translation>
+        <source>Enable InstantPAC, show confirmations for locked transactions (0-1, default: %u)</source>
+        <translation>Zapnúť InstantPAC, ukázať potvrdenia pre zamknuté transakcie (0-1, predvolené: %u)</translation>
     </message>
     <message>
-        <source>Enable multiple PrivateSend mixing sessions per block, experimental (0-1, default: %u)</source>
-        <translation>Zapnúť viac PrivateSend miešaní za jeden blok, experimentálne (0-1, predvolené: %u)</translation>
+        <source>Enable multiple PrivatePAC mixing sessions per block, experimental (0-1, default: %u)</source>
+        <translation>Zapnúť viac PrivatePAC miešaní za jeden blok, experimentálne (0-1, predvolené: %u)</translation>
     </message>
     <message>
-        <source>Enable use of automated PrivateSend for funds stored in this wallet (0-1, default: %u)</source>
-        <translation>Povoliť používanie automatického PrivateSend pre zdroje uložené v tejto peňaženke (0-1, predvolené: %u)</translation>
+        <source>Enable use of automated PrivatePAC for funds stored in this wallet (0-1, default: %u)</source>
+        <translation>Povoliť používanie automatického PrivatePAC pre zdroje uložené v tejto peňaženke (0-1, predvolené: %u)</translation>
     </message>
     <message>
-        <source>Execute command when a wallet InstantSend transaction is successfully locked (%s in cmd is replaced by TxID)</source>
-        <translation>Spustiť príkaz keď je InstantSend zmení úspešne zamknutá (%s v cmd sa nahrádza TxID)</translation>
+        <source>Execute command when a wallet InstantPAC transaction is successfully locked (%s in cmd is replaced by TxID)</source>
+        <translation>Spustiť príkaz keď je InstantPAC zmení úspešne zamknutá (%s v cmd sa nahrádza TxID)</translation>
     </message>
     <message>
         <source>Extra transactions to keep in memory for compact block reconstructions (default: %u)</source>
@@ -4587,12 +4587,12 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Pokiaľ &lt;category&gt; nie je nastavená, alebo &lt;category&gt; = 1, vypíš všetky informácie pre ladenie.</translation>
     </message>
     <message>
-        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 PAC.</source>
-        <translation>InstantSend zatiaľ nepodporuje posielanie takto vysokých čiastok. Transakcie sú limitované na %1 PAC.</translation>
+        <source>InstantPAC doesn't support sending values that high yet. Transactions are currently limited to %1 PAC.</source>
+        <translation>InstantPAC zatiaľ nepodporuje posielanie takto vysokých čiastok. Transakcie sú limitované na %1 PAC.</translation>
     </message>
     <message>
-        <source>InstantSend requires inputs with at least %d confirmations, you might need to wait a few minutes and try again.</source>
-        <translation>InstantSend vyžaduje vstupy s aspoň %d potvrdeniami, môžete počkať pár minút a skúsiť znova.</translation>
+        <source>InstantPAC requires inputs with at least %d confirmations, you might need to wait a few minutes and try again.</source>
+        <translation>InstantPAC vyžaduje vstupy s aspoň %d potvrdeniami, môžete počkať pár minút a skúsiť znova.</translation>
     </message>
     <message>
         <source>Maintain a full address index, used to query for the balance, txids and unspent outputs for addresses (default: %u)</source>
@@ -4611,8 +4611,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Udržiavať najviac &lt;n&gt; spojení s inými počítačmi (dočasné servisné spojenia nie sú zahrnuté) (predvolené: %u)</translation>
     </message>
     <message>
-        <source>PrivateSend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
-        <translation>Pre poslanie zdrojov používa PrivateSend presné sumy, potrebujete jednoducho anonymizovať viac mincí. </translation>
+        <source>PrivatePAC uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
+        <translation>Pre poslanie zdrojov používa PrivatePAC presné sumy, potrebujete jednoducho anonymizovať viac mincí. </translation>
     </message>
     <message>
         <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
@@ -4659,8 +4659,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Sa snaží držať odchádzajúce prevádzku v rámci daného cieľa (v MB za 24h), 0 = žiadny limit (predvolený: %d)</translation>
     </message>
     <message>
-        <source>Unable to locate enough PrivateSend denominated funds for this transaction.</source>
-        <translation>Nedá sa nájsť dostatok denominácií PrivateSend pre túto transakciu. </translation>
+        <source>Unable to locate enough PrivatePAC denominated funds for this transaction.</source>
+        <translation>Nedá sa nájsť dostatok denominácií PrivatePAC pre túto transakciu. </translation>
     </message>
     <message>
         <source>Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
@@ -4743,8 +4743,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Povoliť zverejnenie hash hlasovania správy pre &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Enable publish hash transaction (locked via InstantSend) in &lt;address&gt;</source>
-        <translation>Povoliť publikovanie transformačných transakcií (zamknutých cez InstantSend) v &lt;address&gt;</translation>
+        <source>Enable publish hash transaction (locked via InstantPAC) in &lt;address&gt;</source>
+        <translation>Povoliť publikovanie transformačných transakcií (zamknutých cez InstantPAC) v &lt;address&gt;</translation>
     </message>
     <message>
         <source>Enable publish hash transaction in &lt;address&gt;</source>
@@ -4755,8 +4755,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Povoliť zverejnenie raw bloku pre &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Enable publish raw transaction (locked via InstantSend) in &lt;address&gt;</source>
-        <translation>Povoliť publikovanie nespracovaných transakcií (zamknutých cez InstantSend) v &lt;address&gt;</translation>
+        <source>Enable publish raw transaction (locked via InstantPAC) in &lt;address&gt;</source>
+        <translation>Povoliť publikovanie nespracovaných transakcií (zamknutých cez InstantPAC) v &lt;address&gt;</translation>
     </message>
     <message>
         <source>Enable publish raw transaction in &lt;address&gt;</source>
@@ -4779,8 +4779,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Nepodarilo sa vymazať zálohu, chyba: %s</translation>
     </message>
     <message>
-        <source>Failed to load InstantSend data cache from</source>
-        <translation>Chyba pri načítaní vyrovnávajúcej pamäti InstantSend dát z</translation>
+        <source>Failed to load InstantPAC data cache from</source>
+        <translation>Chyba pri načítaní vyrovnávajúcej pamäti InstantPAC dát z</translation>
     </message>
     <message>
         <source>Failed to load sporks cache from</source>
@@ -4799,8 +4799,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Importovať bloky z externého súboru blk000??.dat pri štarte</translation>
     </message>
     <message>
-        <source>InstantSend options:</source>
-        <translation>Možnosti InstantSend:</translation>
+        <source>InstantPAC options:</source>
+        <translation>Možnosti InstantPAC:</translation>
     </message>
     <message>
         <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
@@ -4811,20 +4811,20 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Udržovať zasobník transakcií menší než &lt;n&gt; megabajtov (predvolené: %u)</translation>
     </message>
     <message>
-        <source>Last PrivateSend was too recent.</source>
-        <translation>Posledný PrivateSend bol uskutočnený pred príliš krátkou chvíľou.</translation>
+        <source>Last PrivatePAC was too recent.</source>
+        <translation>Posledný PrivatePAC bol uskutočnený pred príliš krátkou chvíľou.</translation>
     </message>
     <message>
-        <source>Last successful PrivateSend action was too recent.</source>
-        <translation>Posledná úspešná PrivateSend akcia bola uskutočnená pred príliš krátkou chvíľou.</translation>
+        <source>Last successful PrivatePAC action was too recent.</source>
+        <translation>Posledná úspešná PrivatePAC akcia bola uskutočnená pred príliš krátkou chvíľou.</translation>
     </message>
     <message>
         <source>Line: %d</source>
         <translation>Riadok: %d</translation>
     </message>
     <message>
-        <source>Loading InstantSend data cache...</source>
-        <translation>Načíta sa vyrovnávacia pamäť InstantSend dát...</translation>
+        <source>Loading InstantPAC data cache...</source>
+        <translation>Načíta sa vyrovnávacia pamäť InstantPAC dát...</translation>
     </message>
     <message>
         <source>Loading addresses...</source>
@@ -4927,20 +4927,20 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Vytlačiť verziu a ukončiť</translation>
     </message>
     <message>
-        <source>PrivateSend is idle.</source>
-        <translation>PrivateSend je nečinný.</translation>
+        <source>PrivatePAC is idle.</source>
+        <translation>PrivatePAC je nečinný.</translation>
     </message>
     <message>
-        <source>PrivateSend options:</source>
-        <translation>Možnosti PrivateSend:</translation>
+        <source>PrivatePAC options:</source>
+        <translation>Možnosti PrivatePAC:</translation>
     </message>
     <message>
-        <source>PrivateSend request complete:</source>
-        <translation>Dokončené PrivateSend požiadavky:</translation>
+        <source>PrivatePAC request complete:</source>
+        <translation>Dokončené PrivatePAC požiadavky:</translation>
     </message>
     <message>
-        <source>PrivateSend request incomplete:</source>
-        <translation>Nedokončené PrivateSend požiadavky:</translation>
+        <source>PrivatePAC request incomplete:</source>
+        <translation>Nedokončené PrivatePAC požiadavky:</translation>
     </message>
     <message>
         <source>Prune cannot be configured with a negative value.</source>
@@ -5103,8 +5103,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Keď si myslíte, že %s je užitočný, podporte nás. Pre viac informácií o software navštívte %s.</translation>
     </message>
     <message>
-        <source>Provide liquidity to PrivateSend by infrequently mixing coins on a continual basis (%u-%u, default: %u, 1=very frequent, high fees, %u=very infrequent, low fees)</source>
-        <translation>Poskytnúť likviditu PrivateSend tým, že občas miešať mince na priebežnej báze (%u-%u, predvolené: %u, 1=veľmi často, vysoké poplatky, %u=veľmi zriedkavo, nízke poplatky)</translation>
+        <source>Provide liquidity to PrivatePAC by infrequently mixing coins on a continual basis (%u-%u, default: %u, 1=very frequent, high fees, %u=very infrequent, low fees)</source>
+        <translation>Poskytnúť likviditu PrivatePAC tým, že občas miešať mince na priebežnej báze (%u-%u, predvolené: %u, 1=veľmi často, vysoké poplatky, %u=veľmi zriedkavo, nízke poplatky)</translation>
     </message>
     <message>
         <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect/-noconnect)</source>
@@ -5127,8 +5127,8 @@ https://www.transifex.com/projects/p/paccoin/</translation>
         <translation>Tento produkt zahrňuje programy vyvinuté projektom OpenSSL pre použití v OpenSSL Toolkite %s a kryptografický program od Erika Younga a program UPnP od Thomasa Bernarda.</translation>
     </message>
     <message>
-        <source>Unable to locate enough PrivateSend non-denominated funds for this transaction.</source>
-        <translation>Pre túto transakciu nie je možné nájsť dostatok neverejnených prostriedkov PrivateSend.</translation>
+        <source>Unable to locate enough PrivatePAC non-denominated funds for this transaction.</source>
+        <translation>Pre túto transakciu nie je možné nájsť dostatok neverejnených prostriedkov PrivatePAC.</translation>
     </message>
     <message>
         <source>Use N separate masternodes for each denominated input to mix funds (%u-%u, default: %u)</source>

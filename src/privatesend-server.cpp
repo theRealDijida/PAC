@@ -138,7 +138,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
             }
             mnodeman.AllowMixing(dsq.masternodeOutpoint);
 
-            LogPrint("privatesend", "DSQUEUE -- new PrivateSend queue (%s) from masternode %s\n", dsq.ToString(), mnInfo.addr.ToString());
+            LogPrint("privatesend", "DSQUEUE -- new PrivatePAC queue (%s) from masternode %s\n", dsq.ToString(), mnInfo.addr.ToString());
             vecPrivateSendQueue.push_back(dsq);
             dsq.Relay(connman);
         }
@@ -380,7 +380,7 @@ void CPrivateSendServer::CommitFinalTransaction(CConnman& connman)
 //
 // Charge clients a fee if they're abusive
 //
-// Why bother? PrivateSend uses collateral to ensure abuse to the process is kept to a minimum.
+// Why bother? PrivatePAC uses collateral to ensure abuse to the process is kept to a minimum.
 // The submission and signing stages are completely separate. In the cases where
 // a client submits a transaction then refused to sign, there must be a cost. Otherwise they
 // would be able to do this over and over again and bring the mixing to a halt.

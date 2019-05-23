@@ -9,10 +9,10 @@ from test_framework.util import *
 from time import *
 
 '''
-InstantSendTest -- test InstantSend functionality (prevent doublespend for unconfirmed transactions)
+InstantPACTest -- test InstantPAC functionality (prevent doublespend for unconfirmed transactions)
 '''
 
-class InstantSendTest(PACTestFramework):
+class InstantPACTest(PACTestFramework):
     def __init__(self):
         super().__init__(14, 10, [])
         # set sender,  receiver,  isolated nodes
@@ -24,7 +24,7 @@ class InstantSendTest(PACTestFramework):
         # feed the sender with some balance
         sender_addr = self.nodes[self.sender_idx].getnewaddress()
         self.nodes[0].sendtoaddress(sender_addr, 1)
-        # make sender funds mature for InstantSend
+        # make sender funds mature for InstantPAC
         for i in range(0, 2):
             set_mocktime(get_mocktime() + 1)
             set_node_times(self.nodes, get_mocktime())
@@ -76,4 +76,4 @@ class InstantSendTest(PACTestFramework):
 
 
 if __name__ == '__main__':
-    InstantSendTest().main()
+    InstantPACTest().main()

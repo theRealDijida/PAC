@@ -1431,7 +1431,7 @@ CAmount CWallet::GetDebit(const CTxIn &txin, const isminefilter& filter) const
     return 0;
 }
 
-// Recursively determine the rounds of a given input (How deep is the PrivateSend chain for a given input)
+// Recursively determine the rounds of a given input (How deep is the PrivatePAC chain for a given input)
 int CWallet::GetRealOutpointPrivateSendRounds(const COutPoint& outpoint, int nRounds) const
 {
     static std::map<uint256, CMutableTransaction> mDenomWtxes;
@@ -3329,7 +3329,7 @@ bool CWallet::CreateCollateralTransaction(CMutableTransaction& txCollateral, std
     CTxDSIn txdsinCollateral;
 
     if (!GetCollateralTxDSIn(txdsinCollateral, nValue)) {
-        strReason = "PrivateSend requires a collateral transaction and could not locate an acceptable input!";
+        strReason = "PrivatePAC requires a collateral transaction and could not locate an acceptable input!";
         return false;
     }
 
@@ -3531,22 +3531,22 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                 if (!SelectCoins(vAvailableCoins, nValueToSelect, setCoins, nValueIn, coinControl, nCoinType, fUseInstantSend))
                 {
                     if (nCoinType == ONLY_NONDENOMINATED) {
-                        strFailReason = _("Unable to locate enough PrivateSend non-denominated funds for this transaction.");
+                        strFailReason = _("Unable to locate enough PrivatePAC non-denominated funds for this transaction.");
                     } else if (nCoinType == ONLY_DENOMINATED) {
-                        strFailReason = _("Unable to locate enough PrivateSend denominated funds for this transaction.");
-                        strFailReason += " " + _("PrivateSend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.");
+                        strFailReason = _("Unable to locate enough PrivatePAC denominated funds for this transaction.");
+                        strFailReason += " " + _("PrivatePAC uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.");
                     } else if (nValueIn < nValueToSelect) {
                         strFailReason = _("Insufficient funds.");
                         if (fUseInstantSend) {
                             // could be not true but most likely that's the reason
-                            strFailReason += " " + strprintf(_("InstantSend requires inputs with at least %d confirmations, you might need to wait a few minutes and try again."), nInstantSendConfirmationsRequired);
+                            strFailReason += " " + strprintf(_("InstantPAC requires inputs with at least %d confirmations, you might need to wait a few minutes and try again."), nInstantSendConfirmationsRequired);
                         }
                     }
 
                     return false;
                 }
                 if (fUseInstantSend && nValueIn > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
-                    strFailReason += " " + strprintf(_("InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 PAC."), sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE));
+                    strFailReason += " " + strprintf(_("InstantPAC doesn't support sending values that high yet. Transactions are currently limited to %1 PAC."), sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE));
                     return false;
                 }
 
@@ -3734,7 +3734,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                     currentConfirmationTarget = coinControl->nConfirmTarget;
 
                 // Can we complete this as a free transaction?
-                // Note: InstantSend transaction can't be a free one
+                // Note: InstantPAC transaction can't be a free one
                 if (!fUseInstantSend && fSendFreeTransactions && nBytes <= MAX_FREE_TRANSACTION_CREATE_SIZE)
                 {
                     // Not enough fee: enough priority?
