@@ -1396,6 +1396,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
     if (strCommand == NetMsgType::REJECT)
     {
+        LogPrint("net", "trCommand == NetMsgType::REJECT");
         std::string strMsg; unsigned char ccode; std::string strReason;
         uint256 hash;
         try {
@@ -1429,6 +1430,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
     else if (strCommand == NetMsgType::VERSION)
     {
+        LogPrint("net", "strCommand == NetMsgType::VERSION");
         // Each connection can only send one version message
         if (pfrom->nVersion != 0)
         {
@@ -1626,6 +1628,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
     if (strCommand == NetMsgType::VERACK)
     {
+        LogPrint("net", "strCommand == NetMsgType::VERACK");
         pfrom->SetRecvVersion(std::min(pfrom->nVersion.load(), PROTOCOL_VERSION));
 
         if (!pfrom->fInbound) {
@@ -1666,6 +1669,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
     else if (strCommand == NetMsgType::ADDR)
     {
+        LogPrint("net", "strCommand == NetMsgType::ADDR");
         std::vector<CAddress> vAddr;
         vRecv >> vAddr;
 
@@ -1733,6 +1737,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
     else if (strCommand == NetMsgType::INV)
     {
+        LogPrint("net", "strCommand == NetMsgType::INV");
         std::vector<CInv> vInv;
         vRecv >> vInv;
         if (vInv.size() > MAX_INV_SZ)

@@ -405,6 +405,7 @@ int CMasternodePayments::GetMinMasternodePaymentsProto() const {
 
 void CMasternodePayments::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman)
 {
+    LogPrintf("CMasternodePayments::ProcessMessage");
     if (deterministicMNManager->IsDeterministicMNsSporkActive())
         return;
 

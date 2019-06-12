@@ -132,7 +132,21 @@ public:
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(masternodeOutpoint);
+        int nVersion = s.GetVersion();
+        if (nVersion == 70215 && (s.GetType() & SER_NETWORK)) {
+            // converting from/to old format
+            CTxIn txin{};
+            if (ser_action.ForRead()) {
+                READWRITE(txin);
+                masternodeOutpoint = txin.prevout;
+            } else {
+                txin = CTxIn(masternodeOutpoint);
+                READWRITE(txin);
+            }
+        } else {
+            // using new format directly
+            READWRITE(masternodeOutpoint);
+        }
         READWRITE(nBlockHeight);
         READWRITE(*(CScriptBase*)(&payee));
         if (!(s.GetType() & SER_GETHASH)) {

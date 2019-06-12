@@ -988,13 +988,14 @@ void CMasternodeMan::ProcessPendingMnbRequests(CConnman& connman)
 
 void CMasternodeMan::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman)
 {
+    LogPrintf("CMasternodeMan::ProcessMessage ====== strCommand %s\n", strCommand);
     if (deterministicMNManager->IsDeterministicMNsSporkActive())
         return;
-
+    LogPrintf("CMasternodeMan::ProcessMessage ====== fLiteMode\n");
     if(fLiteMode) return; // disable all PAC specific functionality
 
     if (strCommand == NetMsgType::MNANNOUNCE) { //Masternode Broadcast
-
+LogPrintf("CMasternodeMan::ProcessMessage ====== MNANNOUNCE\n");
         CMasternodeBroadcast mnb;
         vRecv >> mnb;
 
@@ -1004,11 +1005,12 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, const std::string& strCommand,
         }
 
         if(!masternodeSync.IsBlockchainSynced()) return;
-
+LogPrintf("CMasternodeMan::ProcessMessage ====== !masternodeSync.IsBlockchainSynced(\n");
         LogPrint("masternode", "MNANNOUNCE -- Masternode announce, masternode=%s\n", mnb.outpoint.ToStringShort());
 
         int nDos = 0;
 
+LogPrintf("CMasternodeMan::ProcessMessage ====== CheckMnbAndUpdateMasternodeList(pfrom, mnb, nDos, connman)\n");
         if (CheckMnbAndUpdateMasternodeList(pfrom, mnb, nDos, connman)) {
             // use announced Masternode as a peer
             connman.AddNewAddress(CAddress(mnb.addr, NODE_NETWORK), pfrom->addr, 2*60*60);
@@ -1016,15 +1018,19 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, const std::string& strCommand,
             LOCK(cs_main);
             Misbehaving(pfrom->GetId(), nDos);
         }
+LogPrintf("CMasternodeMan::ProcessMessage ====== fMasternodesAdded\n");
 
         if(fMasternodesAdded) {
             NotifyMasternodeUpdates(connman);
         }
     } else if (strCommand == NetMsgType::MNPING) { //Masternode Ping
 
-        CMasternodePing mnp;
-        vRecv >> mnp;
+        LogPrintf("++++++++++++++++++++++ MNPING -- strCommand == NetMsgType::MNPING\n");
 
+        CMasternodePing mnp;
+         LogPrintf("++++++++++++++++++++++ MNPING -- strCommand == vRecv >> mnp;\n");
+        vRecv >> mnp;
+         LogPrintf("++++++++++++++++++++++ MNPING -- strCommand == uint256 nHash = mnp.GetHash();\n");
         uint256 nHash = mnp.GetHash();
 
         {
@@ -1072,6 +1078,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, const std::string& strCommand,
         // Ignore such requests until we are fully synced.
         // We could start processing this after masternode list is synced
         // but this is a heavy one so it's better to finish sync first.
+        LogPrintf("++++++++++++++++++++++ MNPING -- strCommand == NetMsgType::DSEG\n");
         if (!masternodeSync.IsSynced()) return;
 
         COutPoint masternodeOutpoint;
@@ -1089,7 +1096,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, const std::string& strCommand,
 
         // Need LOCK2 here to ensure consistent locking order because all functions below call GetBlockHash which locks cs_main
         LOCK2(cs_main, cs);
-
+LogPrintf("++++++++++++++++++++++ MNPING -- strCommand == NetMsgType::MNVERIFY\n");
         CMasternodeVerification mnv;
         vRecv >> mnv;
 
