@@ -74,8 +74,11 @@ class CBlock : public CBlockHeader
 public:
     // network and disk
     std::vector<CTransactionRef> vtx;
+    std::vector<unsigned char> vchBlockSig;
 
     // memory only
+    mutable CTxOut txoutMasternode;
+    mutable std::vector<CTxOut> voutSuperblock;
     mutable bool fChecked;
 
     CBlock()
@@ -86,15 +89,19 @@ public:
     CBlock(const CBlockHeader &header)
     {
         SetNull();
-        *((CBlockHeader*)this) = header;
+        *(static_cast<CBlockHeader*>(this)) = header;
     }
 
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(*(CBlockHeader*)this);
+        READWRITEAS(CBlockHeader, *this);
         READWRITE(vtx);
+        if(vtx.size() > 1 && vtx[1]->IsCoinStake())
+        {
+            READWRITE(vchBlockSig);
+        }
     }
 
     void SetNull()
@@ -102,6 +109,7 @@ public:
         CBlockHeader::SetNull();
         vtx.clear();
         fChecked = false;
+		    vchBlockSig.clear();
     }
 
     CBlockHeader GetBlockHeader() const
@@ -116,9 +124,11 @@ public:
         return block;
     }
 
+    bool IsProofOfStake() const;
+    bool IsProofOfWork() const;
+
     std::string ToString() const;
 };
-
 
 /** Describes a place in the block chain to another node such that if the
  * other node doesn't have the same branch, it can find a recent common trunk.
@@ -130,10 +140,7 @@ struct CBlockLocator
 
     CBlockLocator() {}
 
-    CBlockLocator(const std::vector<uint256>& vHaveIn)
-    {
-        vHave = vHaveIn;
-    }
+    explicit CBlockLocator(const std::vector<uint256>& vHaveIn) : vHave(vHaveIn) {}
 
     ADD_SERIALIZE_METHODS;
 

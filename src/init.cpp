@@ -2129,6 +2129,10 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
         pwalletMain->postInitProcess(scheduler);
 #endif
 
+    if(GetBoolArg("-staking", true)) {
+        threadGroup.create_thread(std::bind(&ThreadStakeMinter, boost::ref(chainparams), boost::ref(connman)));
+    }
+
     threadGroup.create_thread(boost::bind(&ThreadSendAlert, boost::ref(connman)));
 
     return !fRequestShutdown;

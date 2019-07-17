@@ -84,6 +84,7 @@ private:
     WalletFrame *walletFrame;
 
     UnitDisplayStatusBarControl *unitDisplayControl;
+    QLabel* labelStakingIcon = nullptr;
     QLabel *labelWalletEncryptionIcon;
     QLabel *labelWalletHDStatusIcon;
     QLabel *labelConnectionsIcon;
@@ -191,6 +192,12 @@ public Q_SLOTS:
     void message(const QString &title, const QString &message, unsigned int style, bool *ret = NULL);
 
 #ifdef ENABLE_WALLET
+
+    /** Set the UI status indicators based on the currently selected wallet.
+    */
+    void setStakingStatus();
+
+private:
     /** Set the hd-enabled status as shown in the UI.
      @param[in] status            current hd enabled status
      @see WalletModel::EncryptionStatus
