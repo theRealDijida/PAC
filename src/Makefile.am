@@ -112,6 +112,7 @@ BITCOIN_CORE_H = \
   bip39.h \
   bip39_english.h \
   blockencodings.h \
+  blocksigner.h \
   bloom.h \
   cachemap.h \
   cachemultimap.h \
@@ -163,6 +164,7 @@ BITCOIN_CORE_H = \
   key.h \
   keepass.h \
   keystore.h \
+  kernel.h \
   dbwrapper.h \
   limitedmap.h \
   llmq/quorums.h \
@@ -265,6 +267,7 @@ libdash_server_a_SOURCES = \
   batchedlogger.cpp \
   bloom.cpp \
   blockencodings.cpp \
+  blocksigner.cpp \
   chain.cpp \
   checkpoints.cpp \
   dsnotificationinterface.cpp \
@@ -279,6 +282,7 @@ libdash_server_a_SOURCES = \
   httpserver.cpp \
   init.cpp \
   instantx.cpp \
+  kernel.cpp \
   dbwrapper.cpp \
   governance.cpp \
   governance-classes.cpp \
@@ -673,9 +677,9 @@ if EMBEDDED_LEVELDB
 include Makefile.leveldb.include
 endif
 
-if ENABLE_TESTS
-include Makefile.test.include
-endif
+#if ENABLE_TESTS
+#include Makefile.test.include
+#endif
 
 if ENABLE_BENCH
 include Makefile.bench.include
@@ -685,6 +689,6 @@ if ENABLE_QT
 include Makefile.qt.include
 endif
 
-if ENABLE_QT_TESTS
-include Makefile.qttest.include
-endif
+#if ENABLE_QT_TESTS
+#include Makefile.qttest.include
+#endif

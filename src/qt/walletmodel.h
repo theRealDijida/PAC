@@ -121,7 +121,8 @@ public:
         TransactionCreationFailed, // Error returned when wallet is still locked
         TransactionCommitFailed,
         AbsurdFee,
-        PaymentRequestExpired
+        PaymentRequestExpired,
+        StakingOnlyUnlocked
     };
 
     enum EncryptionStatus
@@ -129,6 +130,7 @@ public:
         Unencrypted,            // !wallet->IsCrypted()
         Locked,                 // wallet->IsCrypted() && wallet->IsLocked(true)
         UnlockedForMixingOnly,  // wallet->IsCrypted() && !wallet->IsLocked(true) && wallet->IsLocked()
+        UnlockedForStakingOnly, // wallet->IsCrypted() && !wallet->IsLocked() && wallet->fWalletUnlockStakingOnly
         Unlocked,               // wallet->IsCrypted() && !wallet->IsLocked()
     };
 
@@ -173,6 +175,9 @@ public:
     // Passphrase only needed when unlocking
     bool setWalletLocked(bool locked, const SecureString &passPhrase=SecureString(), bool fMixing=false);
     bool changePassphrase(const SecureString &oldPass, const SecureString &newPass);
+
+    // Is wallet unlocked for staking only?
+    bool isStakingOnlyUnlocked();
 
     // Wallet backup
     bool backupWallet(const QString &filename);

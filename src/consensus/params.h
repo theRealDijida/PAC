@@ -168,9 +168,18 @@ struct Params {
     int64_t nPowTargetTimespan;
     int nPowKGWHeight;
     int nPowDGWHeight;
+    int nLastPoWBlock;
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
+
+    /** Proof of stake parameters */
+    uint256 posLimit;
+    int64_t nPosTargetSpacing;
+    int64_t nPosTargetTimespan;
+    int nStakeMinAge;
+    int nStakeMaxAge;
+    int64_t nModifierInterval;
 
     /** these parameters are only used on devnet and can be configured from the outside */
     int nMinimumDifficultyBlocks{0};

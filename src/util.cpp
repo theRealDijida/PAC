@@ -571,7 +571,7 @@ boost::filesystem::path GetDefaultDataDir()
     // Unix: ~/.dashcore
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "DashCore";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "pactestneta";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -581,10 +581,10 @@ boost::filesystem::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/DashCore";
+    return pathRet / "Library/Application Support/pactestneta";
 #else
     // Unix
-    return pathRet / ".dashcore";
+    return pathRet / ".pactestneta";
 #endif
 #endif
 }
@@ -874,6 +874,19 @@ void runCommand(const std::string& strCommand)
     int nErr = ::system(strCommand.c_str());
     if (nErr)
         LogPrintf("runCommand error: system(%s) returned %d\n", strCommand, nErr);
+}
+
+void SetThreadPriority(int nPriority)
+{
+#ifdef WIN32
+    SetThreadPriority(GetCurrentThread(), nPriority);
+#else // WIN32
+#ifdef PRIO_THREAD
+    setpriority(PRIO_THREAD, 0, nPriority);
+#else // PRIO_THREAD
+    setpriority(PRIO_PROCESS, 0, nPriority);
+#endif // PRIO_THREAD
+#endif // WIN32
 }
 
 void RenameThread(const char* name)

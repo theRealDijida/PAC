@@ -284,6 +284,10 @@
         <file alias="transaction_abandoned">res/icons/trad/transaction_abandoned.png</file>
         <file alias="network_disabled">res/icons/trad/network_disabled.png</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file alias="staking_active">res/icons/staking_active.png</file>
+        <file alias="staking_inactive">res/icons/staking_inactive.png</file>
+    </qresource>
     <qresource prefix="/css">
         <file alias="drkblue">res/css/drkblue.css</file>
         <file alias="crownium">res/css/crownium.css</file>

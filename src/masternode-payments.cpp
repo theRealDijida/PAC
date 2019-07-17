@@ -82,6 +82,9 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
 
     strErrorRet = "";
 
+    bool isProofOfStake = !block.IsProofOfWork();
+    const auto& coinbaseTransaction = block.vtx[isProofOfStake];
+
     if (nBlockHeight < consensusParams.nBudgetPaymentsStartBlock) {
         // old budget system is not activated yet, just make sure we do not exceed the regular block reward
         if(!isBlockRewardValueMet) {
@@ -229,10 +232,12 @@ void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blo
     txNew.vout.insert(txNew.vout.end(), voutMasternodePaymentsRet.begin(), voutMasternodePaymentsRet.end());
     txNew.vout.insert(txNew.vout.end(), voutSuperblockPaymentsRet.begin(), voutSuperblockPaymentsRet.end());
 
+    // done this way to be capable of pow/mn & pos/mn if desired
     std::string voutMasternodeStr;
+    bool IsProofOfStake = nBlockHeight > Params().GetConsensus().nLastPoWBlock ? true : false;
     for (const auto& txout : voutMasternodePaymentsRet) {
         // subtract MN payment from miner reward
-        txNew.vout[0].nValue -= txout.nValue;
+        txNew.vout[IsProofOfStake].nValue -= txout.nValue;
         if (!voutMasternodeStr.empty())
             voutMasternodeStr += ",";
         voutMasternodeStr += txout.ToString();

@@ -76,7 +76,7 @@ static bool verify_flags(unsigned int flags)
     return (flags & ~(dashconsensus_SCRIPT_FLAGS_VERIFY_ALL)) == 0;
 }
 
-int dashconsensus_verify_script(const unsigned char *scriptPubKey, unsigned int scriptPubKeyLen,
+int dashconsensus_verify_script(const unsigned char *scriptPubKey, unsigned int scriptPubKeyLen, CAmount amount,
                                     const unsigned char *txTo        , unsigned int txToLen,
                                     unsigned int nIn, unsigned int flags, dashconsensus_error* err)
 {

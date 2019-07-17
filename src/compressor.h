@@ -14,6 +14,13 @@ class CKeyID;
 class CPubKey;
 class CScriptID;
 
+bool CompressScript(const CScript& script, std::vector<unsigned char> &out);
+unsigned int GetSpecialScriptSize(unsigned int nSize);
+bool DecompressScript(CScript& script, unsigned int nSize, const std::vector<unsigned char> &out);
+
+uint64_t CompressAmount(uint64_t nAmount);
+uint64_t DecompressAmount(uint64_t nAmount);
+
 /** Compact serializer for scripts.
  *
  *  It detects common cases and encodes them much more efficiently.
