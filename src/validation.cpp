@@ -1203,9 +1203,9 @@ double ConvertBitsToDouble(unsigned int nBits)
 
 CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
-    if (nPrevHeight < 10)
+    if (nPrevHeight < 20)
         return 1000000 * COIN;
-    return 10 * COIN;
+    return 10000 * COIN;
 }
 
 /*
@@ -3560,14 +3560,17 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, const Co
             mapProofOfStake.insert(std::make_pair(hash, hashProofOfStake));
     }
 
-    // Check difficulty
-    if (block.nBits != GetNextWorkRequired(pindexPrev, consensusParams, block.IsProofOfStake()))
-        return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, strprintf("incorrect difficulty: block pow=%d bits=%08x calc=%08x",
-                  block.IsProofOfWork() ? "Y" : "N", block.nBits, GetNextWorkRequired(pindexPrev, consensusParams, block.IsProofOfStake())));
-    else
-        LogPrintf("Block pow=%s bits=%08x found=%08x %s=%s\n", block.IsProofOfWork() ? "Y" : "N", GetNextWorkRequired(pindexPrev,
-                  consensusParams, block.IsProofOfStake()), block.nBits, block.IsProofOfWork() ? "powhash" : "hashproof",
-                  block.IsProofOfWork() ? block.GetHash().ToString().c_str() : hashProofOfStake.ToString().c_str());
+    // Test nbits if proof of work
+    if (block.IsProofOfWork())
+    {
+        if (block.nBits != GetNextWorkRequired(pindexPrev, consensusParams))
+            return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, strprintf("incorrect difficulty: block pow=Y bits=%08x calc=%08x",
+                             block.nBits, GetNextWorkRequired(pindexPrev, consensusParams)));
+    }
+    else {
+        LogPrintf("Block pow=N bits=%08x found=%08x hashProof=%s\n", GetNextWorkRequired(pindexPrev, consensusParams), block.nBits,
+                  hashProofOfStake.ToString().c_str());
+    }
 
     // Start enforcing BIP113 (Median Time Past) using versionbits logic.
     int nLockTimeFlags = 0;

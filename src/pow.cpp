@@ -13,17 +13,10 @@
 
 #include <math.h>
 
-const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake)
+unsigned int DualKGW3(const CBlockIndex* pindexLast, bool fProofOfStake, const Consensus::Params& params)
 {
-    while (pindex && pindex->pprev && (pindex->IsProofOfStake() != fProofOfStake))
-        pindex = pindex->pprev;
-    return pindex;
-}
-
-unsigned int DualKGW3(const CBlockIndex* pindexLast, const Consensus::Params& params)
-{
-    const CBlockIndex* BlockLastSolved = GetLastBlockIndex(pindexLast, false);
-    const CBlockIndex* BlockReading = GetLastBlockIndex(pindexLast, false);
+    const CBlockIndex *BlockLastSolved = pindexLast;
+    const CBlockIndex *BlockReading = pindexLast;
     int64_t PastBlocksMass = 0;
     int64_t PastRateActualSeconds = 0;
     int64_t PastRateTargetSeconds = 0;
@@ -33,13 +26,15 @@ unsigned int DualKGW3(const CBlockIndex* pindexLast, const Consensus::Params& pa
     double EventHorizonDeviation;
     double EventHorizonDeviationFast;
     double EventHorizonDeviationSlow;
-    static const int64_t Blocktime = params.nPowTargetSpacing;
+    static const int64_t Blocktime = fProofOfStake ? params.nPosTargetSpacing :
+                                                     params.nPowTargetSpacing;
     static const unsigned int timeDaySeconds = 86400;
     uint64_t pastSecondsMin = timeDaySeconds * 0.025;
     uint64_t pastSecondsMax = timeDaySeconds * 7;
     uint64_t PastBlocksMin = pastSecondsMin / Blocktime;
     uint64_t PastBlocksMax = pastSecondsMax / Blocktime;
-    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+    const arith_uint256 bnPowLimit = fProofOfStake ? UintToArith256(params.posLimit) :
+                                                     UintToArith256(params.powLimit);
 
     if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 ||
             (uint64_t)BlockLastSolved->nHeight < PastBlocksMin)
@@ -117,36 +112,6 @@ unsigned int DualKGW3(const CBlockIndex* pindexLast, const Consensus::Params& pa
 
     return bnNew.GetCompact();
 }
-
-unsigned int PoSWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params)
-{
-    const CBlockIndex* LastPoSBlock = GetLastBlockIndex(pindexLast, true);
-    const arith_uint256 bnPosLimit = UintToArith256(params.posLimit);
-    int64_t nTargetSpacing = Params().GetConsensus().nPosTargetSpacing;
-    int64_t nTargetTimespan = Params().GetConsensus().nPosTargetTimespan;
-
-    int64_t nActualSpacing = 0;
-    if (LastPoSBlock->nHeight != 0)
-        nActualSpacing = LastPoSBlock->GetBlockTime() - LastPoSBlock->pprev->GetBlockTime();
-
-    if (nActualSpacing < 0)
-        nActualSpacing = 1;
-
-    // ppcoin: target change every block
-    // ppcoin: retarget with exponential moving toward target spacing
-    arith_uint256 bnNew;
-    bnNew.SetCompact(LastPoSBlock->nBits);
-
-    int64_t nInterval = nTargetTimespan / nTargetSpacing;
-    bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
-    bnNew /= ((nInterval + 1) * nTargetSpacing);
-
-    if (bnNew <= 0 || bnNew > bnPosLimit)
-        bnNew = bnPosLimit;
-
-    return bnNew.GetCompact();
-}
-
 
 unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const Consensus::Params& params) {
     const CBlockIndex *BlockLastSolved = pindexLast;
@@ -283,14 +248,13 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const Consens
    return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
 }
 
-unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params, bool fProofOfStake)
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params)
 {
-    unsigned int nBits = UintToArith256(params.powLimit).GetCompact();
-    if(fProofOfStake)
-        nBits = PoSWorkRequired(pindexLast, params);
-    else
-        nBits = DualKGW3(pindexLast, params);
-    return nBits;
+    if(pindexLast->nHeight + 1 > params.nLastPoWBlock)
+        return DualKGW3(pindexLast, true, params);
+    if(pindexLast->nHeight + 1 > params.nLastPoWBlock - 10)
+        return DualKGW3(pindexLast, false, params);
+    return UintToArith256(params.powLimit).GetCompact();
 }
 
 // for DIFF_BTC only!

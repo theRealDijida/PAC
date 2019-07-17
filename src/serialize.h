@@ -173,8 +173,9 @@ enum
 template<typename X> X& ReadWriteAsHelper(X& x) { return x; }
 template<typename X> const X& ReadWriteAsHelper(const X& x) { return x; }
 
-#define READWRITE(...) (::SerReadWriteMany(s, ser_action, __VA_ARGS__))
+#define READWRITE(obj)      (::SerReadWrite(s, (obj), ser_action))
 #define READWRITEAS(type, obj) (::SerReadWriteMany(s, ser_action, ReadWriteAsHelper<type>(obj)))
+#define READWRITEMANY(...)      (::SerReadWriteMany(s, ser_action, __VA_ARGS__))
 
 /** 
  * Implement three methods for serializable objects. These are actually wrappers over
