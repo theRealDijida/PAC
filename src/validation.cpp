@@ -1117,7 +1117,13 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus:
 
 bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus::Params& consensusParams)
 {
-    if (!ReadBlockFromDisk(block, pindex->GetBlockPos(), consensusParams))
+    CDiskBlockPos blockPos;
+    {
+        LOCK(cs_main);
+        blockPos = pindex->GetBlockPos();
+    }
+
+    if (!ReadBlockFromDisk(block, blockPos, consensusParams))
         return false;
     if (block.GetHash() != pindex->GetBlockHash())
         return error("ReadBlockFromDisk(CBlock&, CBlockIndex*): GetHash() doesn't match index for %s at %s",
@@ -3531,6 +3537,7 @@ bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationState& sta
 
 bool ContextualCheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
 {
+    AssertLockHeld(cs_main);
     const int nHeight = pindexPrev == NULL ? 0 : pindexPrev->nHeight + 1;
 
     // always return true for genesis block (assumed valid)
@@ -3541,31 +3548,25 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, const Co
     if (!pindexPrev)
         return state.DoS(100, false, REJECT_INVALID, "bad-pindex-prev", false, strprintf("current block is not genesis but has null previous"));
 
+    // Test nbits if proof of work
+    if (block.IsProofOfWork())
+        if (block.nBits != GetNextWorkRequired(pindexPrev, consensusParams))
+            return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, strprintf("incorrect difficulty: block pow=Y bits=%08x calc=%08x",
+                             block.nBits, GetNextWorkRequired(pindexPrev, consensusParams)));
+
     // Test if stake matches target given
     uint256 hashProofOfStake = uint256();
     if (block.IsProofOfStake())
     {
         uint256 hash = block.GetHash();
         if(!CheckProofOfStake(block, hashProofOfStake))
-           return state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
+           return state.DoS(100, error("ContextualCheckBlock(): check proof-of-stake failed for block %s (incorrect proof)\n", hash.ToString().c_str()));
 
         if(hashProofOfStake == uint256())
-           return state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
+           return state.DoS(100, error("ContextualCheckBlock(): check proof-of-stake failed for block %s (returned null)\n", hash.ToString().c_str()));
 
         if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
             mapProofOfStake.insert(std::make_pair(hash, hashProofOfStake));
-    }
-
-    // Test nbits if proof of work
-    if (block.IsProofOfWork())
-    {
-        if (block.nBits != GetNextWorkRequired(pindexPrev, consensusParams))
-            return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, strprintf("incorrect difficulty: block pow=Y bits=%08x calc=%08x",
-                             block.nBits, GetNextWorkRequired(pindexPrev, consensusParams)));
-    }
-    else {
-        LogPrintf("Block pow=N bits=%08x found=%08x hashProof=%s\n", GetNextWorkRequired(pindexPrev, consensusParams), block.nBits,
-                  hashProofOfStake.ToString().c_str());
     }
 
     // Start enforcing BIP113 (Median Time Past) using versionbits logic.
