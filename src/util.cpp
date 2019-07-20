@@ -571,7 +571,7 @@ boost::filesystem::path GetDefaultDataDir()
     // Unix: ~/.dashcore
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "pactestneta";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "PACGlobal";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -581,10 +581,10 @@ boost::filesystem::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/pactestneta";
+    return pathRet / "Library/Application Support/PACGlobal";
 #else
     // Unix
-    return pathRet / ".pactestneta";
+    return pathRet / ".PACGlobal";
 #endif
 #endif
 }

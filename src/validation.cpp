@@ -3165,54 +3165,50 @@ bool ResetBlockFailureFlags(CBlockIndex *pindex) {
     return true;
 }
 
-static void AcceptProofOfStakeBlock(const CBlock &block, CBlockIndex *pindexNew)
+bool AcceptProofOfStakeBlock(const CBlock &block, CBlockIndex *pindex)
 {
-    if(!pindexNew)
-        return;
+    if (!pindex)
+        return false;
 
     if (block.IsProofOfStake()) {
-        pindexNew->SetProofOfStake();
-        pindexNew->prevoutStake = block.vtx[1]->vin[0].prevout;
-        pindexNew->nStakeTime = block.nTime;
+        pindex->SetProofOfStake();
+        pindex->prevoutStake = block.vtx[1]->vin[0].prevout;
+        pindex->nStakeTime = block.nTime;
     } else {
-        pindexNew->prevoutStake.SetNull();
-        pindexNew->nStakeTime = 0;
+        pindex->prevoutStake.SetNull();
+        pindex->nStakeTime = 0;
     }
 
-    //update previous block pointer
-    //        pindexNew->pprev->pnext = pindexNew;
-
     // ppcoin: compute chain trust score
-    pindexNew->bnChainTrust = (pindexNew->pprev ? pindexNew->pprev->bnChainTrust : ArithToUint256(0 + pindexNew->GetBlockTrust()));
+    pindex->bnChainTrust = (pindex->pprev ? pindex->pprev->bnChainTrust : ArithToUint256(0 + pindex->GetBlockTrust()));
 
     // ppcoin: compute stake entropy bit for stake modifier
-    if (!pindexNew->SetStakeEntropyBit(pindexNew->GetStakeEntropyBit()))
+    if (!pindex->SetStakeEntropyBit(pindex->GetStakeEntropyBit()))
         LogPrintf("AcceptProofOfStakeBlock() : SetStakeEntropyBit() failed \n");
 
-    uint256 hash = block.GetHash();
-
     // ppcoin: record proof-of-stake hash value
-    if (pindexNew->IsProofOfStake()) {
+    if (pindex->IsProofOfStake()) {
+        uint256 hash = block.GetHash();
         if (!mapProofOfStake.count(hash))
             LogPrintf("AcceptProofOfStakeBlock() : hashProofOfStake not found in map \n");
-        pindexNew->hashProofOfStake = mapProofOfStake[hash];
+        pindex->hashProofOfStake = mapProofOfStake[hash];
     }
 
     // ppcoin: compute stake modifier
     uint64_t nStakeModifier = 0;
     bool fGeneratedStakeModifier = false;
-    if (!ComputeNextStakeModifier(pindexNew, nStakeModifier, fGeneratedStakeModifier))
+    if (!ComputeNextStakeModifier(pindex, nStakeModifier, fGeneratedStakeModifier))
         LogPrintf("AcceptProofOfStakeBlock() : ComputeNextStakeModifier() failed \n");
-    pindexNew->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
-    pindexNew->nStakeModifierChecksum = GetStakeModifierChecksum(pindexNew);
-    if (!CheckStakeModifierCheckpoints(pindexNew->nHeight, pindexNew->nStakeModifierChecksum)) {
-        LogPrintf("AcceptProofOfStakeBlock() : Rejected by stake modifier checkpoint height=%d, modifier=%s \n", pindexNew->nHeight, std::to_string(nStakeModifier));
-        LogPrintf("pindexNew->nStakeModifierChecksum = %08x\n", pindexNew->nStakeModifierChecksum);
-    } else {
-        LogPrintf("AcceptProofOfStakeBlock() : Accepted stake modifier - checksum %08x\n", pindexNew->nStakeModifierChecksum);
+    pindex->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
+    pindex->nStakeModifierChecksum = GetStakeModifierChecksum(pindex);
+    if (!CheckStakeModifierCheckpoints(pindex->nHeight, pindex->nStakeModifierChecksum)) {
+        LogPrintf("AcceptProofOfStakeBlock() : Rejected by stake modifier checkpoint height=%d, modifier=0x%016llx, checksum=0x%08x\n",
+                  pindex->nHeight, nStakeModifier, pindex->nStakeModifierChecksum);
+        return false;
     }
 
-    setDirtyBlockIndex.insert(pindexNew);
+    setDirtyBlockIndex.insert(pindex);
+    return true;
 }
 
 CBlockIndex* AddToBlockIndex(const CBlockHeader& block, enum BlockStatus nStatus = BLOCK_VALID_TREE)
@@ -3794,7 +3790,8 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
         return error("%s: %s", __func__, FormatStateMessage(state));
     }
 
-    AcceptProofOfStakeBlock(block, pindex);
+    if (!AcceptProofOfStakeBlock(block, pindex))
+        return false;
 
     // Header is valid/has work, merkle tree is good...RELAY NOW
     // (but if it does not build on our best tip, let the SendMessages loop relay it)
@@ -4427,7 +4424,8 @@ static bool AddGenesisBlock(const CChainParams& chainparams, const CBlock& block
     if (!WriteBlockToDisk(block, blockPos, chainparams.MessageStart()))
         return error("%s: writing genesis block to disk failed", __func__);
     CBlockIndex *pindex = AddToBlockIndex(block);
-    AcceptProofOfStakeBlock(block, pindex);
+    if (!AcceptProofOfStakeBlock(block, pindex))
+        return error("%s: genesis block not accepted", __func__);
     if (!ReceivedBlockTransactions(block, state, pindex, blockPos))
         return error("%s: genesis block not accepted", __func__);
     return true;
