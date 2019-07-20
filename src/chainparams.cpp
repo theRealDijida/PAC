@@ -485,21 +485,9 @@ public:
         nDefaultPort = 29999;
         nPruneAfterHeight = 1000;
 
-	/////////////////////////////////////////////////////////////////////////
-	uint32_t nTime = 1563050000;
-	uint32_t nNonce = 0;
-	while (UintToArith256(genesis.GetHash()) >
-	       UintToArith256(consensus.powLimit))
-        {
-	  nNonce++;
-	  genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
-	}
-	genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
-	consensus.hashGenesisBlock = genesis.GetHash();
-	/////////////////////////////////////////////////////////////////////////
-
+        genesis = CreateGenesisBlock(1563589000, 62255, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        // assert(consensus.hashGenesisBlock == uint256S("0x0000071f25514da6d65c4fa2187ef8ee1f6b6a68b7761af91ecfb28dc85d3e8a"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000b67f0d64e977df72e86de5ef38e46b03d163790ed9a12e43240915be7197"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
@@ -549,7 +537,7 @@ public:
         };
 
         chainTxData = ChainTxData{
-            nTime,      // * UNIX timestamp of last known number of transactions
+            1563589000, // * UNIX timestamp of last known number of transactions
             0,          // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.0         // * estimated number of transactions per second after that timestamp
