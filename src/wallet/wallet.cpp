@@ -3942,12 +3942,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore,
         return false;
     }
 
-    // Update coinbase transaction with additional info about masternode and governance payments,
-    // get some info back to pass to getblocktemplate
-    std::vector<CTxOut> txoutMasternodeRet;
-    std::vector<CTxOut> voutSuperblockRet;
     int nHeight = chainActive.Tip()->nHeight + 1;
-    FillBlockPayments(txNew, nHeight, blockReward, txoutMasternodeRet, voutSuperblockRet);
     nLastStakeSetUpdate = 0;
     return true;
 }
