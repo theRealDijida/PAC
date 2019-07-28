@@ -77,8 +77,6 @@ public:
     std::vector<unsigned char> vchBlockSig;
 
     // memory only
-    mutable CTxOut txoutMasternode;
-    mutable std::vector<CTxOut> voutSuperblock;
     mutable bool fChecked;
 
     CBlock()
@@ -96,7 +94,7 @@ public:
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITEAS(CBlockHeader, *this);
+        READWRITE(*(CBlockHeader*)this);
         READWRITE(vtx);
         if(vtx.size() > 1 && vtx[1]->IsCoinStake())
         {
@@ -140,7 +138,10 @@ struct CBlockLocator
 
     CBlockLocator() {}
 
-    explicit CBlockLocator(const std::vector<uint256>& vHaveIn) : vHave(vHaveIn) {}
+    CBlockLocator(const std::vector<uint256>& vHaveIn)
+    {
+        vHave = vHaveIn;
+    }
 
     ADD_SERIALIZE_METHODS;
 
