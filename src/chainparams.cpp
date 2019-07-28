@@ -415,7 +415,7 @@ public:
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.DIP0001Height = 1;
-        consensus.DIP0003Height = 1;
+        consensus.DIP0003Height = 50;
         consensus.DIP0003EnforcementHeight = 250;
         consensus.DIP0003EnforcementHash = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
         consensus.powLimit = uint256S("0000fffff0000000000000000000000000000000000000000000000000000000");
@@ -485,9 +485,9 @@ public:
         nDefaultPort = 29999;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1563589000, 62255, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1564329000, 1273, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000b67f0d64e977df72e86de5ef38e46b03d163790ed9a12e43240915be7197"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000aa69de17dfd6989df2a1350ccfe8ed6b591a8d373f2b7a79c1ad3b94e70a"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
