@@ -472,7 +472,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nThreshold = 10;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000010001");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
@@ -485,9 +485,9 @@ public:
         nDefaultPort = 29999;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1564329000, 1273, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1564769250, 3002, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000aa69de17dfd6989df2a1350ccfe8ed6b591a8d373f2b7a79c1ad3b94e70a"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000097a08e38cbc3111ec655792e578127e1c62c1b108f393f35582f3d750f0a"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
@@ -537,7 +537,7 @@ public:
         };
 
         chainTxData = ChainTxData{
-            1563589000, // * UNIX timestamp of last known number of transactions
+            1564769250, // * UNIX timestamp of last known number of transactions
             0,          // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.0         // * estimated number of transactions per second after that timestamp
