@@ -1088,6 +1088,7 @@ bool WriteBlockToDisk(const CBlock& block, CDiskBlockPos& pos, const CMessageHea
 
 bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus::Params& consensusParams)
 {
+    LOCK(cs_main);
     block.SetNull();
 
     // Open history file to read
@@ -1112,7 +1113,13 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus:
 
 bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus::Params& consensusParams)
 {
-    if (!ReadBlockFromDisk(block, pindex->GetBlockPos(), consensusParams))
+    CDiskBlockPos blockPos;
+    {
+        LOCK(cs_main);
+        blockPos = pindex->GetBlockPos();
+    }
+
+    if (!ReadBlockFromDisk(block, blockPos, consensusParams))
         return false;
     if (block.GetHash() != pindex->GetBlockHash())
         return error("ReadBlockFromDisk(CBlock&, CBlockIndex*): GetHash() doesn't match index for %s at %s",
@@ -3204,7 +3211,7 @@ CBlockIndex* AddToBlockIndex(const CBlockHeader& block, enum BlockStatus nStatus
         // ppcoin: compute stake modifier
         uint64_t nStakeModifier = 0;
         bool fGeneratedStakeModifier = false;
-        if (!ComputeNextStakeModifier(pindexNew->pprev, nStakeModifier, fGeneratedStakeModifier))
+        if (!ComputeNextStakeModifier(pindexNew, nStakeModifier, fGeneratedStakeModifier))
             LogPrintf("AddToBlockIndex() : ComputeNextStakeModifier() failed \n");
         pindexNew->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
         pindexNew->nStakeModifierChecksum = GetStakeModifierChecksum(pindexNew);
@@ -3215,7 +3222,6 @@ CBlockIndex* AddToBlockIndex(const CBlockHeader& block, enum BlockStatus nStatus
     pindexNew->RaiseValidity(BLOCK_VALID_TREE);
     if (pindexBestHeader == NULL || pindexBestHeader->nChainWork < pindexNew->nChainWork)
         pindexBestHeader = pindexNew;
-
     setDirtyBlockIndex.insert(pindexNew);
 
     return pindexNew;
@@ -3505,31 +3511,11 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, const Co
     if (!pindexPrev)
         return state.DoS(100, false, REJECT_INVALID, "bad-pindex-prev", false, strprintf("current block is not genesis but has null previous"));
 
-    // Test if stake matches target given
-    uint256 hashProofOfStake = uint256();
-    if (block.IsProofOfStake())
-    {
-        uint256 hash = block.GetHash();
-        if(!CheckProofOfStake(block, hashProofOfStake))
-           return state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
 
-        if(hashProofOfStake == uint256())
-           return state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str()));
-
-        if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
-            mapProofOfStake.insert(std::make_pair(hash, hashProofOfStake));
-    }
-
-    // Test nbits if proof of work
-    if (block.IsProofOfWork())
-    {
+    if (block.IsProofOfWork()) {
         if (block.nBits != GetNextWorkRequired(pindexPrev, consensusParams))
             return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, strprintf("incorrect difficulty: block pow=Y bits=%08x calc=%08x",
                              block.nBits, GetNextWorkRequired(pindexPrev, consensusParams)));
-    }
-    else {
-        LogPrintf("Block pow=N bits=%08x found=%08x hashProof=%s\n", GetNextWorkRequired(pindexPrev, consensusParams), block.nBits,
-                  hashProofOfStake.ToString().c_str());
     }
 
     // Start enforcing BIP113 (Median Time Past) using versionbits logic.
@@ -3615,7 +3601,7 @@ static bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state
             return true;
         }
 
-        if (!CheckBlockHeader(block, state, chainparams.GetConsensus(), block.nNonce != uint32_t(0)))
+        if (!CheckBlockHeader(block, state, chainparams.GetConsensus(), false))
             return error("%s: Consensus::CheckBlockHeader: %s, %s", __func__, hash.ToString(), FormatStateMessage(state));
 
         // Get prev block index
@@ -3689,7 +3675,6 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
 
     CBlockIndex *pindexDummy = NULL;
     CBlockIndex *&pindex = ppindex ? *ppindex : pindexDummy;
-
     if (!AcceptBlockHeader(block, state, chainparams, &pindex))
         return false;
 
@@ -3788,6 +3773,21 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
                 last = last->pprev;
             }
         }
+    }
+
+    // test if hashproofofstake matches
+    uint256 hashProofOfStake = uint256();
+    if (block.IsProofOfStake())
+    {
+        if(!CheckProofOfStake(block, hashProofOfStake))
+           return state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hashProofOfStake.ToString().c_str()));
+
+        uint256 hash = block.GetHash();
+        if(!mapProofOfStake.count(hash)) // add to mapProofOfStake
+            mapProofOfStake.insert(std::make_pair(hash, hashProofOfStake));
+
+        LogPrintf("Block pow=N bits=%08x found=%08x hashProof=%s\n",
+                  GetNextWorkRequired(pindex->pprev, Params().GetConsensus()),block.nBits, hashProofOfStake.ToString().c_str());
     }
 
     // Write block to history file
@@ -4472,6 +4472,7 @@ bool LoadExternalBlockFile(const CChainParams& chainparams, FILE* fileIn, CDiskB
 
                 // detect out of order blocks, and store them for later
                 uint256 hash = block.GetHash();
+                LOCK(cs_main);
                 if (hash != chainparams.GetConsensus().hashGenesisBlock && mapBlockIndex.find(block.hashPrevBlock) == mapBlockIndex.end()) {
                     LogPrint("reindex", "%s: Out of order block %s, parent %s not known\n", __func__, hash.ToString(),
                             block.hashPrevBlock.ToString());

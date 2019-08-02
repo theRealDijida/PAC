@@ -1368,10 +1368,14 @@ void CConnman::ThreadSocketHandler()
             }
         }
 
-        //
-        // Service each socket
-        //
-        std::vector<CNode*> vNodesCopy = CopyNodeVector();
+        std::vector<CNode*> vNodesCopy;
+        {
+            LOCK(cs_vNodes);
+            vNodesCopy = vNodes;
+            for (CNode* pnode : vNodesCopy)
+                pnode->AddRef();
+        }
+
         BOOST_FOREACH(CNode* pnode, vNodesCopy)
         {
             if (interruptNet)
@@ -1494,7 +1498,11 @@ void CConnman::ThreadSocketHandler()
                 }
             }
         }
-        ReleaseNodeVector(vNodesCopy);
+        {
+            LOCK(cs_vNodes);
+            for (CNode* pnode : vNodesCopy)
+                pnode->Release();
+        }
     }
 }
 

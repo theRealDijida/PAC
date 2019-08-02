@@ -222,7 +222,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
     return true;
 }
 
-static bool GetKernelStakeModifierV03(uint256 hashBlockFrom, unsigned int nTimeTx, uint64_t& nStakeModifier, int& nStakeModifierHeight, int64_t& nStakeModifierTime, bool fPrintProofOfStake)
+static bool GetKernelStakeModifier(uint256 hashBlockFrom, unsigned int nTimeTx, uint64_t& nStakeModifier, int& nStakeModifierHeight, int64_t& nStakeModifierTime, bool fPrintProofOfStake)
 {
     nStakeModifier = 0;
     if (!mapBlockIndex.count(hashBlockFrom))
@@ -264,12 +264,6 @@ static bool GetKernelStakeModifierV03(uint256 hashBlockFrom, unsigned int nTimeT
     return true;
 }
 
-// Get the stake modifier specified by the protocol to hash for a stake kernel
-static bool GetKernelStakeModifier(uint256 hashBlockFrom, unsigned int nTimeTx, uint64_t& nStakeModifier, int& nStakeModifierHeight, int64_t& nStakeModifierTime, bool fPrintProofOfStake)
-{
-    return GetKernelStakeModifierV03(hashBlockFrom, nTimeTx, nStakeModifier, nStakeModifierHeight, nStakeModifierTime, fPrintProofOfStake);
-}
-
 uint256 stakeHash(unsigned int nTimeTx, CDataStream ss, unsigned int prevoutIndex, uint256 prevoutHash, unsigned int nTimeBlockFrom)
 {
     ss << nTimeBlockFrom << prevoutIndex << prevoutHash << nTimeTx;
@@ -292,10 +286,6 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     bnTargetPerCoinDay.SetCompact(nBits);
     CAmount nValueIn = txPrev->vout[prevout.n].nValue;
 
-    // stake input must be of a minimum value
-    if (nValueIn < COIN)
-        return error("CheckStakeKernelHash() : nValueIn is less than COIN (nValueIn=%llu)", nValueIn);
-
     // v0.3 protocol kernel hash weight starts from 0 at the 30-day min age
     // this change increases active coins participating the hash and helps
     // to secure the network when proof-of-stake difficulty is low
@@ -310,6 +300,7 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
 
     if (!GetKernelStakeModifier(blockFrom.GetHash(), nTimeTx, nStakeModifier, nStakeModifierHeight, nStakeModifierTime, false))
         return false;
+
     ss << nStakeModifier;
     ss << nTimeBlockFrom << nTxPrevOffset << txPrevTime << prevout.n << nTimeTx;
     hashProofOfStake = Hash(ss.begin(), ss.end());
@@ -363,8 +354,9 @@ bool CheckProofOfStake(const CBlock &block, uint256& hashProofOfStake)
 
     const auto &cons = Params().GetConsensus();
 
-    if (!GetTransaction(txin.prevout.hash, txPrev, cons, hashBlock, true))
+    if (!GetTransaction(txin.prevout.hash, txPrev, cons, hashBlock, true)) {
         return error("CheckProofOfStake() : INFO: read txPrev failed");
+    }
 
     CTxOut prevTxOut = txPrev->vout[txin.prevout.n];
     CBlockIndex* pindex = NULL;

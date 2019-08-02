@@ -231,6 +231,9 @@ struct CNodeState {
      */
     bool fSupportsDesiredCmpctVersion;
 
+    //! Time of last new block announcement
+    int64_t m_last_block_announcement;
+
     CNodeState(CAddress addrIn, std::string addrNameIn) : address(addrIn), name(addrNameIn) {
         fCurrentlyConnected = false;
         nMisbehavior = 0;
@@ -251,6 +254,7 @@ struct CNodeState {
         fPreferHeaderAndIDs = false;
         fProvidesHeaderAndIDs = false;
         fSupportsDesiredCmpctVersion = false;
+        m_last_block_announcement = 0;
     }
 };
 
@@ -452,6 +456,7 @@ void MaybeSetPeerAsAnnouncingHeaderAndIDs(NodeId nodeid, CConnman& connman) {
             }
         }
         connman.ForNode(nodeid, [&connman](CNode* pfrom){
+            AssertLockHeld(cs_main);
             bool fAnnounceUsingCMPCTBLOCK = false;
             uint64_t nCMPCTBLOCKVersion = 1;
             if (lNodesAnnouncingHeaderAndIDs.size() >= 3) {
@@ -975,7 +980,6 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
                    pcoinsTip->HaveCoinInCache(COutPoint(inv.hash, 0)) || // Best effort: only try output 0 and 1
                    pcoinsTip->HaveCoinInCache(COutPoint(inv.hash, 1));
         }
-
     case MSG_BLOCK:
         return mapBlockIndex.count(inv.hash);
 
@@ -1022,7 +1026,6 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
     case MSG_ISLOCK:
         return llmq::quorumInstantSendManager->AlreadyHave(inv);
     }
-
     // Don't know what it is, just say we already got one
     return true;
 }
@@ -1929,6 +1932,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         uint256 hashStop;
         vRecv >> locator >> hashStop;
 
+        if (locator.vHave.size() > MAX_LOCATOR_SZ) {
+            LogPrint("net", "getblocks locator size %lld > %d, disconnect peer=%d\n", locator.vHave.size(), MAX_LOCATOR_SZ, pfrom->GetId());
+            pfrom->fDisconnect = true;
+            return true;
+        }
+
         // We might have announced the currently-being-connected tip using a
         // compact block, which resulted in the peer sending a getblocks
         // request, which we would otherwise respond to without the new block.
@@ -2039,6 +2048,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         CBlockLocator locator;
         uint256 hashStop;
         vRecv >> locator >> hashStop;
+
+        if (locator.vHave.size() > MAX_LOCATOR_SZ) {
+            LogPrint("net", "getheaders locator size %lld > %d, disconnect peer=%d\n", locator.vHave.size(), MAX_LOCATOR_SZ, pfrom->GetId());
+            pfrom->fDisconnect = true;
+            return true;
+        }
 
         LOCK(cs_main);
         if (IsInitialBlockDownload() && !pfrom->fWhitelisted) {
@@ -2362,6 +2377,8 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         CBlockHeaderAndShortTxIDs cmpctblock;
         vRecv >> cmpctblock;
 
+        bool received_new_header = false;
+
         {
         LOCK(cs_main);
 
@@ -2370,6 +2387,10 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             if (!IsInitialBlockDownload())
                 connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::GETHEADERS, chainActive.GetLocator(pindexBestHeader), uint256()));
             return true;
+        }
+
+        if (!LookupBlockIndex(cmpctblock.header.GetHash())) {
+            received_new_header = true;
         }
         }
 
@@ -2380,7 +2401,9 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             if (state.IsInvalid(nDoS)) {
                 if (nDoS > 0) {
                     LOCK(cs_main);
-                    Misbehaving(pfrom->GetId(), nDoS);
+                    Misbehaving(pfrom->GetId(), nDoS /*, strprintf("Peer %d sent us invalid header via cmpctblock\n", pfrom->GetId())*/);
+                } else {
+                    LogPrint("net", "Peer %d sent us invalid header via cmpctblock\n", pfrom->GetId());
                 }
                 LogPrintf("Peer %d sent us invalid header via cmpctblock\n", pfrom->id);
                 return true;
@@ -2410,6 +2433,14 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         assert(pindex);
         UpdateBlockAvailability(pfrom->GetId(), pindex->GetBlockHash());
 
+        CNodeState *nodestate = State(pfrom->GetId());
+
+        // If this was a new header with more work than our tip, update the
+        // peer's last block announcement time
+        if (received_new_header && pindex->nChainWork > chainActive.Tip()->nChainWork) {
+            nodestate->m_last_block_announcement = GetTime();
+        }
+
         std::map<uint256, std::pair<NodeId, std::list<QueuedBlock>::iterator> >::iterator blockInFlightIt = mapBlocksInFlight.find(pindex->GetBlockHash());
         bool fAlreadyInFlight = blockInFlightIt != mapBlocksInFlight.end();
 
@@ -2431,8 +2462,6 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         // If we're not close to tip yet, give up and let parallel block fetch work its magic
         if (!fAlreadyInFlight && !CanDirectFetch(chainparams.GetConsensus()))
             return true;
-
-        CNodeState *nodestate = State(pfrom->GetId());
 
         // We want to be a bit conservative just to be extra careful about DoS
         // possibilities in compact block processing...
@@ -2532,9 +2561,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             }
             bool fNewBlock = false;
             ProcessNewBlock(chainparams, pblock, true, &fNewBlock);
-            if (fNewBlock)
+            if (fNewBlock) {
                 pfrom->nLastBlockTime = GetTime();
-
+            } else {
+                LOCK(cs_main);
+                mapBlockSource.erase(pblock->GetHash());
+            }
             LOCK(cs_main); // hold cs_main for CBlockIndex::IsValid()
             if (pindex->IsValid(BLOCK_VALID_TRANSACTIONS)) {
                 // Clear download state for this block, which is in
@@ -2609,8 +2641,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             // Since we requested this block (it was in mapBlocksInFlight), force it to be processed,
             // even if it would not be a candidate for new tip (missing previous block, chain not long enough, etc)
             ProcessNewBlock(chainparams, pblock, true, &fNewBlock);
-            if (fNewBlock)
+            if (fNewBlock) {
                 pfrom->nLastBlockTime = GetTime();
+            } else {
+                LOCK(cs_main);
+                mapBlockSource.erase(pblock->GetHash());
+            }
         }
     }
 
@@ -2759,7 +2795,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
                 }
             }
         }
-        }
+      }
     }
 
     else if (strCommand == NetMsgType::BLOCK && !fImporting && !fReindex) // Ignore blocks received while importing
@@ -2786,8 +2822,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
         bool fNewBlock = false;
         ProcessNewBlock(chainparams, pblock, forceProcessing, &fNewBlock);
-        if (fNewBlock)
+        if (fNewBlock){
             pfrom->nLastBlockTime = GetTime();
+        } else {
+            LOCK(cs_main);
+            mapBlockSource.erase(pblock->GetHash());
+        }
     }
 
 
