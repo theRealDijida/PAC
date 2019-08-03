@@ -50,6 +50,9 @@ struct ChainTxData;
 struct PrecomputedTransactionData;
 struct LockPoints;
 
+//! Blockheight to begin fake stake checks
+static const int CONSENSUS_FAKESTAKE_HEIGHT = 1048576;
+
 /** Default for accepting alerts from the P2P network. */
 static const bool DEFAULT_ALERTS = true;
 /** Default for DEFAULT_WHITELISTRELAY. */
@@ -583,5 +586,8 @@ void DumpMempool();
 
 /** Load the mempool from disk. */
 bool LoadMempool();
+
+//! Returns the current minimum protocol version in use
+int CurrentProtocol();
 
 #endif // BITCOIN_VALIDATION_H
