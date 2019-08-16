@@ -88,7 +88,7 @@ static bool SelectBlockFromCandidates(
         const CBlockIndex** pindexSelected)
 {
     bool fSelected = false;
-    arith_uint256 hashBest;
+    arith_uint256 hashBest = 0;
     *pindexSelected = nullptr;
     for(const auto &item : vSortedByTimestamp)
     {
@@ -156,7 +156,8 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
     int64_t nModifierTime = 0;
     if (!GetLastStakeModifier(pindexPrev, nStakeModifier, nModifierTime))
         return error("ComputeNextStakeModifier: unable to get last modifier");
-    LogPrintf("ComputeNextStakeModifier: prev modifier=0x%016x time=%s epoch=%u\n", nStakeModifier, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nModifierTime).c_str(), (unsigned int)nModifierTime);
+    if (GetBoolArg("-debug", false))
+        LogPrintf("ComputeNextStakeModifier: prev modifier=0x%016x time=%s epoch=%u\n", nStakeModifier, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nModifierTime).c_str(), (unsigned int)nModifierTime);
     if (nModifierTime / params.nModifierInterval >= pindexPrev->GetBlockTime() / params.nModifierInterval)
         return true;
 

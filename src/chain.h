@@ -181,9 +181,6 @@ public:
     //! pointer to the index of some further predecessor of this block
     CBlockIndex* pskip;
 
-    //ppcoin: trust score of block chain
-    uint256 bnChainTrust;
-
     //! height of the entry in the chain. The genesis block has height 0
     int nHeight;
 
@@ -197,7 +194,7 @@ public:
     unsigned int nUndoPos;
 
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
-    arith_uint256 nChainWork;
+    arith_uint256 nChainTrust;
 
     //! Number of transactions in this block.
     //! Note: in a potential headers-first mode, this number cannot be relied upon
@@ -250,7 +247,7 @@ public:
         nFile = 0;
         nDataPos = 0;
         nUndoPos = 0;
-        nChainWork = arith_uint256();
+        nChainTrust = arith_uint256();
         nTx = 0;
         nChainTx = 0;
         nStatus = 0;
@@ -258,11 +255,11 @@ public:
         nTimeMax = 0;
 
         nMint = 0;
-        bnChainTrust = uint256();
         nMoneySupply = 0;
         nFlags = 0;
         nStakeModifier = 0;
         nStakeModifierChecksum = 0;
+        hashProofOfStake = uint256();
         prevoutStake.SetNull();
         nStakeTime = 0;
 
@@ -289,7 +286,7 @@ public:
         nNonce         = block.nNonce;
 
         //Proof of Stake
-        bnChainTrust = uint256();
+        nChainTrust = arith_uint256();
         nMint = 0;
         nMoneySupply = 0;
         nFlags = 0;
@@ -440,7 +437,7 @@ public:
     const CBlockIndex* GetAncestor(int height) const;
 };
 
-arith_uint256 GetBlockProof(const CBlockIndex& block);
+arith_uint256 GetBlockTrust(const CBlockIndex& block);
 /** Return the time it would take to redo the work difference between from and to, assuming the current hashrate corresponds to the difficulty at tip, in seconds. */
 int64_t GetBlockProofEquivalentTime(const CBlockIndex& to, const CBlockIndex& from, const CBlockIndex& tip, const Consensus::Params&);
 

@@ -13,6 +13,13 @@
 
 #include <math.h>
 
+const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake)
+{
+    while (pindex && pindex->pprev && (pindex->IsProofOfStake() != fProofOfStake))
+        pindex = pindex->pprev;
+    return pindex;
+}
+
 unsigned int DualKGW3(const CBlockIndex* pindexLast, bool fProofOfStake, const Consensus::Params& params)
 {
     const CBlockIndex *BlockLastSolved = pindexLast;
