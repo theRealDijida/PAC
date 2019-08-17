@@ -76,7 +76,7 @@ UniValue GetNetworkHashPS(int lookup, int height) {
     if (minTime == maxTime)
         return 0;
 
-    arith_uint256 workDiff = pb->nChainWork - pb0->nChainWork;
+    arith_uint256 workDiff = pb->nChainTrust - pb0->nChainTrust;
     int64_t timeDiff = maxTime - minTime;
 
     return workDiff.getdouble() / timeDiff;
