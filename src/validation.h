@@ -52,6 +52,9 @@ struct LockPoints;
 
 //! Blockheight to begin fake stake checks
 static const int CONSENSUS_FAKESTAKE_HEIGHT = 1048576;
+//! Blockheight range covering sigops abuse/spam
+static const int CONSENSUS_SIGOPABUSE_START = 139900;
+static const int CONSENSUS_SIGOPABUSE_FINISH = 165000;
 
 /** Default for accepting alerts from the P2P network. */
 static const bool DEFAULT_ALERTS = true;
@@ -589,5 +592,8 @@ bool LoadMempool();
 
 //! Returns the current minimum protocol version in use
 int CurrentProtocol();
+
+//! Returns true if we can ignore sigops limits temporarily
+bool IgnoreSigopsLimits(int nHeight);
 
 #endif // BITCOIN_VALIDATION_H
