@@ -2123,9 +2123,10 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
         nInputs += tx.vin.size();
         nSigOps += GetLegacySigOpCount(tx);
-        if (nSigOps > MaxBlockSigOps(fDIP0001Active_context))
-            return state.DoS(100, error("ConnectBlock(): too many sigops"),
-                             REJECT_INVALID, "bad-blk-sigops");
+        if (!IgnoreSigopsLimits(pindex->nHeight))
+            if (nSigOps > MaxBlockSigOps(fDIP0001Active_context))
+                return state.DoS(100, error("ConnectBlock(): too many sigops"),
+                                 REJECT_INVALID, "bad-blk-sigops");
 
         if (!tx.IsCoinBase())
         {
@@ -2192,9 +2193,10 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                 // this is to prevent a "rogue miner" from creating
                 // an incredibly-expensive-to-validate block.
                 nSigOps += GetP2SHSigOpCount(tx, view);
-                if (nSigOps > MaxBlockSigOps(fDIP0001Active_context))
-                    return state.DoS(100, error("ConnectBlock(): too many sigops"),
-                                     REJECT_INVALID, "bad-blk-sigops");
+                if (!IgnoreSigopsLimits(pindex->nHeight))
+                    if (nSigOps > MaxBlockSigOps(fDIP0001Active_context))
+                        return state.DoS(100, error("ConnectBlock(): too many sigops"),
+                                         REJECT_INVALID, "bad-blk-sigops");
             }
 
         }
@@ -3450,19 +3452,22 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     }
 
     // Check transactions
-    for (const auto& tx : block.vtx)
-        if (!CheckTransaction(*tx, state))
-            return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
-                                 strprintf("Transaction check failed (tx hash %s) %s", tx->GetHash().ToString(), state.GetDebugMessage()));
+    if (!IgnoreSigopsLimits(-1))
+        for (const auto& tx : block.vtx)
+            if (!CheckTransaction(*tx, state))
+                return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
+                                     strprintf("Transaction check failed (tx hash %s) %s", tx->GetHash().ToString(), state.GetDebugMessage()));
 
-    unsigned int nSigOps = 0;
-    for (const auto& tx : block.vtx)
-    {
-        nSigOps += GetLegacySigOpCount(*tx);
+    // Don't know height here, use failsafe
+    if (!IgnoreSigopsLimits(-1)) {
+        unsigned int nSigOps = 0;
+        for (const auto& tx : block.vtx) {
+            nSigOps += GetLegacySigOpCount(*tx);
+        }
+        // sigops limits (relaxed)
+        if (nSigOps > MaxBlockSigOps(true))
+            return state.DoS(100, false, REJECT_INVALID, "bad-blk-sigops", false, "out-of-bounds SigOpCount");
     }
-    // sigops limits (relaxed)
-    if (nSigOps > MaxBlockSigOps(true))
-        return state.DoS(100, false, REJECT_INVALID, "bad-blk-sigops", false, "out-of-bounds SigOpCount");
 
     if (fCheckPOW && fCheckMerkleRoot)
         block.fChecked = true;
@@ -3570,8 +3575,9 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, const Co
     }
 
     // Check sigops
-    if (nSigOps > MaxBlockSigOps(fDIP0001Active_context))
-        return state.DoS(10, false, REJECT_INVALID, "bad-blk-sigops", false, "out-of-bounds SigOpCount");
+    if (!IgnoreSigopsLimits(nHeight))
+        if (nSigOps > MaxBlockSigOps(fDIP0001Active_context))
+            return state.DoS(10, false, REJECT_INVALID, "bad-blk-sigops", false, "out-of-bounds SigOpCount");
 
     // Enforce rule that the coinbase starts with serialized block height
     // After DIP3/DIP4 activation, we don't enforce the height in the input script anymore.
@@ -4909,6 +4915,18 @@ int CurrentProtocol() {
    return (Params().NetworkIDString() ==
            CBaseChainParams::TESTNET ? MIN_PEER_PROTO_VERSION_TESTNET :
                                        MIN_PEER_PROTO_VERSION_MAINNET);
+}
+
+//! Returns true if we can ignore sigops limits temporarily
+bool fFailsafe = false;
+bool IgnoreSigopsLimits(int nHeight) {
+   bool fIgnore = (nHeight >= CONSENSUS_SIGOPABUSE_START &&
+                   nHeight <= CONSENSUS_SIGOPABUSE_FINISH);
+   if (nHeight == -1)
+       return fFailsafe;
+   else
+       fFailsafe = fIgnore;
+   return fIgnore;
 }
 
 class CMainCleanup
