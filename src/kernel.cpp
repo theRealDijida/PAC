@@ -191,7 +191,8 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64_t &nStake
         nStakeModifierNew |= (((uint64_t)pindex->GetStakeEntropyBit()) << nRound);
         // add the selected block from candidates to selected list
         mapSelectedBlocks.insert(make_pair(pindex->GetBlockHash(), pindex));
-        LogPrintf("%s : selected round %d stop=%s height=%d bit=%d\n", __func__, nRound, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nSelectionIntervalStop).c_str(), pindex->nHeight, pindex->GetStakeEntropyBit());
+        if (GetBoolArg("-printstakemodifier", false))
+            LogPrintf("%s : selected round %d stop=%s height=%d bit=%d\n", __func__, nRound, DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nSelectionIntervalStop).c_str(), pindex->nHeight, pindex->GetStakeEntropyBit());
     }
 
     // Print selection map for visualization of the selected blocks
@@ -287,6 +288,10 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     bnTargetPerCoinDay.SetCompact(nBits);
     CAmount nValueIn = txPrev->vout[prevout.n].nValue;
 
+    // discard stakes generated from inputs of less than 10000 PAC
+    if (nValueIn < Params().GetConsensus().nMinimumStakeValue)
+        return error("CheckStakeKernelHash() : min amount violation");
+
     // v0.3 protocol kernel hash weight starts from 0 at the 30-day min age
     // this change increases active coins participating the hash and helps
     // to secure the network when proof-of-stake difficulty is low
@@ -360,6 +365,12 @@ bool CheckProofOfStake(const CBlock &block, uint256& hashProofOfStake)
     }
 
     CTxOut prevTxOut = txPrev->vout[txin.prevout.n];
+
+    // Enforce minimum amount for stake input
+    if (prevTxOut.nValue < Params().GetConsensus().nMinimumStakeValue)
+	return error("CheckProofOfStake() : INFO: stakeinput value less than minimum required (%llu < %llu), blockhash %s\n",
+                     prevTxOut.nValue, Params().GetConsensus().nMinimumStakeValue, hashBlock.ToString().c_str());
+
     CBlockIndex* pindex = NULL;
     BlockMap::iterator it = mapBlockIndex.find(hashBlock);
     if (it != mapBlockIndex.end())

@@ -50,8 +50,6 @@ struct ChainTxData;
 struct PrecomputedTransactionData;
 struct LockPoints;
 
-//! Blockheight to begin fake stake checks
-static const int CONSENSUS_FAKESTAKE_HEIGHT = 1048576;
 //! Blockheight range covering sigops abuse/spam
 static const int CONSENSUS_SIGOPABUSE_START = 139900;
 static const int CONSENSUS_SIGOPABUSE_FINISH = 165000;
@@ -92,7 +90,7 @@ static const int MAX_SCRIPTCHECK_THREADS = 16;
 /** -par default (number of script-checking threads, 0 = auto) */
 static const int DEFAULT_SCRIPTCHECK_THREADS = 0;
 /** Number of blocks that can be requested at any given time from a single peer. */
-static const int MAX_BLOCKS_IN_TRANSIT_PER_PEER = 256;
+static const int MAX_BLOCKS_IN_TRANSIT_PER_PEER = 500;
 /** Timeout in seconds during which a peer must stall block download progress before being disconnected. */
 static const unsigned int BLOCK_STALLING_TIMEOUT = 2;
 /** Number of headers sent in one getheaders result. We rely on the assumption that if a peer sends
@@ -107,7 +105,7 @@ static const int MAX_BLOCKTXN_DEPTH = 10;
  *  Larger windows tolerate larger download speed differences between peer, but increase the potential
  *  degree of disordering of blocks on disk (which make reindexing and in the future perhaps pruning
  *  harder). We'll probably want to make this a per-peer adaptive value at some point. */
-static const unsigned int BLOCK_DOWNLOAD_WINDOW = 1024;
+static const unsigned int BLOCK_DOWNLOAD_WINDOW = 1000;
 /** Time to wait (in seconds) between writing blocks/block index to disk. */
 static const unsigned int DATABASE_WRITE_INTERVAL = 60 * 60;
 /** Time to wait (in seconds) between flushing chainstate to disk. */
@@ -499,7 +497,7 @@ void ReprocessBlocks(int nBlocks);
 
 /** Context-independent validity checks */
 bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true);
-bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true, bool fCheckMerkleRoot = true);
+bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true, bool fCheckMerkleRoot = true, bool fCheckSignature = true);
 
 /** Context-dependent validity checks.
  *  By "context", we mean only the previous block headers, but not the UTXO
@@ -595,5 +593,8 @@ int CurrentProtocol();
 
 //! Returns true if we can ignore sigops limits temporarily
 bool IgnoreSigopsLimits(int nHeight);
+
+//! Returns true if we have entered PoS consensus state
+bool IsPoS();
 
 #endif // BITCOIN_VALIDATION_H

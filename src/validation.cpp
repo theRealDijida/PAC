@@ -8,7 +8,9 @@
 
 #include "alert.h"
 #include "arith_uint256.h"
+#include "banned.h"
 #include "blockencodings.h"
+#include "blocksigner.h"
 #include "chainparams.h"
 #include "checkpoints.h"
 #include "checkqueue.h"
@@ -527,6 +529,11 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state)
         allowEmptyTxInOut = true;
     }
 
+    // Check for banned inputs
+    for (const auto& txin : tx.vin) {
+       if (areBannedInputs(txin.prevout.hash, txin.prevout.n))
+	  return state.DoS(100, false, REJECT_INVALID, "banned-inputs-spent");
+    }
     // Basic checks that don't depend on any context
     if (!allowEmptyTxInOut && tx.vin.empty())
         return state.DoS(10, false, REJECT_INVALID, "bad-txns-vin-empty");
@@ -1150,117 +1157,88 @@ double ConvertBitsToDouble(unsigned int nBits)
 double GetSubsidyMultiplier(int nPrevHeight, int nSubsidyAdjustmentInterval)
 {
     double dMultiplier = 0.0;
-
-    if (nPrevHeight < 100) {
-        dMultiplier = 1.0;
-    } else if (nPrevHeight <= nSubsidyAdjustmentInterval * 1) {
-        dMultiplier = 3.0/5.0;
-    } else if (nPrevHeight <= nSubsidyAdjustmentInterval * 2) {
-        dMultiplier = 4.0/5.0;
-    } else if (nPrevHeight <= nSubsidyAdjustmentInterval * 14) {
-        dMultiplier = 1.0;
-    } else if (nPrevHeight <= nSubsidyAdjustmentInterval * 19) {
-        dMultiplier = 4.0/5.0;
-    } else if (nPrevHeight <= nSubsidyAdjustmentInterval * 20) {
-        dMultiplier = 6.0/8.0;
-    } else if (nPrevHeight <= nSubsidyAdjustmentInterval * 21) {
-        dMultiplier = 3.0/5.0;
-    } else if (nPrevHeight <= nSubsidyAdjustmentInterval * 23) {
-        dMultiplier = 2.0/5.0;
-    } else if (nPrevHeight <= nSubsidyAdjustmentInterval * 25) {
-        dMultiplier = 1.0/5.0;
-    } else {
-        dMultiplier = 0.0;
-    }
-
+    if (nPrevHeight < 100)                                   { dMultiplier = 1.0;       }
+    else if (nPrevHeight <= nSubsidyAdjustmentInterval * 1)  { dMultiplier = 3.0 / 5.0; }
+    else if (nPrevHeight <= nSubsidyAdjustmentInterval * 2)  { dMultiplier = 4.0 / 5.0; }
+    else if (nPrevHeight <= nSubsidyAdjustmentInterval * 14) { dMultiplier = 1.0;       }
+    else if (nPrevHeight <= nSubsidyAdjustmentInterval * 19) { dMultiplier = 4.0 / 5.0; }
+    else if (nPrevHeight <= nSubsidyAdjustmentInterval * 20) { dMultiplier = 6.0 / 8.0; }
+    else if (nPrevHeight <= nSubsidyAdjustmentInterval * 21) { dMultiplier = 3.0 / 5.0; }
+    else if (nPrevHeight <= nSubsidyAdjustmentInterval * 23) { dMultiplier = 2.0 / 5.0; }
+    else if (nPrevHeight <= nSubsidyAdjustmentInterval * 25) { dMultiplier = 1.0 / 5.0; }
+    else                                                     { dMultiplier = 0.0;       }
     return dMultiplier;
 }
 
-/*
-NOTE:   unlike bitcoin we are using PREVIOUS block height here,
-        might be a good idea to change this to use prev bits
-        but current height to avoid confusion.
-*/
 CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
-    if (Params().NetworkIDString() != CBaseChainParams::TESTNET)
+    // proof of stake
+    if (nPrevHeight + 1 > Params().GetConsensus().nLastPoWBlock ||
+        Params().NetworkIDString() == CBaseChainParams::TESTNET)
     {
-        double dDiff;
-        CAmount nSubsidyBase;
-
-        if (nPrevHeight <= 4500 && Params().NetworkIDString() == CBaseChainParams::MAIN) {
-            /* a bug which caused diff to not be correctly calculated */
-            dDiff = (double)0x0000ffff / (double)(nPrevBits & 0x00ffffff);
-        } else {
-            dDiff = ConvertBitsToDouble(nPrevBits);
+        if (fSuperblockPartOnly) {
+            if (nPrevHeight < 1471680)      return 10119 * COIN;
+            else if (nPrevHeight < 3994560) return 12649 * COIN;
+            else if (nPrevHeight < 4204800) return 9486 * COIN;
+            else if (nPrevHeight < 4414050) return 7589 * COIN;
+            else if (nPrevHeight < 4835520) return 5059 * COIN;
+            else                            return 2529 * COIN;
         }
 
-        if (nPrevHeight < 100)
+        if (Params().NetworkIDString() == CBaseChainParams::TESTNET &&
+            nPrevHeight < Params().GetConsensus().nLastPoWBlock)
         {
-            nSubsidyBase = 35500000;
-        } else {
-            // 11111111111/(((x+4201)/9)^2)
-            // nSubsidyBase = (11111111111.0 / (pow((dDiff+4201.0)/9.0,2.0)));
-            nSubsidyBase = 23000;
+	    return 1000000 * COIN;
         }
 
-        // Projected ~100B coins by year 2043.
-        double dSubsidyMultiplier = GetSubsidyMultiplier(nPrevHeight, consensusParams.nSubsidyHalvingInterval);
-        CAmount nSubsidy = nSubsidyBase * COIN * dSubsidyMultiplier;
-        //LogPrintf("height %u diff %4.2f - reward %d - net reward %d\n", nPrevHeight, dDiff, nSubsidyBase * COIN, nSubsidy);
-
-        // Hard fork to reduce the block reward by 20 extra percent (allowing budget/superblocks)
-        CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/5 : 0;
-        return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
+        return 1 * COIN;
     }
-    else {
 
-        if (nPrevHeight < 20)
-            return 1000000 * COIN;
-        return 10000 * COIN;
-    }
-}
+    // proof of work
+    CAmount nSubsidyBase;
+    if (nPrevHeight < 100) nSubsidyBase = 35500000;
+    else                   nSubsidyBase = 23000;
 
-/*
-	A wrapper to call from the PoS miner.
-*/
-CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
-{
-    return GetBlockSubsidy(0, nPrevHeight, consensusParams, false);
+    double dSubsidyMultiplier = GetSubsidyMultiplier(nPrevHeight, consensusParams.nSubsidyHalvingInterval);
+    CAmount nSubsidy = nSubsidyBase * COIN * dSubsidyMultiplier;
+    CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy / 5 : 0;
+    return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
-    if (Params().NetworkIDString() == CBaseChainParams::TESTNET)
+    // proof of stake
+    if (nHeight > Params().GetConsensus().nLastPoWBlock ||
+        Params().NetworkIDString() == CBaseChainParams::TESTNET)
     {
-        double dMasternodePart;
-
-        if(nHeight <  Params().GetConsensus().nMasternodePaymentsIncreaseBlock) {
-            dMasternodePart = 15.0/16.0; // 93.75% of the block reward.
-        } else {
-            dMasternodePart = 13.0/16.0; // 81.25% of the corresponding reward for miners/masternodes, or 65% of the total block reward.
-        }
-        return (blockValue * dMasternodePart);
+        if (nPrevHeight < 1471680)      return 8280 * COIN;
+        else if (nPrevHeight < 3994560) return 10350 * COIN;
+        else if (nPrevHeight < 4204800) return 7762 * COIN;
+        else if (nPrevHeight < 4414050) return 6210 * COIN;
+        else if (nPrevHeight < 4835520) return 4140 * COIN;
+        else                            return 2070 * COIN;
     }
-    else
-    {
-        CAmount ret = blockValue/5; // start at 20%
 
-        int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
-        int nMNPIPeriod = Params().GetConsensus().nMasternodePaymentsIncreasePeriod;
+    // proof of work
+    CAmount ret = blockValue / 5; // start at 20%
+    int nMNPIBlock  = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
+    int nMNPIPeriod = Params().GetConsensus().nMasternodePaymentsIncreasePeriod;
+    if (nHeight > nMNPIBlock)                     ret += blockValue / 20; // 158000 - 25.0% - 2014-10-24
+    if (nHeight > nMNPIBlock + (nMNPIPeriod * 1)) ret += blockValue / 20; // 175280 - 30.0% - 2014-11-25
+    if (nHeight > nMNPIBlock + (nMNPIPeriod * 2)) ret += blockValue / 20; // 192560 - 35.0% - 2014-12-26
+    if (nHeight > nMNPIBlock + (nMNPIPeriod * 3)) ret += blockValue / 40; // 209840 - 37.5% - 2015-01-26
+    if (nHeight > nMNPIBlock + (nMNPIPeriod * 4)) ret += blockValue / 40; // 227120 - 40.0% - 2015-02-27
+    if (nHeight > nMNPIBlock + (nMNPIPeriod * 5)) ret += blockValue / 40; // 244400 - 42.5% - 2015-03-30
+    if (nHeight > nMNPIBlock + (nMNPIPeriod * 6)) ret += blockValue / 40; // 261680 - 45.0% - 2015-05-01
+    if (nHeight > nMNPIBlock + (nMNPIPeriod * 7)) ret += blockValue / 40; // 278960 - 47.5% - 2015-06-01
+    if (nHeight > nMNPIBlock + (nMNPIPeriod * 9)) ret += blockValue / 40; // 313520 - 50.0% - 2015-08-03
+    return ret;
 
-        if(nHeight > nMNPIBlock)                  ret += blockValue / 20; // 158000 - 25.0% - 2014-10-24
-        if(nHeight > nMNPIBlock+(nMNPIPeriod* 1)) ret += blockValue / 20; // 175280 - 30.0% - 2014-11-25
-        if(nHeight > nMNPIBlock+(nMNPIPeriod* 2)) ret += blockValue / 20; // 192560 - 35.0% - 2014-12-26
-        if(nHeight > nMNPIBlock+(nMNPIPeriod* 3)) ret += blockValue / 40; // 209840 - 37.5% - 2015-01-26
-        if(nHeight > nMNPIBlock+(nMNPIPeriod* 4)) ret += blockValue / 40; // 227120 - 40.0% - 2015-02-27
-        if(nHeight > nMNPIBlock+(nMNPIPeriod* 5)) ret += blockValue / 40; // 244400 - 42.5% - 2015-03-30
-        if(nHeight > nMNPIBlock+(nMNPIPeriod* 6)) ret += blockValue / 40; // 261680 - 45.0% - 2015-05-01
-        if(nHeight > nMNPIBlock+(nMNPIPeriod* 7)) ret += blockValue / 40; // 278960 - 47.5% - 2015-06-01
-        if(nHeight > nMNPIBlock+(nMNPIPeriod* 9)) ret += blockValue / 40; // 313520 - 50.0% - 2015-08-03
+  }
+}
 
-        return ret;
-    }
+CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly) {
+    return GetBlockSubsidy(0, nPrevHeight, consensusParams, fSuperblockPartOnly);
 }
 
 bool IsInitialBlockDownload()
@@ -1958,6 +1936,11 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     if (!CheckBlock(block, state, chainparams.GetConsensus(), !fJustCheck, !fJustCheck))
         return error("%s: Consensus::CheckBlock: %s", __func__, FormatStateMessage(state));
 
+    if (pindex->nHeight > Params().GetConsensus().nLastPoWBlock && block.IsProofOfWork()) {
+        return state.DoS(100, error("ConnectBlock() : PoW period ended"),
+                         REJECT_INVALID, "PoW-ended");
+    }
+
     if (pindex->pprev && pindex->phashBlock && llmq::chainLocksHandler->HasConflictingChainLock(pindex->nHeight, pindex->GetBlockHash())) {
         return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
     }
@@ -1982,11 +1965,6 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
         if (!fJustCheck)
             view.SetBestBlock(pindex->GetBlockHash());
         return true;
-    }
-
-    if (pindex->nHeight > Params().GetConsensus().nLastPoWBlock && block.IsProofOfWork()) {
-        return state.DoS(100, error("ConnectBlock() : PoW period ended"),
-                         REJECT_INVALID, "PoW-ended");
     }
 
     bool fScriptChecks = true;
@@ -2392,7 +2370,8 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
         if (!pblocktree->WriteTxIndex(vPos))
             return AbortNode(state, "Failed to write transaction index");
 
-    if (pindex->nHeight >= CONSENSUS_FAKESTAKE_HEIGHT) {
+    if (pindex->nHeight > Params().GetConsensus().nLastPoWBlock)
+    {
        // add new entries
        for (const CTransactionRef ptx: block.vtx) {
            const CTransaction& tx = *ptx;
@@ -3400,7 +3379,7 @@ bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, const 
     return true;
 }
 
-bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW, bool fCheckMerkleRoot)
+bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSignature)
 {
     // These are checks that are independent of context.
 
@@ -3452,11 +3431,12 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     }
 
     // Check transactions
-    if (!IgnoreSigopsLimits(-1))
+    if (!IgnoreSigopsLimits(-1)) {
         for (const auto& tx : block.vtx)
             if (!CheckTransaction(*tx, state))
                 return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
                                      strprintf("Transaction check failed (tx hash %s) %s", tx->GetHash().ToString(), state.GetDebugMessage()));
+    }
 
     // Don't know height here, use failsafe
     if (!IgnoreSigopsLimits(-1)) {
@@ -3471,6 +3451,10 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
 
     if (fCheckPOW && fCheckMerkleRoot)
         block.fChecked = true;
+
+    // peercoin: check block signature
+    if (fCheckMerkleRoot && fCheckSignature && (block.IsProofOfStake() && !CheckBlockSignature(block)))
+        return state.DoS(100, false, REJECT_INVALID, "bad-blk-sign", false, strprintf("%s : bad block signature", __func__));
 
     return true;
 }
@@ -4927,6 +4911,11 @@ bool IgnoreSigopsLimits(int nHeight) {
    else
        fFailsafe = fIgnore;
    return fIgnore;
+}
+
+//! Returns true if we have entered PoS consensus state
+bool IsPoS() {
+   return (chainActive.Height() > Params().GetConsensus().nLastPoWBlock);
 }
 
 class CMainCleanup

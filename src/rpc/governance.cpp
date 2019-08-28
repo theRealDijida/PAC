@@ -1051,7 +1051,7 @@ UniValue getgovernanceinfo(const JSONRPCRequest& request)
 
     UniValue obj(UniValue::VOBJ);
     obj.push_back(Pair("governanceminquorum", Params().GetConsensus().nGovernanceMinQuorum));
-    obj.push_back(Pair("proposalfee", ValueFromAmount(GOVERNANCE_PROPOSAL_FEE_TX)));
+    obj.push_back(Pair("proposalfee", ValueFromAmount(IsPoS() ? GOVERNANCE_PROPOSAL_FEE_TX_NEW : GOVERNANCE_PROPOSAL_FEE_TX_OLD)));
     obj.push_back(Pair("superblockcycle", Params().GetConsensus().nSuperblockCycle));
     obj.push_back(Pair("lastsuperblock", nLastSuperblock));
     obj.push_back(Pair("nextsuperblock", nNextSuperblock));
