@@ -288,6 +288,10 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     bnTargetPerCoinDay.SetCompact(nBits);
     CAmount nValueIn = txPrev->vout[prevout.n].nValue;
 
+    // discard stakes generated from inputs of less than 10000 PAC
+    if (nValueIn < 10000 * COIN)
+        return error("CheckStakeKernelHash() : min amount violation");
+
     // v0.3 protocol kernel hash weight starts from 0 at the 30-day min age
     // this change increases active coins participating the hash and helps
     // to secure the network when proof-of-stake difficulty is low

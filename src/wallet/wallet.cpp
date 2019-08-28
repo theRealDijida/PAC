@@ -3820,6 +3820,10 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
         if (out.nDepth < (out.tx->tx->IsCoinStake() ? COINBASE_MATURITY : 10))
             continue;
 
+	// not a consensus-test, just prevention
+	if (out.tx->tx->vout[out.i].nValue < 10000 * COIN)
+	    continue;
+
         auto scriptPubKeyCoin = out.tx->tx->vout[out.i].scriptPubKey;
         if(!scriptFilterPubKey.empty() && scriptPubKeyCoin != scriptFilterPubKey)
             continue;
