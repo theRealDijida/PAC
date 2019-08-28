@@ -352,7 +352,7 @@ public:
         nPoolMaxParticipants = 5;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
 
-        vSporkAddresses = {"PMzZr2T3rxV7jRPSpwv6x81j7ihbVDc3Tj"};
+        vSporkAddresses = {"PGtvidAAsW6a9tMBKmdh2tZ1B3SxFDpdXP"};
         nMinSporkKeys = 1;
         fBIP9CheckMasternodesUpgraded = false; 
 
@@ -528,7 +528,7 @@ public:
         nPoolMaxParticipants = 5;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
 
-        vSporkAddresses = {"yb1YKkEEBLntPYgkzoiZoLacrNACMNZBT7"};
+        vSporkAddresses = {"yarEgAKyKCAanupC45vXhdWe6DAQf7RKPh"};
         nMinSporkKeys = 1;
         fBIP9CheckMasternodesUpgraded = true;
 
