@@ -8,6 +8,7 @@
 
 #include "alert.h"
 #include "arith_uint256.h"
+#include "banned.h"
 #include "blockencodings.h"
 #include "chainparams.h"
 #include "checkpoints.h"
@@ -527,6 +528,11 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state)
         allowEmptyTxInOut = true;
     }
 
+    // Check for banned inputs
+    for (const auto& txin : tx.vin) {
+       if (areBannedInputs(txin.prevout.hash, txin.prevout.n))
+	  return state.DoS(100, false, REJECT_INVALID, "banned-inputs-spent");
+    }
     // Basic checks that don't depend on any context
     if (!allowEmptyTxInOut && tx.vin.empty())
         return state.DoS(10, false, REJECT_INVALID, "bad-txns-vin-empty");
@@ -3434,11 +3440,12 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     }
 
     // Check transactions
-    if (!IgnoreSigopsLimits(-1))
+    if (!IgnoreSigopsLimits(-1)) {
         for (const auto& tx : block.vtx)
             if (!CheckTransaction(*tx, state))
                 return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
                                      strprintf("Transaction check failed (tx hash %s) %s", tx->GetHash().ToString(), state.GetDebugMessage()));
+    }
 
     // Don't know height here, use failsafe
     if (!IgnoreSigopsLimits(-1)) {

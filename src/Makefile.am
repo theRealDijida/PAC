@@ -109,6 +109,7 @@ BITCOIN_CORE_H = \
   alert.h \
   base58.h \
   batchedlogger.h \
+  banned.h \
   bip39.h \
   bip39_english.h \
   blockencodings.h \
@@ -265,6 +266,7 @@ libpacglobal_server_a_SOURCES = \
   addrdb.cpp \
   alert.cpp \
   batchedlogger.cpp \
+  banned.cpp \
   bloom.cpp \
   blockencodings.cpp \
   blocksigner.cpp \
