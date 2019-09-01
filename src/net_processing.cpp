@@ -57,7 +57,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-# error "Dash Core cannot be compiled without assertions."
+# error "PACGlobal Core cannot be compiled without assertions."
 #endif
 
 std::atomic<int64_t> nTimeBestReceived(0); // Used only to inform the wallet of when we last received a block
@@ -984,7 +984,7 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
         return mapBlockIndex.count(inv.hash);
 
     /*
-        Dash Related Inventory Messages
+        PACGlobal Related Inventory Messages
 
         --
 
@@ -1024,7 +1024,7 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
     case MSG_CLSIG:
         return llmq::chainLocksHandler->AlreadyHave(inv);
     case MSG_ISLOCK:
-        return llmq::quorumInstantSendManager->AlreadyHave(inv);
+        return llmq::quorumInstaPACManager->AlreadyHave(inv);
     }
     // Don't know what it is, just say we already got one
     return true;
@@ -1357,8 +1357,8 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
             }
 
             if (!push && (inv.type == MSG_ISLOCK)) {
-                llmq::CInstantSendLock o;
-                if (llmq::quorumInstantSendManager->GetInstantSendLockByHash(inv.hash, o)) {
+                llmq::CInstaPACLock o;
+                if (llmq::quorumInstaPACManager->GetInstaPACLockByHash(inv.hash, o)) {
                     connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::ISLOCK, o));
                     push = true;
                 }
@@ -1702,7 +1702,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         if (pfrom->nVersion >= LLMQS_PROTO_VERSION) {
             // Tell our peer that we're interested in plain LLMQ recovered signatures.
             // Otherwise the peer would only announce/send messages resulting from QRECSIG,
-            // e.g. InstantSend locks or ChainLocks. SPV nodes should not send this message
+            // e.g. InstaPAC locks or ChainLocks. SPV nodes should not send this message
             // as they are usually only interested in the higher level messages
             connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::QSENDRECSIGS, true));
         }
@@ -2133,12 +2133,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         if(strCommand == NetMsgType::TX) {
             vRecv >> ptx;
             txLockRequest = CTxLockRequest(ptx);
-            fCanAutoLock = llmq::IsOldInstantSendEnabled() && CInstantSend::CanAutoLock() && txLockRequest.IsSimple();
+            fCanAutoLock = llmq::IsOldInstaPACEnabled() && CInstaPAC::CanAutoLock() && txLockRequest.IsSimple();
         } else if(strCommand == NetMsgType::TXLOCKREQUEST) {
             vRecv >> txLockRequest;
             ptx = txLockRequest.tx;
             nInvType = MSG_TXLOCK_REQUEST;
-            if (llmq::IsNewInstantSendEnabled()) {
+            if (llmq::IsNewInstaPACEnabled()) {
                 // the new system does not require explicit lock requests
                 // changing the inv type to MSG_TX also results in re-broadcasting the TX as normal TX
                 nInvType = MSG_TX;
@@ -3105,7 +3105,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             llmq::quorumSigSharesManager->ProcessMessage(pfrom, strCommand, vRecv, connman);
             llmq::quorumSigningManager->ProcessMessage(pfrom, strCommand, vRecv, connman);
             llmq::chainLocksHandler->ProcessMessage(pfrom, strCommand, vRecv, connman);
-            llmq::quorumInstantSendManager->ProcessMessage(pfrom, strCommand, vRecv, connman);
+            llmq::quorumInstaPACManager->ProcessMessage(pfrom, strCommand, vRecv, connman);
         }
         else
         {

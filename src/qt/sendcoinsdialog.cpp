@@ -68,7 +68,7 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *p
     connect(ui->checkBoxCoinControlChange, SIGNAL(stateChanged(int)), this, SLOT(coinControlChangeChecked(int)));
     connect(ui->lineEditCoinControlChange, SIGNAL(textEdited(const QString &)), this, SLOT(coinControlChangeEdited(const QString &)));
 
-    // Dash specific
+    // PACGlobal specific
     QSettings settings;
     if (!settings.contains("bUseDarkSend"))
         settings.setValue("bUseDarkSend", false);
@@ -76,23 +76,23 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *p
         settings.setValue("bUseInstantX", false);
 
     bool fUsePrivateSend = settings.value("bUseDarkSend").toBool();
-    bool fUseInstantSend = settings.value("bUseInstantX").toBool();
+    bool fUseInstaPAC = settings.value("bUseInstantX").toBool();
     if(fLiteMode) {
         ui->checkUsePrivateSend->setChecked(false);
         ui->checkUsePrivateSend->setVisible(false);
-        ui->checkUseInstantSend->setVisible(false);
+        ui->checkUseInstaPAC->setVisible(false);
         CoinControlDialog::coinControl->fUsePrivateSend = false;
-        CoinControlDialog::coinControl->fUseInstantSend = false;
+        CoinControlDialog::coinControl->fUseInstaPAC = false;
     }
     else{
         ui->checkUsePrivateSend->setChecked(fUsePrivateSend);
-        ui->checkUseInstantSend->setChecked(fUseInstantSend);
+        ui->checkUseInstaPAC->setChecked(fUseInstaPAC);
         CoinControlDialog::coinControl->fUsePrivateSend = fUsePrivateSend;
-        CoinControlDialog::coinControl->fUseInstantSend = fUseInstantSend;
+        CoinControlDialog::coinControl->fUseInstaPAC = fUseInstaPAC;
     }
 
     connect(ui->checkUsePrivateSend, SIGNAL(stateChanged ( int )), this, SLOT(updateDisplayUnit()));
-    connect(ui->checkUseInstantSend, SIGNAL(stateChanged ( int )), this, SLOT(updateInstantSend()));
+    connect(ui->checkUseInstaPAC, SIGNAL(stateChanged ( int )), this, SLOT(updateInstaPAC()));
 
     // Coin Control: clipboard actions
     QAction *clipboardQuantityAction = new QAction(tr("Copy quantity"), this);
@@ -269,14 +269,14 @@ void SendCoinsDialog::on_sendButton_clicked()
         strFunds = tr("using") + " <b>" + tr("any available funds (not anonymous)") + "</b>";
     }
 
-    if(model->IsOldInstantSendEnabled() && ui->checkUseInstantSend->isChecked()) {
+    if(model->IsOldInstaPACEnabled() && ui->checkUseInstaPAC->isChecked()) {
         strFunds += " ";
-        strFunds += tr("and InstantSend");
+        strFunds += tr("and InstaPAC");
     }
 
     for (SendCoinsRecipient& rcp : recipients) {
         rcp.inputType = ui->checkUsePrivateSend->isChecked() ? ONLY_DENOMINATED : ALL_COINS;
-        rcp.fUseInstantSend = model->IsOldInstantSendEnabled() && ui->checkUseInstantSend->isChecked();
+        rcp.fUseInstaPAC = model->IsOldInstaPACEnabled() && ui->checkUseInstaPAC->isChecked();
     }
 
     fNewRecipientAllowed = false;
@@ -607,11 +607,11 @@ void SendCoinsDialog::updateDisplayUnit()
     updateSmartFeeLabel();
 }
 
-void SendCoinsDialog::updateInstantSend()
+void SendCoinsDialog::updateInstaPAC()
 {
     QSettings settings;
-    settings.setValue("bUseInstantX", ui->checkUseInstantSend->isChecked());
-    CoinControlDialog::coinControl->fUseInstantSend = model->IsOldInstantSendEnabled() && ui->checkUseInstantSend->isChecked();
+    settings.setValue("bUseInstantX", ui->checkUseInstaPAC->isChecked());
+    CoinControlDialog::coinControl->fUseInstaPAC = model->IsOldInstaPACEnabled() && ui->checkUseInstaPAC->isChecked();
     coinControlUpdateLabels();
 }
 
@@ -881,7 +881,7 @@ void SendCoinsDialog::coinControlChangeEdited(const QString& text)
         }
         else if (!addr.IsValid()) // Invalid address
         {
-            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Dash address"));
+            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid PACGlobal address"));
         }
         else // Valid address
         {

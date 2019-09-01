@@ -242,7 +242,7 @@ bool CPrivateSend::IsCollateralValid(const CTransaction& txCollateral)
         Coin coin;
         auto mempoolTx = mempool.get(txin.prevout.hash);
         if (mempoolTx != nullptr) {
-            if (mempool.isSpent(txin.prevout) || !llmq::quorumInstantSendManager->IsLocked(txin.prevout.hash)) {
+            if (mempool.isSpent(txin.prevout) || !llmq::quorumInstaPACManager->IsLocked(txin.prevout.hash)) {
                 LogPrint("privatesend", "CPrivateSend::IsCollateralValid -- spent or non-locked mempool input! txin=%s\n", txin.ToString());
                 return false;
             }
@@ -357,10 +357,10 @@ int CPrivateSend::GetDenominations(const std::vector<CTxOut>& vecTxOut, bool fSi
 bool CPrivateSend::GetDenominationsBits(int nDenom, std::vector<int>& vecBitsRet)
 {
     // ( bit on if present, 4 denominations example )
-    // bit 0 - 100DASH+1
-    // bit 1 - 10DASH+1
-    // bit 2 - 1DASH+1
-    // bit 3 - .1DASH+1
+    // bit 0 - 100PAC+1
+    // bit 1 - 10PAC+1
+    // bit 2 - 1PAC+1
+    // bit 3 - .1PAC+1
 
     int nMaxDenoms = vecStandardDenominations.size();
 

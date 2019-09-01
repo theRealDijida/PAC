@@ -372,8 +372,8 @@ std::string EntryDescriptionString()
            "    \"depends\" : [               (array) unconfirmed transactions used as inputs for this transaction\n"
            "        \"transactionid\",        (string) parent transaction id\n"
            "       ... ],\n"
-           "    \"instantsend\" : true|false, (boolean) True if this transaction was sent as an InstantSend one\n"
-           "    \"instantlock\" : true|false  (boolean) True if this transaction was locked via InstantSend\n";
+           "    \"instantsend\" : true|false, (boolean) True if this transaction was sent as an InstaPAC one\n"
+           "    \"instantlock\" : true|false  (boolean) True if this transaction was locked via InstaPAC\n";
 }
 
 void entryToJSON(UniValue &info, const CTxMemPoolEntry &e)
@@ -407,7 +407,7 @@ void entryToJSON(UniValue &info, const CTxMemPoolEntry &e)
 
     info.push_back(Pair("depends", depends));
     info.push_back(Pair("instantsend", instantsend.HasTxLockRequest(tx.GetHash())));
-    info.push_back(Pair("instantlock", instantsend.IsLockedInstantSendTransaction(tx.GetHash()) || llmq::quorumInstantSendManager->IsLocked(tx.GetHash())));
+    info.push_back(Pair("instantlock", instantsend.IsLockedInstaPACTransaction(tx.GetHash()) || llmq::quorumInstaPACManager->IsLocked(tx.GetHash())));
 }
 
 UniValue mempoolToJSON(bool fVerbose = false)
@@ -1504,7 +1504,7 @@ UniValue mempoolInfoToJSON()
     size_t maxmempool = GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000;
     ret.push_back(Pair("maxmempool", (int64_t) maxmempool));
     ret.push_back(Pair("mempoolminfee", ValueFromAmount(mempool.GetMinFee(maxmempool).GetFeePerK())));
-    ret.push_back(Pair("instantsendlocks", (int64_t)llmq::quorumInstantSendManager->GetInstantSendLockCount()));
+    ret.push_back(Pair("instantsendlocks", (int64_t)llmq::quorumInstaPACManager->GetInstaPACLockCount()));
 
     return ret;
 }

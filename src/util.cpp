@@ -110,7 +110,7 @@ namespace boost {
 
 
 
-//Dash only features
+//PACGlobal only features
 bool fMasternodeMode = false;
 bool fLiteMode = false;
 /**
@@ -284,7 +284,7 @@ bool LogAcceptCategory(const char* category)
                 const std::vector<std::string>& categories = mapMultiArgs.at("-debug");
                 ptrCategory.reset(new std::set<std::string>(categories.begin(), categories.end()));
                 // thread_specific_ptr automatically deletes the set when the thread ends.
-                // "dash" is a composite category enabling all Dash-related debug output
+                // "dash" is a composite category enabling all PACGlobal-related debug output
                 if(ptrCategory->count(std::string("dash"))) {
                     ptrCategory->insert(std::string("chainlocks"));
                     ptrCategory->insert(std::string("gobject"));
@@ -565,9 +565,9 @@ void PrintExceptionContinue(const std::exception_ptr pex, const char* pszThread)
 boost::filesystem::path GetDefaultDataDir()
 {
     namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\DashCore
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\DashCore
-    // Mac: ~/Library/Application Support/DashCore
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\PACGlobalCore
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\PACGlobalCore
+    // Mac: ~/Library/Application Support/PACGlobalCore
     // Unix: ~/.dashcore
 #ifdef WIN32
     // Windows

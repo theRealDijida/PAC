@@ -216,9 +216,9 @@ int WalletModel::getNumISLocks() const
     return cachedNumISLocks;
 }
 
-bool WalletModel::IsOldInstantSendEnabled() const
+bool WalletModel::IsOldInstaPACEnabled() const
 {
-    return llmq::IsOldInstantSendEnabled();
+    return llmq::IsOldInstaPACEnabled();
 }
 
 void WalletModel::updateAddressBook(const QString &address, const QString &label,
@@ -319,8 +319,8 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         return AmountExceedsBalance;
     }
 
-    if(recipients[0].fUseInstantSend && IsOldInstantSendEnabled() && total > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
-        Q_EMIT message(tr("Send Coins"), tr("InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 DASH.").arg(sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)),
+    if(recipients[0].fUseInstaPAC && IsOldInstaPACEnabled() && total > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
+        Q_EMIT message(tr("Send Coins"), tr("InstaPAC doesn't support sending values that high yet. Transactions are currently limited to %1 PAC.").arg(sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)),
                      CClientUIInterface::MSG_ERROR);
         return TransactionCreationFailed;
     }
@@ -340,7 +340,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         CWalletTx* newTx = transaction.getTransaction();
         CReserveKey *keyChange = transaction.getPossibleKeyChange();
 
-        fCreated = wallet->CreateTransaction(vecSend, *newTx, *keyChange, nFeeRequired, nChangePosRet, strFailReason, coinControl, true, recipients[0].inputType, recipients[0].fUseInstantSend);
+        fCreated = wallet->CreateTransaction(vecSend, *newTx, *keyChange, nFeeRequired, nChangePosRet, strFailReason, coinControl, true, recipients[0].inputType, recipients[0].fUseInstaPAC);
         transaction.setTransactionFee(nFeeRequired);
         if (fSubtractFeeFromAmount && fCreated)
             transaction.reassignAmounts();
@@ -349,14 +349,14 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         nVinSize = newTx->tx->vin.size();
     }
 
-    if(recipients[0].fUseInstantSend && IsOldInstantSendEnabled()) {
+    if(recipients[0].fUseInstaPAC && IsOldInstaPACEnabled()) {
         if(nValueOut > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
-            Q_EMIT message(tr("Send Coins"), tr("InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 DASH.").arg(sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)),
+            Q_EMIT message(tr("Send Coins"), tr("InstaPAC doesn't support sending values that high yet. Transactions are currently limited to %1 PAC.").arg(sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)),
                          CClientUIInterface::MSG_ERROR);
             return TransactionCreationFailed;
         }
         if(nVinSize > CTxLockRequest::WARN_MANY_INPUTS) {
-            Q_EMIT message(tr("Send Coins"), tr("Used way too many inputs (>%1) for this InstantSend transaction, fees could be huge.").arg(CTxLockRequest::WARN_MANY_INPUTS),
+            Q_EMIT message(tr("Send Coins"), tr("Used way too many inputs (>%1) for this InstaPAC transaction, fees could be huge.").arg(CTxLockRequest::WARN_MANY_INPUTS),
                          CClientUIInterface::MSG_WARNING);
         }
     }
@@ -415,7 +415,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
         CValidationState state;
         // the new IX system does not require explicit IX messages
         std::string strCommand = NetMsgType::TX;
-        if (recipients[0].fUseInstantSend && IsOldInstantSendEnabled()) {
+        if (recipients[0].fUseInstaPAC && IsOldInstaPACEnabled()) {
             strCommand = NetMsgType::TXLOCKREQUEST;
         }
         if(!wallet->CommitTransaction(*newTx, *keyChange, g_connman.get(), state, strCommand))
@@ -821,7 +821,7 @@ bool WalletModel::transactionCanBeAbandoned(uint256 hash) const
 {
     LOCK2(cs_main, wallet->cs_wallet);
     const CWalletTx *wtx = wallet->GetWalletTx(hash);
-    if (!wtx || wtx->isAbandoned() || wtx->GetDepthInMainChain() > 0 || wtx->IsLockedByInstantSend() || wtx->InMempool())
+    if (!wtx || wtx->isAbandoned() || wtx->GetDepthInMainChain() > 0 || wtx->IsLockedByInstaPAC() || wtx->InMempool())
         return false;
     return true;
 }
