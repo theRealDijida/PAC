@@ -1211,12 +1211,12 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
     if (nHeight > Params().GetConsensus().nLastPoWBlock ||
         Params().NetworkIDString() == CBaseChainParams::TESTNET)
     {
-        if (nPrevHeight < 1471680)      return 8280 * COIN;
-        else if (nPrevHeight < 3994560) return 10350 * COIN;
-        else if (nPrevHeight < 4204800) return 7762 * COIN;
-        else if (nPrevHeight < 4414050) return 6210 * COIN;
-        else if (nPrevHeight < 4835520) return 4140 * COIN;
-        else                            return 2070 * COIN;
+        if (nHeight < 1471681)      return 8280 * COIN;
+        else if (nHeight < 3994561) return 10350 * COIN;
+        else if (nHeight < 4204801) return 7762 * COIN;
+        else if (nHeight < 4414051) return 6210 * COIN;
+        else if (nHeight < 4835521) return 4140 * COIN;
+        else                        return 2070 * COIN;
     }
 
     // proof of work
@@ -1233,8 +1233,6 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
     if (nHeight > nMNPIBlock + (nMNPIPeriod * 7)) ret += blockValue / 40; // 278960 - 47.5% - 2015-06-01
     if (nHeight > nMNPIBlock + (nMNPIPeriod * 9)) ret += blockValue / 40; // 313520 - 50.0% - 2015-08-03
     return ret;
-
-  }
 }
 
 CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly) {
@@ -3043,7 +3041,7 @@ bool ActivateBestChain(CValidationState &state, const CChainParams& chainparams,
             uiInterface.NotifyBlockTip(fInitialDownload, pindexNewTip);
         }
     } while (pindexNewTip != pindexMostWork);
-    CheckBlockIndex(chainparams.GetConsensus());
+    if (!IsInitialBlockDownload()) CheckBlockIndex(chainparams.GetConsensus());
 
     // Write changes periodically to disk, after relay.
     if (!FlushStateToDisk(state, FLUSH_STATE_PERIODIC)) {
@@ -3648,7 +3646,7 @@ static bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state
     if (ppindex)
         *ppindex = pindex;
 
-    CheckBlockIndex(chainparams.GetConsensus());
+    if (!IsInitialBlockDownload()) CheckBlockIndex(chainparams.GetConsensus());
 
     // Notify external listeners about accepted block header
     GetMainSignals().AcceptedBlockHeader(pindex);
@@ -3841,7 +3839,7 @@ bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<cons
             // Store to disk
             ret = AcceptBlock(pblock, state, chainparams, &pindex, fForceProcessing, NULL, fNewBlock);
         }
-        CheckBlockIndex(chainparams.GetConsensus());
+        if (!IsInitialBlockDownload()) CheckBlockIndex(chainparams.GetConsensus());
         if (!ret) {
             GetMainSignals().BlockChecked(*pblock, state);
             return error("%s: AcceptBlock FAILED: %s", __func__, FormatStateMessage(state));
