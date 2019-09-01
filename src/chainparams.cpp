@@ -416,7 +416,7 @@ public:
         consensus.BIP66Height = 0;
         consensus.DIP0001Height = 1;
         consensus.DIP0003Height = 50;
-        consensus.DIP0003EnforcementHeight = 250;
+        consensus.DIP0003EnforcementHeight = 500;
         consensus.DIP0003EnforcementHash = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
         consensus.powLimit = uint256S("0000fffff0000000000000000000000000000000000000000000000000000000");
         consensus.posLimit = uint256S("007ffff000000000000000000000000000000000000000000000000000000000");
@@ -473,22 +473,22 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0008].nThreshold = 10;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000010001");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
 
-        pchMessageStart[0] = 0x23;
-        pchMessageStart[1] = 0x45;
-        pchMessageStart[2] = 0x67;
-        pchMessageStart[3] = 0x89;
+        pchMessageStart[0] = 0x11;
+        pchMessageStart[1] = 0x33;
+        pchMessageStart[2] = 0x55;
+        pchMessageStart[3] = 0x77;
         vAlertPubKey = ParseHex("04517d8a699cb43d3938d7b24faaff7cda448ca4ea267723ba614784de661949bf632d6304316b244646dea079735b9a6fc4af804efb4752075b9fe2245e14e412");
         nDefaultPort = 29999;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1564769250, 3002, 0x1f00ffff, 1, 0 * COIN, true);
+        genesis = CreateGenesisBlock(1567342000, 4913, 0x1f00ffff, 1, 0 * COIN, true);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000097a08e38cbc3111ec655792e578127e1c62c1b108f393f35582f3d750f0a"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00002ab12b7dedeeec3f13e601f835a7bbb1987ec3ee22093962a7c9b2f6b745"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
@@ -540,10 +540,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            1564769250, // * UNIX timestamp of last known number of transactions
-            0,          // * total number of transactions between genesis and that timestamp
+            1567342000, // * UNIX timestamp of last known number of transactions
+            1,          // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0.0         // * estimated number of transactions per second after that timestamp
+            1.0         // * estimated number of transactions per second after that timestamp
         };
 
     }
