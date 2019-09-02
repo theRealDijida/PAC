@@ -683,7 +683,7 @@ void CNode::copyStats(CNodeStats &stats)
         nPingUsecWait = GetTimeMicros() - nPingUsecStart;
     }
 
-    // Raw ping time is in microseconds, but show it to user as whole seconds (Dash users should be well used to small numbers with many decimal places by now :)
+    // Raw ping time is in microseconds, but show it to user as whole seconds (PACGlobal users should be well used to small numbers with many decimal places by now :)
     stats.dPingTime = (((double)nPingUsecTime) / 1e6);
     stats.dMinPing  = (((double)nMinPingUsecTime) / 1e6);
     stats.dPingWait = (((double)nPingUsecWait) / 1e6);
@@ -1586,7 +1586,7 @@ void ThreadMapPort()
             }
         }
 
-        std::string strDesc = "Dash Core " + FormatFullVersion();
+        std::string strDesc = "PACGlobal Core " + FormatFullVersion();
 
         try {
             while (true) {
@@ -2888,7 +2888,7 @@ void CConnman::RelayTransaction(const CTransaction& tx)
     int nInv = MSG_TX;
     if (CPrivateSend::GetDSTX(hash)) {
         nInv = MSG_DSTX;
-    } else if (llmq::IsOldInstantSendEnabled() && instantsend.HasTxLockRequest(hash)) {
+    } else if (llmq::IsOldInstaPACEnabled() && instantsend.HasTxLockRequest(hash)) {
         nInv = MSG_TXLOCK_REQUEST;
     }
     CInv inv(nInv, hash);

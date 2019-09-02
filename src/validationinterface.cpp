@@ -29,7 +29,7 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn) {
     g_signals.NewPoWValidBlock.connect(boost::bind(&CValidationInterface::NewPoWValidBlock, pwalletIn, _1, _2));
     g_signals.NotifyGovernanceObject.connect(boost::bind(&CValidationInterface::NotifyGovernanceObject, pwalletIn, _1));
     g_signals.NotifyGovernanceVote.connect(boost::bind(&CValidationInterface::NotifyGovernanceVote, pwalletIn, _1));
-    g_signals.NotifyInstantSendDoubleSpendAttempt.connect(boost::bind(&CValidationInterface::NotifyInstantSendDoubleSpendAttempt, pwalletIn, _1, _2));
+    g_signals.NotifyInstaPACDoubleSpendAttempt.connect(boost::bind(&CValidationInterface::NotifyInstaPACDoubleSpendAttempt, pwalletIn, _1, _2));
     g_signals.NotifyMasternodeListChanged.connect(boost::bind(&CValidationInterface::NotifyMasternodeListChanged, pwalletIn, _1, _2, _3));
 }
 
@@ -50,7 +50,7 @@ void UnregisterValidationInterface(CValidationInterface* pwalletIn) {
     g_signals.AcceptedBlockHeader.disconnect(boost::bind(&CValidationInterface::AcceptedBlockHeader, pwalletIn, _1));
     g_signals.NotifyGovernanceObject.disconnect(boost::bind(&CValidationInterface::NotifyGovernanceObject, pwalletIn, _1));
     g_signals.NotifyGovernanceVote.disconnect(boost::bind(&CValidationInterface::NotifyGovernanceVote, pwalletIn, _1));
-    g_signals.NotifyInstantSendDoubleSpendAttempt.disconnect(boost::bind(&CValidationInterface::NotifyInstantSendDoubleSpendAttempt, pwalletIn, _1, _2));
+    g_signals.NotifyInstaPACDoubleSpendAttempt.disconnect(boost::bind(&CValidationInterface::NotifyInstaPACDoubleSpendAttempt, pwalletIn, _1, _2));
     g_signals.NotifyMasternodeListChanged.disconnect(boost::bind(&CValidationInterface::NotifyMasternodeListChanged, pwalletIn, _1, _2, _3));
 }
 
@@ -71,6 +71,6 @@ void UnregisterAllValidationInterfaces() {
     g_signals.AcceptedBlockHeader.disconnect_all_slots();
     g_signals.NotifyGovernanceObject.disconnect_all_slots();
     g_signals.NotifyGovernanceVote.disconnect_all_slots();
-    g_signals.NotifyInstantSendDoubleSpendAttempt.disconnect_all_slots();
+    g_signals.NotifyInstaPACDoubleSpendAttempt.disconnect_all_slots();
     g_signals.NotifyMasternodeListChanged.disconnect_all_slots();
 }

@@ -111,8 +111,8 @@ public Q_SLOTS:
     void setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers);
     /** Set size (number of transactions and memory usage) of the mempool in the UI */
     void setMempoolSize(long numberOfTxs, size_t dynUsage);
-    /** Set number of InstantSend locks */
-    void setInstantSendLockCount(size_t count);
+    /** Set number of InstaPAC locks */
+    void setInstaPACLockCount(size_t count);
     /** Go forward or back in history */
     void browseHistory(int offset);
     /** Scroll console view to end */

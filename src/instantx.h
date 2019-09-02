@@ -14,13 +14,13 @@ class CTxLockVote;
 class COutPointLock;
 class CTxLockRequest;
 class CTxLockCandidate;
-class CInstantSend;
+class CInstaPAC;
 
-extern CInstantSend instantsend;
+extern CInstaPAC instantsend;
 
 /*
     At 15 signatures, 1/2 of the masternode network can be owned by
-    one party without compromising the security of InstantSend
+    one party without compromising the security of InstaPAC
     (1000/2150.0)**10 = 0.00047382219560689856
     (1000/2900.0)**10 = 2.3769498616783657e-05
 
@@ -37,12 +37,12 @@ static const int INSTANTSEND_LOCK_TIMEOUT_SECONDS   = 15;
 /// must be greater than INSTANTSEND_LOCK_TIMEOUT_SECONDS
 static const int INSTANTSEND_FAILED_TIMEOUT_SECONDS = 60;
 
-extern bool fEnableInstantSend;
+extern bool fEnableInstaPAC;
 
 /**
- * Manages InstantSend. Processes lock requests, candidates, and votes.
+ * Manages InstaPAC. Processes lock requests, candidates, and votes.
  */
-class CInstantSend
+class CInstaPAC
 {
 public:
     /// Automatic locks of "simple" transactions are only allowed
@@ -136,7 +136,7 @@ public:
     bool GetLockedOutPointTxHash(const COutPoint& outpoint, uint256& hashRet);
 
     /// Verify if transaction is currently locked
-    bool IsLockedInstantSendTransaction(const uint256& txHash);
+    bool IsLockedInstaPACTransaction(const uint256& txHash);
     /// Get the actual number of accepted lock signatures
     int GetTransactionLockSignatures(const uint256& txHash);
 
@@ -162,7 +162,7 @@ public:
 };
 
 /**
- * An InstantSend transaction lock request.
+ * An InstaPAC transaction lock request.
  */
 class CTxLockRequest
 {
@@ -222,7 +222,7 @@ public:
 };
 
 /**
- * An InstantSend transaction lock vote. Sent by a masternode in response to a
+ * An InstaPAC transaction lock vote. Sent by a masternode in response to a
  * transaction lock request (ix message) to indicate the transaction input can
  * be locked. Contains the proposed transaction's hash and the outpoint being
  * locked along with the masternodes outpoint and signature.
@@ -299,7 +299,7 @@ public:
 };
 
 /**
- * An InstantSend OutpointLock.
+ * An InstaPAC OutpointLock.
  */
 class COutPointLock
 {
@@ -338,7 +338,7 @@ public:
 };
 
 /**
- * An InstantSend transaction lock candidate.
+ * An InstaPAC transaction lock candidate.
  */
 class CTxLockCandidate
 {

@@ -263,8 +263,6 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const Consensus:
     {
         if (pindexLast->nHeight + 1 > params.nLastPoWBlock)
             return DualKGW3(pindexLast, true, params);
-        if (pindexLast->nHeight + 1 > params.nLastPoWBlock - 10)
-            return DualKGW3(pindexLast, false, params);
         return UintToArith256(params.powLimit).GetCompact();
      }
       else

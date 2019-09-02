@@ -11,7 +11,7 @@ QWidget#contentWidget { /* The actual content with the text/buttons/etc... */
 
 /* SEND DIALOG */
 
-QDialog#SendCoinsDialog .QCheckBox#checkUseInstantSend { /* InstantSend Checkbox */
+QDialog#SendCoinsDialog .QCheckBox#checkUseInstaPAC { /* InstaPAC Checkbox */
 margin-left:10px;
 margin-right:20px;
 }

@@ -25,7 +25,7 @@ CPrivateSendServer privateSendServer;
 void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman)
 {
     if (!fMasternodeMode) return;
-    if (fLiteMode) return; // ignore all Dash related functionality
+    if (fLiteMode) return; // ignore all PACGlobal related functionality
     if (!masternodeSync.IsBlockchainSynced()) return;
 
     if (strCommand == NetMsgType::DSACCEPT) {
@@ -221,7 +221,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
                 Coin coin;
                 auto mempoolTx = mempool.get(txin.prevout.hash);
                 if (mempoolTx != nullptr) {
-                    if (mempool.isSpent(txin.prevout) || !llmq::quorumInstantSendManager->IsLocked(txin.prevout.hash)) {
+                    if (mempool.isSpent(txin.prevout) || !llmq::quorumInstaPACManager->IsLocked(txin.prevout.hash)) {
                         LogPrintf("DSVIN -- spent or non-locked mempool input! txin=%s\n", txin.ToString());
                         PushStatus(pfrom, STATUS_REJECTED, ERR_MISSING_TX, connman);
                         return;
@@ -477,7 +477,7 @@ void CPrivateSendServer::ChargeFees(CConnman& connman)
 
     Being that mixing has "no fees" we need to have some kind of cost associated
     with using it to stop abuse. Otherwise it could serve as an attack vector and
-    allow endless transaction that would bloat Dash and make it unusable. To
+    allow endless transaction that would bloat PACGlobal and make it unusable. To
     stop these kinds of attacks 1 in 10 successful transactions are charged. This
     adds up to a cost of 0.001DRK per transaction on average.
 */
@@ -910,7 +910,7 @@ void CPrivateSendServer::SetState(PoolState nStateNew)
 
 void CPrivateSendServer::DoMaintenance(CConnman& connman)
 {
-    if (fLiteMode) return;        // disable all Dash specific functionality
+    if (fLiteMode) return;        // disable all PACGlobal specific functionality
     if (!fMasternodeMode) return; // only run on masternodes
 
     if (!masternodeSync.IsBlockchainSynced() || ShutdownRequested())

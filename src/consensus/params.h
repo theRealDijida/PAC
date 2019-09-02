@@ -124,10 +124,10 @@ struct Params {
     int nMasternodePaymentsStartBlock;
     int nMasternodePaymentsIncreaseBlock;
     int nMasternodePaymentsIncreasePeriod; // in blocks
-    int nInstantSendConfirmationsRequired; // in blocks
-    int nInstantSendKeepLock; // in blocks
-    int nInstantSendSigsRequired;
-    int nInstantSendSigsTotal;
+    int nInstaPACConfirmationsRequired; // in blocks
+    int nInstaPACKeepLock; // in blocks
+    int nInstaPACSigsRequired;
+    int nInstaPACSigsTotal;
     int nBudgetPaymentsStartBlock;
     int nBudgetPaymentsCycleBlocks;
     int nBudgetPaymentsWindowBlocks;
@@ -191,7 +191,7 @@ struct Params {
 
     std::map<LLMQType, LLMQParams> llmqs;
     LLMQType llmqChainLocks;
-    LLMQType llmqForInstantSend{LLMQ_NONE};
+    LLMQType llmqForInstaPAC{LLMQ_NONE};
 };
 } // namespace Consensus
 

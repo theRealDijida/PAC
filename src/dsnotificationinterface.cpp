@@ -59,7 +59,7 @@ void CDSNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, con
     if (fLiteMode)
         return;
 
-    llmq::quorumInstantSendManager->UpdatedBlockTip(pindexNew);
+    llmq::quorumInstaPACManager->UpdatedBlockTip(pindexNew);
     llmq::chainLocksHandler->UpdatedBlockTip(pindexNew);
 
     CPrivateSend::UpdatedBlockTip(pindexNew);
@@ -74,7 +74,7 @@ void CDSNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, con
 
 void CDSNotificationInterface::SyncTransaction(const CTransaction &tx, const CBlockIndex *pindex, int posInBlock)
 {
-    llmq::quorumInstantSendManager->SyncTransaction(tx, pindex, posInBlock);
+    llmq::quorumInstaPACManager->SyncTransaction(tx, pindex, posInBlock);
     llmq::chainLocksHandler->SyncTransaction(tx, pindex, posInBlock);
     instantsend.SyncTransaction(tx, pindex, posInBlock);
     CPrivateSend::SyncTransaction(tx, pindex, posInBlock);
@@ -90,5 +90,5 @@ void CDSNotificationInterface::NotifyMasternodeListChanged(bool undo, const CDet
 
 void CDSNotificationInterface::NotifyChainLock(const CBlockIndex* pindex)
 {
-    llmq::quorumInstantSendManager->NotifyChainLock(pindex);
+    llmq::quorumInstaPACManager->NotifyChainLock(pindex);
 }

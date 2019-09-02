@@ -98,7 +98,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                 if (ExtractDestination(txout.scriptPubKey, address) && IsMine(*wallet, address))
                 {
-                    // Received by Dash Address
+                    // Received by PACGlobal Address
                     sub.type = TransactionRecord::RecvWithAddress;
                     sub.address = CBitcoinAddress(address).ToString();
                 }
@@ -169,7 +169,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 CTxDestination address;
                 if (ExtractDestination(wtx.tx->vout[0].scriptPubKey, address))
                 {
-                    // Sent to Dash Address
+                    // Sent to PACGlobal Address
                     sub.address = CBitcoinAddress(address).ToString();
                 }
                 else
@@ -245,7 +245,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 CTxDestination address;
                 if (ExtractDestination(txout.scriptPubKey, address))
                 {
-                    // Sent to Dash Address
+                    // Sent to PACGlobal Address
                     sub.type = TransactionRecord::SendToAddress;
                     sub.address = CBitcoinAddress(address).ToString();
                 }
@@ -350,7 +350,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx, int numISLocks, int c
     }
     else
     {
-        status.lockedByInstantSend = wtx.IsLockedByInstantSend();
+        status.lockedByInstaPAC = wtx.IsLockedByInstaPAC();
         if (status.depth < 0)
         {
             status.status = TransactionStatus::Conflicted;

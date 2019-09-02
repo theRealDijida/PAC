@@ -106,8 +106,8 @@ public:
     {
         CBlockHeader::SetNull();
         vtx.clear();
+        vchBlockSig.clear();
         fChecked = false;
-		    vchBlockSig.clear();
     }
 
     CBlockHeader GetBlockHeader() const
