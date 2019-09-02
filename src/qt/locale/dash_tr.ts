@@ -466,7 +466,7 @@
         <translation>&amp;URI Aç...</translation>
     </message>
     <message>
-        <source>Open a dash: URI or payment request</source>
+        <source>Open a pac: URI or payment request</source>
         <translation>Bir PACGlobal: bağlantısı ya da ödeme talebi aç</translation>
     </message>
     <message>
@@ -2956,7 +2956,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Mesaj:</translation>
     </message>
     <message>
-        <source>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
+        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
         <translation>Referans için PACGlobal: URI'siyle iliştirilmiş işlemle birlikte depolanacak bir ileti. Not: Bu mesaj PACGlobal ağı üzerinden gönderilmeyecektir.</translation>
     </message>
     <message>

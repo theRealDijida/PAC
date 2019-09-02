@@ -482,8 +482,8 @@
         <translation>Open &amp;URI</translation>
     </message>
     <message>
-        <source>Open a dash: URI or payment request</source>
-        <translation>Open een dash: URI of betalingsaanvraag</translation>
+        <source>Open a pac: URI or payment request</source>
+        <translation>Open een pac: URI of betalingsaanvraag</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -2994,8 +2994,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het PACGlobal n
         <translation>Bericht:</translation>
     </message>
     <message>
-        <source>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
-        <translation>Een boodschap die was bijgevoegd aan de dash: URI die met de transactie voor uw referentie wordt opgeslagen. Opmerking: Dit bericht zal niet over het PACGlobal netwerk worden verzonden.</translation>
+        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
+        <translation>Een boodschap die was bijgevoegd aan de pac: URI die met de transactie voor uw referentie wordt opgeslagen. Opmerking: Dit bericht zal niet over het PACGlobal netwerk worden verzonden.</translation>
     </message>
     <message>
         <source>This is an unauthenticated payment request.</source>
