@@ -792,7 +792,7 @@ void RPCConsole::clear(bool clearHistory)
 
     // Add smoothly scaled icon images.
     // (when using width/height on an img, Qt uses nearest instead of linear interpolation)
-    QString iconPath = ":/icons/" + GUIUtil::getThemeName() + "/";
+    QString iconPath = ":/icons/";
     QString iconName = "";
     
     for(int i=0; ICON_MAPPING[i].url; ++i)

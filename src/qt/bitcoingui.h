@@ -17,6 +17,7 @@
 #include <QMenu>
 #include <QPoint>
 #include <QPushButton>
+#include <QToolButton>
 #include <QSystemTrayIcon>
 
 #ifdef Q_OS_MAC
@@ -137,6 +138,12 @@ private:
     RPCConsole *rpcConsole;
     HelpMessageDialog *helpMessageDialog;
     ModalOverlay *modalOverlay;
+
+    QFrame *headerFrame;
+    QPushButton *btnImg;
+    QToolButton *btnRefresh;
+    QToolButton *btnCopyNews;
+    QLabel *messageLabel;
 
 #ifdef Q_OS_MAC
     CAppNapInhibitor* m_app_nap_inhibitor = nullptr;
