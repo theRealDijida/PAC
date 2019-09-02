@@ -148,7 +148,7 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent)
 
 bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
-    // return if URI is not valid or is no dash: URI
+    // return if URI is not valid or is no pac: URI
     if(!uri.isValid() || uri.scheme() != QString("dash"))
         return false;
 
@@ -922,18 +922,7 @@ QString getThemeName()
 QString loadStyleSheet()
 {
     QString styleSheet;
-    QSettings settings;
-    QString cssName;
-    QString theme = settings.value("theme", "").toString();
-
-    if(!theme.isEmpty()){
-        cssName = QString(":/css/") + theme; 
-    }
-    else {
-        cssName = QString(":/css/light");  
-        settings.setValue("theme", "light");
-    }
-    
+    QString cssName = QString(":/css/standard");
     QFile qFile(cssName);      
     if (qFile.open(QFile::ReadOnly)) {
         styleSheet = QLatin1String(qFile.readAll());

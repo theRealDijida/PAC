@@ -482,7 +482,7 @@
         <translation>&amp;URI öffnen...</translation>
     </message>
     <message>
-        <source>Open a dash: URI or payment request</source>
+        <source>Open a pac: URI or payment request</source>
         <translation>Eine "dash:"-URI oder Zahlungsanforderung öffnen</translation>
     </message>
     <message>
@@ -2990,7 +2990,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Nachricht:</translation>
     </message>
     <message>
-        <source>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
+        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
         <translation>Eine an die "dash:"-URI angefügte Nachricht, die zusammen mit der Transaktion gespeichert wird. Hinweis: Diese Nachricht wird nicht über das PACGlobal-Netzwerk gesendet.</translation>
     </message>
     <message>

@@ -482,7 +482,7 @@
         <translation>Avaa &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a dash: URI or payment request</source>
+        <source>Open a pac: URI or payment request</source>
         <translation>Avaa PACGlobal: URI tai maksupyyntö</translation>
     </message>
     <message>
@@ -2992,7 +2992,7 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Viesti:</translation>
     </message>
     <message>
-        <source>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
+        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
         <translation>Viesti joka liitettiin PACGlobal: URI joka tallenetaan siirtotapahtuman kanssa viitteeksi sinulle. Huomio: Tätä viestiä ei lähetetä PACGlobal verkkoon.</translation>
     </message>
     <message>

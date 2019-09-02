@@ -482,7 +482,7 @@
         <translation>打开 &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a dash: URI or payment request</source>
+        <source>Open a pac: URI or payment request</source>
         <translation>打开一个达世币协议的URI或付款请求</translation>
     </message>
     <message>
@@ -2988,7 +2988,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>消息：</translation>
     </message>
     <message>
-        <source>A message that was attached to the dash: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
+        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
         <translation>附加在达世币付款协议URI中的信息，会和交易内容一并存储，可供您参考。提示：此信息不会发送到达世币网络上。</translation>
     </message>
     <message>

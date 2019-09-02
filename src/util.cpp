@@ -122,8 +122,8 @@ bool fLiteMode = false;
 */
 int nWalletBackups = 10;
 
-const char * const BITCOIN_CONF_FILENAME = "dash.conf";
-const char * const BITCOIN_PID_FILENAME = "dashd.pid";
+const char * const BITCOIN_CONF_FILENAME = "pacglobal.conf";
+const char * const BITCOIN_PID_FILENAME = "pacglobal.pid";
 
 CCriticalSection cs_args;
 std::unordered_map<std::string, std::string> mapArgs;

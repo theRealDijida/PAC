@@ -145,16 +145,15 @@ void CSporkManager::ProcessSpork(CNode* pfrom, const std::string& strCommand, CD
             // Note: unlike for other messages we have to check for new format even with SPORK_6_NEW_SIGS
             // inactive because SPORK_6_NEW_SIGS default is OFF and it is not the first spork to sync
             // (and even if it would, spork order can't be guaranteed anyway).
-            if (IsPoS() || Params().NetworkIDString() == CBaseChainParams::TESTNET) {
-              if (!spork.GetSignerKeyID(keyIDSigner, !fSpork6IsActive) || !setSporkPubKeyIDs.count(keyIDSigner)) {
+            if (!spork.GetSignerKeyID(keyIDSigner, !fSpork6IsActive) || !setSporkPubKeyIDs.count(keyIDSigner)) {
+               if (chainActive.Height() > Params().GetConsensus().nLastPoWBlock) {
                   LOCK(cs_main);
                   LogPrintf("CSporkManager::ProcessSpork -- ERROR: invalid signature\n");
                   Misbehaving(pfrom->GetId(), 100);
-                  return;
-              }
+               }
+               return;
             }
         }
-
         {
             LOCK(cs); // make sure to not lock this together with cs_main
             if (mapSporksActive.count(spork.nSporkID)) {
