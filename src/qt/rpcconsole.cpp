@@ -437,12 +437,12 @@ RPCConsole::RPCConsole(const PlatformStyle *_platformStyle, QWidget *parent) :
 
     QString theme = GUIUtil::getThemeName();
     if (platformStyle->getImagesOnButtons()) {
-        ui->openDebugLogfileButton->setIcon(QIcon(":/icons/" + theme + "/export"));
+        ui->openDebugLogfileButton->setIcon(QIcon(":/icons/export"));
     }
     // Needed on Mac also
-    ui->clearButton->setIcon(QIcon(":/icons/" + theme + "/remove"));
-    ui->fontBiggerButton->setIcon(QIcon(":/icons/" + theme + "/fontbigger"));
-    ui->fontSmallerButton->setIcon(QIcon(":/icons/" + theme + "/fontsmaller"));
+    ui->clearButton->setIcon(QIcon(":/icons/remove"));
+    ui->fontBiggerButton->setIcon(QIcon(":/icons/fontbigger"));
+    ui->fontSmallerButton->setIcon(QIcon(":/icons/fontsmaller"));
 
     // Install event filter for up and down arrow
     ui->lineEdit->installEventFilter(this);
