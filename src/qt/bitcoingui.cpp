@@ -578,12 +578,6 @@ void BitcoinGUI::createToolBars()
         spacerBottomIcon->setFixedWidth(120);
         spacerBottomIcon->setFixedHeight(5);
 
-        QWidget* mainIcon = new QWidget();
-        mainIcon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        mainIcon->setObjectName("toolbarIcon");
-        mainIcon->setFixedWidth(105);
-        mainIcon->setFixedHeight(105);
-
         QToolBar *toolbar = new QToolBar(tr("Tabs toolbar"));
         toolbar->setObjectName("toolBar");
         toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
@@ -592,7 +586,6 @@ void BitcoinGUI::createToolBars()
         toolbar->setOrientation(Qt::Vertical);
         toolbar->setFixedWidth(120);
         toolbar->addWidget(spacer);
-        toolbar->addWidget(mainIcon);
         toolbar->addWidget(spacerBottomIcon);
         toolbar->addAction(overviewAction);
         toolbar->addAction(sendCoinsAction);
