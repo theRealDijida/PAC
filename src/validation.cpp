@@ -530,10 +530,13 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state)
     }
 
     // Check for banned inputs
-    for (const auto& txin : tx.vin) {
-       if (areBannedInputs(txin.prevout.hash, txin.prevout.n))
-	  return state.DoS(100, false, REJECT_INVALID, "banned-inputs-spent");
+    if (IsPoS()) {
+        for (const auto& txin : tx.vin) {
+           if (areBannedInputs(txin.prevout.hash, txin.prevout.n))
+	       return state.DoS(100, false, REJECT_INVALID, "banned-inputs-spent");
+        }
     }
+
     // Basic checks that don't depend on any context
     if (!allowEmptyTxInOut && tx.vin.empty())
         return state.DoS(10, false, REJECT_INVALID, "bad-txns-vin-empty");

@@ -478,17 +478,17 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
 
-        pchMessageStart[0] = 0x11;
-        pchMessageStart[1] = 0x33;
-        pchMessageStart[2] = 0x55;
-        pchMessageStart[3] = 0x77;
+        pchMessageStart[0] = 0x22;
+        pchMessageStart[1] = 0x44;
+        pchMessageStart[2] = 0x66;
+        pchMessageStart[3] = 0x88;
         vAlertPubKey = ParseHex("04517d8a699cb43d3938d7b24faaff7cda448ca4ea267723ba614784de661949bf632d6304316b244646dea079735b9a6fc4af804efb4752075b9fe2245e14e412");
         nDefaultPort = 29999;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1567342000, 4913, 0x1f00ffff, 1, 0 * COIN, true);
+        genesis = CreateGenesisBlock(1567646780, 24712, 0x1f00ffff, 1, 0 * COIN, true);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00002ab12b7dedeeec3f13e601f835a7bbb1987ec3ee22093962a7c9b2f6b745"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000d3b6747d6f7fe976c218fe7834d2fa79b661a6debe69a0af9b8faea3b0fa"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
