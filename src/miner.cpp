@@ -177,8 +177,8 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
     CAmount blockReward = GetBlockSubsidy(pindexPrev->nHeight, Params().GetConsensus());
     std::vector<const CWalletTx*> vwtxPrev;
-    if(fProofOfStake)
-    {
+
+    if(fProofOfStake) {
         assert(pwalletMain);
         boost::this_thread::interruption_point();
         pblock->nBits = GetNextWorkRequired(pindexPrev, chainparams.GetConsensus());
@@ -187,27 +187,20 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
         bool fStakeFound = false;
         if (nSearchTime >= nLastCoinStakeSearchTime) {
             unsigned int nTxNewTime = 0;
-            if (pwalletMain->CreateCoinStake(*pwalletMain, pblock->nBits, blockReward, coinstakeTx, nTxNewTime, vwtxPrev))
-            {
+            if (pwalletMain->CreateCoinStake(*pwalletMain, pblock->nBits, blockReward, coinstakeTx, nTxNewTime, vwtxPrev)) {
                 pblock->nTime = nTxNewTime;
                 coinbaseTx.vout[0].SetEmpty();
-
                 FillBlockPayments(coinstakeTx, nHeight, blockReward, pblocktemplate->voutMasternodePayments, pblocktemplate->voutSuperblockPayments);
-                coinstakeTx.vout[0].SetEmpty();
                 pblock->vtx.emplace_back(MakeTransactionRef(coinstakeTx));
-
                 fStakeFound = true;
             }
-
             nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
             nLastCoinStakeSearchTime = nSearchTime;
         }
-
         if (!fStakeFound)
             return nullptr;
     }
-    else
-    {
+    else {
         coinbaseTx.vout[0].nValue = blockReward;
     }
 
@@ -575,7 +568,7 @@ static bool ProcessBlockFound(const std::shared_ptr<const CBlock> &pblock, const
 
 void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWallet* pwallet, bool fProofOfStake)
 {
-    LogPrintf("bitcoinminer -- started\n");
+    LogPrintf("PACminer -- started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
     RenameThread("bitcoin-miner");
 
@@ -600,13 +593,11 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
                 bool fvNodesEmpty = connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0;
                 if (!fvNodesEmpty && !IsInitialBlockDownload() && masternodeSync.IsSynced())
                     break;
-                MilliSleep(1000);
+                MilliSleep(5000);
             } while (true);
 
-            if(fProofOfStake)
-            {
-                if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock ||
-                    pwallet->IsLocked() || !masternodeSync.IsSynced()) {
+            if(fProofOfStake) {
+                if (chainActive.Tip()->nHeight < chainparams.GetConsensus().nLastPoWBlock || pwallet->IsLocked() || !masternodeSync.IsSynced()) {
                     nLastCoinStakeSearchInterval = 0;
                     MilliSleep(5000);
                     continue;
@@ -625,28 +616,25 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
 
             BlockAssembler assembler(chainparams);
             auto pblocktemplate = assembler.CreateNewBlock(coinbaseScript->reserveScript, fProofOfStake);
-            if (!pblocktemplate.get())
-            {
-                LogPrintf("bitcoinminer -- Failed to find a coinstake\n");
+            if (!pblocktemplate.get()) {
+                LogPrintf("PACminer -- Failed to find a coinstake\n");
                 MilliSleep(5000);
                 continue;
             }
+
             auto pblock = std::make_shared<CBlock>(pblocktemplate->block);
             IncrementExtraNonce(pblock.get(), pindexPrev, nExtraNonce);
 
-            LogPrintf("BitcoinMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+            LogPrintf("PACminer -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                       ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
             //Sign block
-            if (fProofOfStake)
-            {
+            if (fProofOfStake) {
                 LogPrintf("CPUMiner : proof-of-stake block found %s \n", pblock->GetHash().ToString().c_str());
-
                 if (!SignBlock(*pblock, *pwallet)) {
                     LogPrintf("BitcoinMiner(): Signing new block failed \n");
                     throw std::runtime_error(strprintf("%s: SignBlock failed", __func__));
                 }
-
                 LogPrintf("CPUMiner : proof-of-stake block was signed %s \n", pblock->GetHash().ToString().c_str());
             }
 
@@ -682,7 +670,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
                     {
                         // Found a solution
                         SetThreadPriority(THREAD_PRIORITY_NORMAL);
-                        LogPrintf("bitcoinminer:\n  proof-of-work found\n  hash: %s\n  target: %s\n", hash.GetHex(), hashTarget.GetHex());
+                        LogPrintf("PACminer:\n  proof-of-work found\n  hash: %s\n  target: %s\n", hash.GetHex(), hashTarget.GetHex());
                         ProcessBlockFound(pblock, chainparams);
                         SetThreadPriority(THREAD_PRIORITY_LOWEST);
                         coinbaseScript->KeepScript();
@@ -713,13 +701,12 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
         }
         catch (const boost::thread_interrupted&)
         {
-            LogPrintf("BitcoinMiner -- terminated\n");
+            LogPrintf("PACminer -- terminated\n");
             throw;
         }
         catch (const std::runtime_error &e)
         {
-            LogPrintf("bitcoinminer -- runtime error: %s\n", e.what());
-            //            return;
+            LogPrintf("PACminer -- runtime error: %s\n", e.what());
         }
     }
 }

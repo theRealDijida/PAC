@@ -1191,7 +1191,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
 	    return 1000000 * COIN;
         }
 
-        return 1 * COIN;
+        return GetMasternodePayment(nPrevHeight + 1, 0) + (1 * COIN);
     }
 
     // proof of work
@@ -3449,10 +3449,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
 
     if (fCheckPOW && fCheckMerkleRoot)
         block.fChecked = true;
-
-    // peercoin: check block signature
-    if (fCheckMerkleRoot && fCheckSignature && (block.IsProofOfStake() && !CheckBlockSignature(block)))
-        return state.DoS(100, false, REJECT_INVALID, "bad-blk-sign", false, strprintf("%s : bad block signature", __func__));
 
     return true;
 }
