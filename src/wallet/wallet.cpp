@@ -3350,6 +3350,12 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
             strFailReason = _("Transaction amounts must not be negative");
             return false;
         }
+
+        if (recipient.nAmount < COIN)
+        {
+            strFailReason = _("Output amounts must be equal to or greater than 1 PAC");
+            return false;
+        }
         nValue += recipient.nAmount;
 
         if (recipient.fSubtractFeeFromAmount)

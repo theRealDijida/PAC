@@ -537,6 +537,13 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state)
         }
     }
 
+    // Enforce minimum output size
+    if (IsPoS() && tx.nType == TRANSACTION_NORMAL && Params().NetworkIDString() != CBaseChainParams::TESTNET) {
+        for (const auto& txout : tx.vout)
+            if (txout.nValue < COIN)
+                return state.DoS(0, false, REJECT_INVALID, "we-dont-relay-dust");
+    }
+
     // Basic checks that don't depend on any context
     if (!allowEmptyTxInOut && tx.vin.empty())
         return state.DoS(10, false, REJECT_INVALID, "bad-txns-vin-empty");
