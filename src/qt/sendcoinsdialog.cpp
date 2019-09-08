@@ -764,7 +764,7 @@ void SendCoinsDialog::updateSmartFeeLabel()
     if (feeRate <= CFeeRate(0)) // not enough data => minfee
     {
         ui->labelSmartFee->setText(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(),
-                                                                std::max(CWallet::fallbackFee.GetFeePerK(), CWallet::GetRequiredFee(1000))) + "/kB");
+                                                                std::max(CWallet::GetRequiredFee(1000), IsPoS() ? CWallet::fallbackFeeCurrent.GetFeePerK() : CWallet::fallbackFeeLegacy.GetFeePerK())) + "/kB");
         ui->labelSmartFee2->show(); // (Smart fee not initialized yet. This usually takes a few blocks...)
         ui->labelFeeEstimation->setText("");
         ui->fallbackFeeWarningLabel->setVisible(true);

@@ -49,8 +49,10 @@ static const unsigned int DEFAULT_KEYPOOL_SIZE = 1000;
 //! -paytxfee default
 static const CAmount DEFAULT_TRANSACTION_FEE = 0;
 //! -fallbackfee default
+static const CAmount DEFAULT_FALLBACK_FEELEGACY = 50 * COIN;
 static const CAmount DEFAULT_FALLBACK_FEE = 1000;
 //! -mintxfee default
+static const CAmount DEFAULT_TRANSACTION_MINFEELEGACY = 50 * COIN;
 static const CAmount DEFAULT_TRANSACTION_MINFEE = 1000;
 //! minimum recommended increment for BIP 125 replacement txs
 static const CAmount WALLET_INCREMENTAL_RELAY_FEE = 5000;
@@ -1012,8 +1014,11 @@ public:
     bool AddAccountingEntry(const CAccountingEntry&);
     bool AddAccountingEntry(const CAccountingEntry&, CWalletDB *pwalletdb);
 
-    static CFeeRate minTxFee;
-    static CFeeRate fallbackFee;
+    static CFeeRate minTxFeeLegacy;
+    static CFeeRate minTxFeeCurrent;
+    static CFeeRate fallbackFeeLegacy;
+    static CFeeRate fallbackFeeCurrent;
+
     /**
      * Estimate the minimum fee considering user set parameters
      * and the required fee
