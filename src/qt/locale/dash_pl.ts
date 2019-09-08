@@ -294,8 +294,8 @@
         <translation>Odbie&amp;rz</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
-        <translation>Poproś o płatności (generuje kod QR oraz dash: link)</translation>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <translation>Poproś o płatności (generuje kod QR oraz pac: link)</translation>
     </message>
     <message>
         <source>&amp;Transactions</source>
@@ -483,7 +483,7 @@
     </message>
     <message>
         <source>Open a pac: URI or payment request</source>
-        <translation>Otwórz dash: Link lub żądanie zapłaty</translation>
+        <translation>Otwórz pac: Link lub żądanie zapłaty</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1459,9 +1459,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>PACGlobal Core nie został przetłumaczony na twój język? Tłumaczenie jest niepełne lub niepoprawne? Możesz pomóc nam tłumaczyć tutaj:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1804,8 +1804,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Błąd żądania płatności</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
-        <translation>Nie można włączyć dash: kliknij-aby-zapłacić ubsługującemu.</translation>
+        <source>Cannot start pac: click-to-pay handler</source>
+        <translation>Nie można włączyć pac: kliknij-aby-zapłacić ubsługującemu.</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -2989,7 +2989,7 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the PACGlobal network.</source>
-        <translation>Wiadomość, która została dołączona do dash: Link, który zostanie zapisany wraz z transakcją do wglądu w przyszłości. Zauważ, że sama wiadomość nie zostanie wysłana przez sieć PACGlobal.</translation>
+        <translation>Wiadomość, która została dołączona do pac: Link, który zostanie zapisany wraz z transakcją do wglądu w przyszłości. Zauważ, że sama wiadomość nie zostanie wysłana przez sieć PACGlobal.</translation>
     </message>
     <message>
         <source>This is an unauthenticated payment request.</source>

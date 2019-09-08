@@ -278,7 +278,7 @@
         <translation>&amp;รับ</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
         <translation>เรียกเก็บ การชำระเงิน (สร้าง QR codes และ PACGlobal: URIs)</translation>
     </message>
     <message>
@@ -1407,9 +1407,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>ภาษาขาดหายไปหรือการแปลไม่สมบูรณ์ใช่หรือไม่?  สามารถช่วยแปลเพิ่มเติมได้ที่นี่:   
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1752,7 +1752,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>คำขอการชำระเงินผิดพลาด</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
+        <source>Cannot start pac: click-to-pay handler</source>
         <translation>ไม่สามารถเริ่มต้น PACGlobal: คลิกเพื่อจ่ายเงิน</translation>
     </message>
     <message>

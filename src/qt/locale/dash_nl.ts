@@ -294,7 +294,7 @@
         <translation>&amp;Ontvangen</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
         <translation>Vraag betaling aan (genereert QR-codes en PACGlobal: URI's)</translation>
     </message>
     <message>
@@ -1461,9 +1461,9 @@ Meer anonimisatie rondes geeft een hoger niveau van privacy, maar kost ook meer 
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>Is een een taal te kort of een vertaling onvolledig ? Help de vertaling hier: 
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1807,7 +1807,7 @@ Om te mixen moeten andere gebruikers exact dezelfde denominaties inbrengen.</tra
         <translation>Fout bij betalingsverzoek</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
+        <source>Cannot start pac: click-to-pay handler</source>
         <translation>Kan PACGlobal niet starten: click-to-pay handler</translation>
     </message>
     <message>

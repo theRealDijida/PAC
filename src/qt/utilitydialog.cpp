@@ -72,7 +72,7 @@ HelpMessageDialog::HelpMessageDialog(QWidget *parent, HelpMode helpMode) :
     } else if (helpMode == cmdline) {
         setWindowTitle(tr("Command-line options"));
         QString header = tr("Usage:") + "\n" +
-            "  dash-qt [" + tr("command-line options") + "]                     " + "\n";
+            "  pacglobal-qt [" + tr("command-line options") + "]                     " + "\n";
         QTextCursor cursor(ui->helpMessage->document());
         cursor.insertText(version);
         cursor.insertBlock();
@@ -161,7 +161,7 @@ your funds will already be anonymized. No additional waiting is required.</li> \
 This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. \
 It can only do this, however, if you have automatic backups enabled.<br> \
 Consequently, users who have backups disabled will also have PrivateSend disabled. <hr>\
-For more information, see the <a href=\"https://docs.dash.org/en/stable/wallets/dashcore/privatesend-instantsend.html\">PrivateSend documentation</a>."
+For more information, see the <a href=\"https://docs.pacglobal.io/en/stable/wallets/dashcore/privatesend-instantsend.html\">PrivateSend documentation</a>."
         ));
         ui->aboutMessage->setWordWrap(true);
         ui->helpMessage->setVisible(false);

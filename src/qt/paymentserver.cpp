@@ -308,7 +308,7 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     // Install global event filter to catch QFileOpenEvents
-    // on Mac: sent when you click dash: links
+    // on Mac: sent when you click pac: links
     // other OSes: helpful when dealing with payment request files
     if (parent)
         parent->installEventFilter(this);
@@ -325,7 +325,7 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
         if (!uriServer->listen(name)) {
             // constructor is called early in init, so don't use "Q_EMIT message()" here
             QMessageBox::critical(0, tr("Payment request error"),
-                tr("Cannot start dash: click-to-pay handler"));
+                tr("Cannot start pac: click-to-pay handler"));
         }
         else {
             connect(uriServer, SIGNAL(newConnection()), this, SLOT(handleURIConnection()));
@@ -340,7 +340,7 @@ PaymentServer::~PaymentServer()
 }
 
 //
-// OSX-specific way of handling dash: URIs and PaymentRequest mime types.
+// OSX-specific way of handling pac: URIs and PaymentRequest mime types.
 // Also used by paymentservertests.cpp and when opening a payment request file
 // via "Open URI..." menu entry.
 //
@@ -366,7 +366,7 @@ void PaymentServer::initNetManager()
     if (netManager != NULL)
         delete netManager;
 
-    // netManager is used to fetch paymentrequests given in dash: URIs
+    // netManager is used to fetch paymentrequests given in pac: URIs
     netManager = new QNetworkAccessManager(this);
 
     QNetworkProxy proxy;

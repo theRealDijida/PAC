@@ -378,8 +378,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
-        <translation>Request payments (generates QR codes and dash: URIs)</translation>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <translation>Request payments (generates QR codes and pac: URIs)</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1845,9 +1845,9 @@
     <message>
         <location line="+21"/>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2310,8 +2310,8 @@ https://www.transifex.com/projects/p/dash/</translation>
     </message>
     <message>
         <location line="-402"/>
-        <source>Cannot start dash: click-to-pay handler</source>
-        <translation>Cannot start dash: click-to-pay handler</translation>
+        <source>Cannot start pac: click-to-pay handler</source>
+        <translation>Cannot start pac: click-to-pay handler</translation>
     </message>
     <message>
         <location line="+103"/>

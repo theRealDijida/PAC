@@ -294,7 +294,7 @@
         <translation>&amp;Prijať</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
         <translation>Vyžiadať platby (vygeneruje QR kódy a PACGlobal: URI)</translation>
     </message>
     <message>
@@ -1459,9 +1459,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>Chýbajúci alebo nekompletný preklad? Pomôžte nám tu:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1805,7 +1805,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Chyba pri vyžiadaní platby</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
+        <source>Cannot start pac: click-to-pay handler</source>
         <translation>PACGlobal sa nedá spustiť: click-to-pay handler</translation>
     </message>
     <message>
