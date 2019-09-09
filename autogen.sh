@@ -13,14 +13,6 @@ else
    exit
 fi
 
-unzip -o v20181101.zip
-cd bls-signatures-20181101
-mkdir -p build
-cd build
-cmake ..
-make -j2 install
-cd ../..
-
 srcdir="$(dirname $0)"
 cd "$srcdir"
 if [ -z ${LIBTOOLIZE} ] && GLIBTOOLIZE="`which glibtoolize 2>/dev/null`"; then
