@@ -2925,7 +2925,7 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
 
     CReserveKey reservekey(this);
     CWalletTx wtx;
-    if (!CreateTransaction(vecSend, wtx, reservekey, nFeeRet, nChangePosInOut, strFailReason, &coinControl, false, ALL_COINS, false, nExtraPayloadSize))
+    if (!CreateTransaction(vecSend, wtx, reservekey, nFeeRet, nChangePosInOut, strFailReason, &coinControl, false, ALL_COINS, false, nExtraPayloadSize, (tx.nType == TRANSACTION_NORMAL)))
         return false;
 
     if (nChangePosInOut != -1)
@@ -3333,7 +3333,7 @@ bool CWallet::ConvertList(std::vector<CTxIn> vecTxIn, std::vector<CAmount>& vecA
 }
 
 bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
-                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstaPAC, int nExtraPayloadSize)
+                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstaPAC, int nExtraPayloadSize, bool fStandardTx)
 {
     if (!llmq::IsOldInstaPACEnabled()) {
         // The new system does not require special handling for InstaPAC as this is all done in CInstaPACManager.
@@ -3354,7 +3354,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
             return false;
         }
 
-        if (recipient.nAmount < COIN)
+        if (recipient.nAmount < COIN && fStandardTx == true)
         {
             strFailReason = _("Output amounts must be equal to or greater than 1 PAC");
             return false;
