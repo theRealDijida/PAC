@@ -278,7 +278,7 @@
         <translation>受取 (&amp;R)</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
         <translation>送金を要求 (QRコードとdash:URIを生成)</translation>
     </message>
     <message>
@@ -467,7 +467,7 @@
     </message>
     <message>
         <source>Open a pac: URI or payment request</source>
-        <translation>dash: URIまたは送金リクエストを開く</translation>
+        <translation>pac: URIまたは送金リクエストを開く</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1436,9 +1436,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>希望の言語がない場合または翻訳に問題がある場合はこちらで翻訳にご協力ください。:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1781,7 +1781,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>支払いリクエストのエラー</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
+        <source>Cannot start pac: click-to-pay handler</source>
         <translation>PACGlobal を起動できません: click-to-pay ハンドラー</translation>
     </message>
     <message>

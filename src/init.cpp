@@ -644,12 +644,13 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/dashpay/dash>";
-    const std::string URL_WEBSITE = "<https://dash.org>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/PACGlobalOfficial/PAC>";
+    const std::string URL_WEBSITE = "<https://pacglobal.io>";
 
     return CopyrightHolders(_("Copyright (C)"), 2014, COPYRIGHT_YEAR) + "\n" +
            "\n" +
-           strprintf(_("Please contribute if you find %s useful. "
+           strprintf(_("A special thankyou to Serik, Unick, Luka, zerocool, gpenco, in_the_know, carbon2000, fozzyblob, Macish, dijida and to all those we forgot.. \n\n"
+                       "Please contribute if you find %s useful. "
                        "Visit %s for further information about the software."),
                PACKAGE_NAME, URL_WEBSITE) +
            "\n" +
@@ -1719,7 +1720,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     }
 
     if((!fLiteMode && fTxIndex == false)
-       && chainparams.NetworkIDString() != CBaseChainParams::REGTEST) { // TODO remove this when pruning is fixed. See https://github.com/dashpay/dash/pull/1817 and https://github.com/dashpay/dash/pull/1743
+       && chainparams.NetworkIDString() != CBaseChainParams::REGTEST) { // TODO remove this when pruning is fixed. See https://github.com/PACGlobalOfficial/PAC/pull/1817 and https://github.com/PACGlobalOfficial/PAC/pull/1743
         return InitError(_("Transaction index can't be disabled in full mode. Either start with -litemode command line switch or enable transaction index."));
     }
 

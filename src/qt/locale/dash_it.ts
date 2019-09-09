@@ -294,8 +294,8 @@
         <translation>&amp;Ricevi</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
-        <translation>Richieste di pagamenti (genera codici QR e dash: URLs)</translation>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <translation>Richieste di pagamenti (genera codici QR e pac: URLs)</translation>
     </message>
     <message>
         <source>&amp;Transactions</source>
@@ -1459,9 +1459,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>La tua lingua manca o la traduzione è incompleta? Contribuisci alla traduzione qui: 
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1804,8 +1804,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Errore di richiesta di pagamento</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
-        <translation>Impossibile avviare dash: gestore click-to-pay</translation>
+        <source>Cannot start pac: click-to-pay handler</source>
+        <translation>Impossibile avviare pac: gestore click-to-pay</translation>
     </message>
     <message>
         <source>URI handling</source>

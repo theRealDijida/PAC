@@ -52,7 +52,7 @@ static const int MAX_URI_LENGTH = 255;
 #define SPINNER_FRAMES 36
 
 #define QAPP_ORG_NAME "PACGlobal"
-#define QAPP_ORG_DOMAIN "dash.org"
+#define QAPP_ORG_DOMAIN "pacglobal.io"
 #define QAPP_APP_NAME_DEFAULT "PACGlobal-Qt"
 #define QAPP_APP_NAME_TESTNET "PACGlobal-Qt-testnet"
 #define QAPP_APP_NAME_DEVNET "PACGlobal-Qt-%s"

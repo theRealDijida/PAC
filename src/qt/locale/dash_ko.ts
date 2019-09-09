@@ -278,7 +278,7 @@
         <translation>받기(&amp;R)</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
         <translation>지불 요청하기 (QR코드와 대시 URI가 생성됩니다.)</translation>
     </message>
     <message>
@@ -1435,9 +1435,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>지정하려는 언어가 목록에 없거나 번역이 완성되지 않았다면? 다음의 주소에서 번역을 도와주세요:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1780,7 +1780,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>지불 요청 오류</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
+        <source>Cannot start pac: click-to-pay handler</source>
         <translation>대시를 시작할 수 없습니다: 원클릭 지불 핸들러</translation>
     </message>
     <message>

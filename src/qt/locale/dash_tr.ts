@@ -278,7 +278,7 @@
         <translation>&amp;Al</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
         <translation>Ödeme talep et (QR kodu ve PACGlobal URI'si oluşturur)</translation>
     </message>
     <message>
@@ -1431,9 +1431,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>Diliniz mevcut değil veya çeviri eksik mi? Buradan çevirilere katkıda bulunun:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1776,7 +1776,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Ödeme talebi hatası</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
+        <source>Cannot start pac: click-to-pay handler</source>
         <translation>PACGlobal başlatılamadı: tıkla-ve-öde yöneticisi</translation>
     </message>
     <message>

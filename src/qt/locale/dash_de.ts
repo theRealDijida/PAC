@@ -294,7 +294,7 @@
         <translation>&amp;Empfangen</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
         <translation>Zahlungen anfordern (erzeugt QR-Codes und "dash:"-URIs)</translation>
     </message>
     <message>
@@ -1460,9 +1460,9 @@ Der Mixing-Prozeß läuft nach dem Start vollständig im Hintergrund, d.h. es is
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>Fehlt eine Sprache oder ist unvollständig übersetzt? Hier können Sie helfen:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1806,7 +1806,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Fehlerhafte Zahlungsanforderung</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
+        <source>Cannot start pac: click-to-pay handler</source>
         <translation>PACGlobal kann nicht gestartet werden: click-to-pay handler</translation>
     </message>
     <message>

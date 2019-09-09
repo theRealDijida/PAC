@@ -278,7 +278,7 @@
         <translation>استقبل</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
         <translation>أطلب دفعات (يولد كودات الرمز المربع وبيت كوين: العناوين المعطاة)</translation>
     </message>
     <message>
@@ -1435,9 +1435,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>لغة مفقودة أو ترجمة غير مكتملة؟ مساعدة في المساهمة بالترجمات هنا:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1780,7 +1780,7 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>خطأ في طلب الدفع</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
+        <source>Cannot start pac: click-to-pay handler</source>
         <translation>لا يمكن بدء داش: معالج الدفع مقابل الدفع</translation>
     </message>
     <message>

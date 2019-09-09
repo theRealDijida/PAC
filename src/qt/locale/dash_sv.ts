@@ -252,7 +252,7 @@
         <translation>&amp;Motta</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
         <translation>Begär betalningar (genererar QR-koder och PACGlobal:-URI:s)</translation>
     </message>
     <message>
@@ -1106,9 +1106,9 @@ Adress: %4
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>Fattas språk eller är det en ofullständig översättning? Hjälp till att bidra med översättningar här:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>&amp;Unit to show amounts in:</source>
@@ -1335,8 +1335,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Fel vid betalningsbegäran</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
-        <translation>Kan inte starta dash: klicka-för-att-betala hanterare</translation>
+        <source>Cannot start pac: click-to-pay handler</source>
+        <translation>Kan inte starta pac: klicka-för-att-betala hanterare</translation>
     </message>
     <message>
         <source>URI handling</source>

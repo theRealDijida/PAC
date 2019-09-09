@@ -278,8 +278,8 @@
         <translation>&amp;Nhận</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and dash: URIs)</source>
-        <translation>Yêu cầu thanh toán (sinh mã QR và dash: URIs)</translation>
+        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <translation>Yêu cầu thanh toán (sinh mã QR và pac: URIs)</translation>
     </message>
     <message>
         <source>&amp;Transactions</source>
@@ -1443,9 +1443,9 @@
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/dash/</source>
+https://www.transifex.com/projects/p/pacglobal/</source>
         <translation>Ngôn ngữ ị thiếu hoặc việc dịch chưa hoàn tất? Tham gia dịch giúp tại đây:
-https://www.transifex.com/projects/p/dash/</translation>
+https://www.transifex.com/projects/p/pacglobal/</translation>
     </message>
     <message>
         <source>User Interface Theme:</source>
@@ -1788,8 +1788,8 @@ https://www.transifex.com/projects/p/dash/</translation>
         <translation>Yêu cầu thanh toán bị lỗi</translation>
     </message>
     <message>
-        <source>Cannot start dash: click-to-pay handler</source>
-        <translation>Không thể khởi động dash: trình xử lý click-to-pay</translation>
+        <source>Cannot start pac: click-to-pay handler</source>
+        <translation>Không thể khởi động pac: trình xử lý click-to-pay</translation>
     </message>
     <message>
         <source>URI handling</source>
