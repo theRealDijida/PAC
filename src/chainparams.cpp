@@ -227,13 +227,13 @@ public:
         consensus.BIP34Hash = uint256S("0x000001f35e70f7c5705f64c6c5cc3dea9449e74d5b5c7cf74dad1bcca14a8012");
         consensus.BIP65Height = 619382;
         consensus.BIP66Height = 245817;
-        consensus.DIP0001Height = NEVER32;
-        consensus.DIP0003Height = NEVER32;
+        consensus.DIP0001Height = 12096;
+        consensus.DIP0003Height = 330000;
         consensus.DIP0003EnforcementHeight = NEVER32;
-        consensus.DIP0003EnforcementHash = uint256S("0000000000000000000000000000000000000000000000000000000000000000");
+        consensus.DIP0003EnforcementHash = uint256();
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.posLimit = uint256S("0007ffff00000000000000000000000000000000000000000000000000000000");
-        consensus.nLastPoWBlock = 329999;
+        consensus.nLastPoWBlock = consensus.DIP0003Height - 1;
         consensus.nPowTargetTimespan = 24 * 60 * 60;
         consensus.nPowTargetSpacing = 2.5 * 60;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
