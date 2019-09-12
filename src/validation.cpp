@@ -856,7 +856,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
         }
 
         // No transactions are allowed below minRelayTxFee except from disconnected blocks
-        if (fLimitFree && nModifiedFees < ::minRelayTxFee.GetFee(nSize)) {
+        if (fLimitFree && nModifiedFees < CurrentRelayFee().GetFee(nSize)) {
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "min relay fee not met");
         }
 
@@ -4920,6 +4920,13 @@ bool IgnoreSigopsLimits(int nHeight) {
 //! Returns true if we have entered PoS consensus state
 bool IsPoS() {
    return (chainActive.Height() > Params().GetConsensus().nLastPoWBlock);
+}
+
+//! Return the current minimum relay tx fee
+CFeeRate CurrentRelayFee() {
+   if (IsPoS())
+      return CFeeRate(1000);
+   return CFeeRate(50 * COIN);
 }
 
 class CMainCleanup

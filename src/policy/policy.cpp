@@ -11,6 +11,7 @@
 #include "tinyformat.h"
 #include "util.h"
 #include "utilstrencodings.h"
+#include "validation.h"
 
 #include <boost/foreach.hpp>
 
@@ -102,7 +103,7 @@ bool IsStandardTx(const CTransaction& tx, std::string& reason)
         else if ((whichType == TX_MULTISIG) && (!fIsBareMultisigStd)) {
             reason = "bare-multisig";
             return false;
-        } else if (txout.IsDust(dustRelayFee)) {
+        } else if (txout.IsDust(CurrentRelayFee())) {
             reason = "dust";
             return false;
         }

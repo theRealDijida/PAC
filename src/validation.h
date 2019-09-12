@@ -61,7 +61,7 @@ static const bool DEFAULT_WHITELISTRELAY = true;
 /** Default for DEFAULT_WHITELISTFORCERELAY. */
 static const bool DEFAULT_WHITELISTFORCERELAY = true;
 /** Default for -minrelaytxfee, minimum relay fee for transactions */
-static const unsigned int DEFAULT_MIN_RELAY_TX_FEE = 1000;
+static const CAmount DEFAULT_MIN_RELAY_TX_FEE = 50 * COIN;
 //! -maxtxfee default
 static const CAmount DEFAULT_TRANSACTION_MAXFEE = 1000 * COIN;
 //! Discourage users to set fees higher than this amount (in duffs) per kB
@@ -596,5 +596,8 @@ bool IgnoreSigopsLimits(int nHeight);
 
 //! Returns true if we have entered PoS consensus state
 bool IsPoS();
+
+//! Return the current minimum relay tx fee
+CFeeRate CurrentRelayFee();
 
 #endif // BITCOIN_VALIDATION_H
