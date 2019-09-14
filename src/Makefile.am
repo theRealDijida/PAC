@@ -148,6 +148,7 @@ BITCOIN_CORE_H = \
   privatesend-server.h \
   privatesend-util.h \
   dsnotificationinterface.h \
+  feerates.h \
   governance.h \
   governance-classes.h \
   governance-exceptions.h \
@@ -280,6 +281,7 @@ libpacglobal_server_a_SOURCES = \
   evo/providertx.cpp \
   evo/simplifiedmns.cpp \
   evo/specialtx.cpp \
+  feerates.cpp \
   httprpc.cpp \
   httpserver.cpp \
   init.cpp \

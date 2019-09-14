@@ -7,6 +7,7 @@
 
 #include "chainparams.h"
 #include "clientversion.h"
+#include "feerates.h"
 #include "validation.h"
 #include "net.h"
 #include "net_processing.h"
@@ -447,7 +448,7 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
         obj.push_back(Pair("connections",   (int)g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL)));
     }
     obj.push_back(Pair("networks",      GetNetworksInfo()));
-    obj.push_back(Pair("relayfee",      ValueFromAmount(CurrentRelayFee().GetFeePerK())));
+    obj.push_back(Pair("relayfee",      ValueFromAmount(MinRelayFee().GetFeePerK())));
     obj.push_back(Pair("incrementalfee", ValueFromAmount(::incrementalRelayFee.GetFeePerK())));
     UniValue localAddresses(UniValue::VARR);
     {

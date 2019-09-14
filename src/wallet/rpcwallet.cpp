@@ -2580,7 +2580,6 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
     obj.push_back(Pair("keys_left",     pwallet->nKeysLeftSinceAutoBackup));
     if (pwallet->IsCrypted())
         obj.push_back(Pair("unlocked_until", pwallet->nRelockTime));
-    obj.push_back(Pair("paytxfee",      ValueFromAmount(payTxFee.GetFeePerK())));
     if (fHDEnabled) {
         obj.push_back(Pair("hdchainid", hdChainCurrent.GetID().GetHex()));
         obj.push_back(Pair("hdaccountcount", (int64_t)hdChainCurrent.CountAccounts()));

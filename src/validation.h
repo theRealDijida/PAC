@@ -63,7 +63,7 @@ static const bool DEFAULT_WHITELISTFORCERELAY = true;
 /** Default for -minrelaytxfee, minimum relay fee for transactions */
 static const CAmount DEFAULT_MIN_RELAY_TX_FEE = 50 * COIN;
 //! -maxtxfee default
-static const CAmount DEFAULT_TRANSACTION_MAXFEE = 1000 * COIN;
+static const CAmount DEFAULT_TRANSACTION_MAXFEE = 5000 * COIN;
 //! Discourage users to set fees higher than this amount (in duffs) per kB
 static const CAmount HIGH_TX_FEE_PER_KB = 0.01 * COIN;
 //! -maxtxfee will warn if called with a higher fee than this amount (in duffs)
@@ -185,7 +185,7 @@ extern CAmount maxTxFee;
 extern bool fAlerts;
 /** If the tip is older than this (in seconds), the node is considered to be in initial block download. */
 extern int64_t nMaxTipAge;
-
+extern CFeeRate minRelayTxFee;
 extern bool fLargeWorkForkFound;
 extern bool fLargeWorkInvalidChainFound;
 
