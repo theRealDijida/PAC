@@ -18,6 +18,7 @@
 #include "consensus/merkle.h"
 #include "consensus/validation.h"
 #include "cuckoocache.h"
+#include "feerates.h"
 #include "hash.h"
 #include "init.h"
 #include "kernel.h"
@@ -41,6 +42,7 @@
 #include "validationinterface.h"
 #include "versionbits.h"
 #include "warnings.h"
+#include "wallet/wallet.h"
 
 #include "instantx.h"
 #include "masternode-payments.h"
@@ -107,7 +109,6 @@ std::atomic<bool> fDIP0003ActiveAtTip{false};
 uint256 hashAssumeValid;
 std::map<COutPoint, int> mapStakeSpent;
 
-CFeeRate minRelayTxFee = CFeeRate(DEFAULT_MIN_RELAY_TX_FEE);
 CAmount maxTxFee = DEFAULT_TRANSACTION_MAXFEE;
 
 CTxMemPool mempool;
@@ -855,8 +856,8 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "mempool min fee not met", false, strprintf("%d < %d", nFees, mempoolRejectFee));
         }
 
-        // No transactions are allowed below minRelayTxFee except from disconnected blocks
-        if (fLimitFree && nModifiedFees < ::minRelayTxFee.GetFee(nSize)) {
+        // No transactions are allowed below minRelayTxFee except from disconnected blocks (or unless tx.nType != TRANSACTION_NORMAL)
+        if (fLimitFree && nModifiedFees < MinRelayFee().GetFee(nSize) && (tx.nType == TRANSACTION_NORMAL)) {
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "min relay fee not met");
         }
 

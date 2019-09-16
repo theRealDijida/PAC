@@ -7,6 +7,7 @@
 
 #include "bitcoinaddressvalidator.h"
 #include "bitcoinunits.h"
+#include "feerates.h"
 #include "qvalidatedlineedit.h"
 #include "walletmodel.h"
 
@@ -269,7 +270,7 @@ bool isDust(const QString& address, const CAmount& amount)
     CTxDestination dest = CBitcoinAddress(address.toStdString()).Get();
     CScript script = GetScriptForDestination(dest);
     CTxOut txOut(amount, script);
-    return txOut.IsDust(dustRelayFee);
+    return txOut.IsDust(MinRelayFee());
 }
 
 QString HtmlEscape(const QString& str, bool fMultiLine)

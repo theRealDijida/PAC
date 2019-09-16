@@ -7,6 +7,7 @@
 #include "base58.h"
 #include "clientversion.h"
 #include "init.h"
+#include "feerates.h"
 #include "net.h"
 #include "netbase.h"
 #include "rpc/server.h"
@@ -114,9 +115,9 @@ UniValue getinfo(const JSONRPCRequest& request)
     if (pwallet && pwallet->IsCrypted()) {
         obj.push_back(Pair("unlocked_until", pwallet->nRelockTime));
     }
-    obj.push_back(Pair("paytxfee",      ValueFromAmount(payTxFee.GetFeePerK())));
+    obj.push_back(Pair("paytxfee",      ValueFromAmount(MinTxFee().GetFeePerK())));
 #endif
-    obj.push_back(Pair("relayfee",      ValueFromAmount(::minRelayTxFee.GetFeePerK())));
+    obj.push_back(Pair("relayfee",      ValueFromAmount(MinRelayFee().GetFeePerK())));
     obj.push_back(Pair("errors",        GetWarnings("statusbar")));
     return obj;
 }

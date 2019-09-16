@@ -4,6 +4,7 @@
 
 #include "chainparams.h"
 #include "dsnotificationinterface.h"
+#include "feerates.h"
 #include "instantx.h"
 #include "governance.h"
 #include "masternode-payments.h"
@@ -11,6 +12,7 @@
 #include "privatesend.h"
 #ifdef ENABLE_WALLET
 #include "privatesend-client.h"
+#include "wallet/wallet.h"
 #endif // ENABLE_WALLET
 #include "validation.h"
 
@@ -52,6 +54,11 @@ void CDSNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, con
     fDIP0001ActiveAtTip = pindexNew->nHeight >= Params().GetConsensus().DIP0001Height;
     // update instantsend autolock activation flag (we reuse the DIP3 deployment)
     instantsend.isAutoLockBip9Active = pindexNew->nHeight + 1 >= Params().GetConsensus().DIP0003Height;
+
+    bool fDSPoSHeaderTrigger = pindexNew->nHeight > Params().GetConsensus().nLastPoWBlock;
+    if (fDSPoSHeaderTrigger) {
+	fPoSTrigger = true;
+    }
 
     if (fInitialDownload)
         return;
