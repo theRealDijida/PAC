@@ -1431,7 +1431,7 @@ bool CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoins
 
             // If prev is coinbase, check that it's matured
             if (coin.IsCoinBase()) {
-                if (nSpendHeight - coin.nHeight < COINBASE_MATURITY)
+                if (nSpendHeight - coin.nHeight < ConfirmationsPerNetwork())
                     return state.Invalid(false,
                         REJECT_INVALID, "bad-txns-premature-spend-of-coinbase",
                         strprintf("tried to spend coinbase at depth %d", nSpendHeight - coin.nHeight));
@@ -4921,6 +4921,12 @@ bool IgnoreSigopsLimits(int nHeight) {
 //! Returns true if we have entered PoS consensus state
 bool IsPoS() {
    return (chainActive.Height() > Params().GetConsensus().nLastPoWBlock);
+}
+
+//! Returns confirmations required to spend coinbase
+int ConfirmationsPerNetwork() {
+    return (Params().NetworkIDString() ==
+            CBaseChainParams::TESTNET ? 20 : 100);
 }
 
 class CMainCleanup

@@ -3811,7 +3811,7 @@ bool CWallet::SelectStakeCoins(StakeCoinsSet &setCoins, CAmount nTargetAmount, c
         if (GetTime() - out.tx->GetTxTime() < Params().GetConsensus().nStakeMinAge)
             continue;
 
-        if (out.nDepth < (out.tx->tx->IsCoinStake() ? COINBASE_MATURITY : 10))
+        if (out.nDepth < (out.tx->tx->IsCoinStake() ? ConfirmationsPerNetwork() : 10))
             continue;
 
 	// not a consensus-test, just prevention
@@ -5591,7 +5591,7 @@ int CMerkleTx::GetBlocksToMaturity() const
 {
     if (!IsCoinBase() && !IsCoinStake())
         return 0;
-    return std::max(0, (COINBASE_MATURITY+1) - GetDepthInMainChain());
+    return std::max(0, (ConfirmationsPerNetwork()+1) - GetDepthInMainChain());
 }
 
 
