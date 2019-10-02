@@ -2113,7 +2113,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     threadGroup.create_thread(boost::bind(&ThreadSendAlert, boost::ref(connman)));
 
 #ifdef ENABLE_WALLET
-    if(GetBoolArg("-staking", true)) {
+    if(GetBoolArg("-staking", false)) {
         threadGroup.create_thread(std::bind(&ThreadStakeMinter, boost::ref(chainparams), boost::ref(connman)));
     }
 #endif

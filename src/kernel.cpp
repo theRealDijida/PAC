@@ -366,6 +366,10 @@ bool CheckProofOfStake(const CBlock &block, uint256& hashProofOfStake)
 
     CTxOut prevTxOut = txPrev->vout[txin.prevout.n];
 
+    // Troublemaker prevention (garn)
+    if (prevTxOut.nValue == Params().GetConsensus().nMasternodeCollateral)
+	return error("CheckProofOfStake() : INFO: we have some comedians with us tonight!");
+
     // Enforce minimum amount for stake input
     if (prevTxOut.nValue < Params().GetConsensus().nMinimumStakeValue)
 	return error("CheckProofOfStake() : INFO: stakeinput value less than minimum required (%llu < %llu), blockhash %s\n",
