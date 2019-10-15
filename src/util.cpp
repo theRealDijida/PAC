@@ -96,6 +96,9 @@
 #include <openssl/rand.h>
 #include <openssl/conf.h>
 
+// Application startup time (used for uptime calculation)
+const int64_t nStartupTime = GetTime();
+
 // Work around clang compilation problem in Boost 1.46:
 // /usr/include/boost/program_options/detail/config_file.hpp:163:17: error: call to function 'to_internal' that is neither visible in the template definition nor found by argument-dependent lookup
 // See also: http://stackoverflow.com/questions/10020179/compilation-fail-in-boost-librairies-program-options
@@ -1068,3 +1071,8 @@ std::string SafeIntVersionToString(uint32_t nVersion)
     }
 }
 
+// Obtain the application startup time (used for uptime calculation)
+int64_t GetStartupTime()
+{
+    return nStartupTime;
+}
