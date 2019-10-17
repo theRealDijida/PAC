@@ -124,10 +124,10 @@ struct Params {
     int nMasternodePaymentsStartBlock;
     int nMasternodePaymentsIncreaseBlock;
     int nMasternodePaymentsIncreasePeriod; // in blocks
-    int nInstaPACConfirmationsRequired; // in blocks
-    int nInstaPACKeepLock; // in blocks
-    int nInstaPACSigsRequired;
-    int nInstaPACSigsTotal;
+    int nInstantSendConfirmationsRequired; // in blocks
+    int nInstantSendKeepLock; // in blocks
+    int nInstantSendSigsRequired;
+    int nInstantSendSigsTotal;
     int nBudgetPaymentsStartBlock;
     int nBudgetPaymentsCycleBlocks;
     int nBudgetPaymentsWindowBlocks;

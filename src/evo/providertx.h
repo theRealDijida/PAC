@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PAC_PROVIDERTX_H
-#define PAC_PROVIDERTX_H
+#ifndef DASH_PROVIDERTX_H
+#define DASH_PROVIDERTX_H
 
 #include "bls/bls.h"
 #include "consensus/validation.h"

@@ -2888,7 +2888,7 @@ void CConnman::RelayTransaction(const CTransaction& tx)
     int nInv = MSG_TX;
     if (CPrivateSend::GetDSTX(hash)) {
         nInv = MSG_DSTX;
-    } else if (llmq::IsOldInstaPACEnabled() && instantsend.HasTxLockRequest(hash)) {
+    } else if (llmq::IsOldInstantSendEnabled() && instantsend.HasTxLockRequest(hash)) {
         nInv = MSG_TXLOCK_REQUEST;
     }
     CInv inv(nInv, hash);

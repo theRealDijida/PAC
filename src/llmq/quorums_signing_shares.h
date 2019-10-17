@@ -2,8 +2,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PAC_QUORUMS_SIGNING_SHARES_H
-#define PAC_QUORUMS_SIGNING_SHARES_H
+#ifndef DASH_QUORUMS_SIGNING_SHARES_H
+#define DASH_QUORUMS_SIGNING_SHARES_H
 
 #include "bls/bls.h"
 #include "chainparams.h"

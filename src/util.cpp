@@ -288,7 +288,7 @@ bool LogAcceptCategory(const char* category)
                 ptrCategory.reset(new std::set<std::string>(categories.begin(), categories.end()));
                 // thread_specific_ptr automatically deletes the set when the thread ends.
                 // "dash" is a composite category enabling all PACGlobal-related debug output
-                if(ptrCategory->count(std::string("dash"))) {
+                if(ptrCategory->count(std::string("pacglobal"))) {
                     ptrCategory->insert(std::string("chainlocks"));
                     ptrCategory->insert(std::string("gobject"));
                     ptrCategory->insert(std::string("instantsend"));

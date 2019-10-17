@@ -67,9 +67,9 @@ QString TransactionDesc::FormatTxStatus(const CWalletTx& wtx)
 
         int nSignatures = instantsend.GetTransactionLockSignatures(wtx.GetHash());
         int nSignaturesMax = CTxLockRequest(wtx).GetMaxSignatures();
-        // InstaPAC
+        // InstantSend
         strTxStatus += " (";
-        if(instantsend.IsLockedInstaPACTransaction(wtx.GetHash())) {
+        if(instantsend.IsLockedInstantSendTransaction(wtx.GetHash())) {
             strTxStatus += tr("verified via InstaPAC");
         } else if(!instantsend.IsTxLockCandidateTimedOut(wtx.GetHash())) {
             strTxStatus += tr("InstaPAC verification in progress - %1 of %2 signatures").arg(nSignatures).arg(nSignaturesMax);

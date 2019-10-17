@@ -211,7 +211,7 @@ bool CZMQPublishHashGovernanceObjectNotifier::NotifyGovernanceObject(const CGove
     return SendMessage(MSG_HASHGOBJ, data, 32);
 }
 
-bool CZMQPublishHashInstaPACDoubleSpendNotifier::NotifyInstaPACDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx)
+bool CZMQPublishHashInstantSendDoubleSpendNotifier::NotifyInstantSendDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx)
 {
     uint256 currentHash = currentTx.GetHash(), previousHash = previousTx.GetHash();
     LogPrint("zmq", "zmq: Publish hashinstantsenddoublespend %s conflicts against %s\n", currentHash.ToString(), previousHash.ToString());
@@ -303,7 +303,7 @@ bool CZMQPublishRawGovernanceObjectNotifier::NotifyGovernanceObject(const CGover
     return SendMessage(MSG_RAWGOBJ, &(*ss.begin()), ss.size());
 }
 
-bool CZMQPublishRawInstaPACDoubleSpendNotifier::NotifyInstaPACDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx)
+bool CZMQPublishRawInstaPACDoubleSpendNotifier::NotifyInstantSendDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx)
 {
     LogPrint("zmq", "zmq: Publish rawinstantsenddoublespend %s conflicts with %s\n", currentTx.GetHash().ToString(), previousTx.GetHash().ToString());
     CDataStream ssCurrent(SER_NETWORK, PROTOCOL_VERSION), ssPrevious(SER_NETWORK, PROTOCOL_VERSION);

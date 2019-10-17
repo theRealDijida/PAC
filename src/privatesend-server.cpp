@@ -221,7 +221,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
                 Coin coin;
                 auto mempoolTx = mempool.get(txin.prevout.hash);
                 if (mempoolTx != nullptr) {
-                    if (mempool.isSpent(txin.prevout) || !llmq::quorumInstaPACManager->IsLocked(txin.prevout.hash)) {
+                    if (mempool.isSpent(txin.prevout) || !llmq::quorumInstantSendManager->IsLocked(txin.prevout.hash)) {
                         LogPrintf("DSVIN -- spent or non-locked mempool input! txin=%s\n", txin.ToString());
                         PushStatus(pfrom, STATUS_REJECTED, ERR_MISSING_TX, connman);
                         return;

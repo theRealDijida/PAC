@@ -41,7 +41,7 @@ CZMQNotificationInterface* CZMQNotificationInterface::Create()
     factories["pubhashtxlock"] = CZMQAbstractNotifier::Create<CZMQPublishHashTransactionLockNotifier>;
     factories["pubhashgovernancevote"] = CZMQAbstractNotifier::Create<CZMQPublishHashGovernanceVoteNotifier>;
     factories["pubhashgovernanceobject"] = CZMQAbstractNotifier::Create<CZMQPublishHashGovernanceObjectNotifier>;
-    factories["pubhashinstantsenddoublespend"] = CZMQAbstractNotifier::Create<CZMQPublishHashInstaPACDoubleSpendNotifier>;
+    factories["pubhashinstantsenddoublespend"] = CZMQAbstractNotifier::Create<CZMQPublishHashInstantSendDoubleSpendNotifier>;
     factories["pubrawblock"] = CZMQAbstractNotifier::Create<CZMQPublishRawBlockNotifier>;
     factories["pubrawchainlock"] = CZMQAbstractNotifier::Create<CZMQPublishRawChainLockNotifier>;
     factories["pubrawtx"] = CZMQAbstractNotifier::Create<CZMQPublishRawTransactionNotifier>;
@@ -239,11 +239,11 @@ void CZMQNotificationInterface::NotifyGovernanceObject(const CGovernanceObject &
     }
 }
 
-void CZMQNotificationInterface::NotifyInstaPACDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx)
+void CZMQNotificationInterface::NotifyInstantSendDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx)
 {
     for (auto it = notifiers.begin(); it != notifiers.end();) {
         CZMQAbstractNotifier *notifier = *it;
-        if (notifier->NotifyInstaPACDoubleSpendAttempt(currentTx, previousTx)) {
+        if (notifier->NotifyInstantSendDoubleSpendAttempt(currentTx, previousTx)) {
             ++it;
         } else {
             notifier->Shutdown();

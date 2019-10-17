@@ -407,7 +407,7 @@ void entryToJSON(UniValue &info, const CTxMemPoolEntry &e)
 
     info.push_back(Pair("depends", depends));
     info.push_back(Pair("instantsend", instantsend.HasTxLockRequest(tx.GetHash())));
-    info.push_back(Pair("instantlock", instantsend.IsLockedInstaPACTransaction(tx.GetHash()) || llmq::quorumInstaPACManager->IsLocked(tx.GetHash())));
+    info.push_back(Pair("instantlock", instantsend.IsLockedInstantSendTransaction(tx.GetHash()) || llmq::quorumInstantSendManager->IsLocked(tx.GetHash())));
 }
 
 UniValue mempoolToJSON(bool fVerbose = false)
@@ -1504,7 +1504,7 @@ UniValue mempoolInfoToJSON()
     size_t maxmempool = GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000;
     ret.push_back(Pair("maxmempool", (int64_t) maxmempool));
     ret.push_back(Pair("mempoolminfee", ValueFromAmount(mempool.GetMinFee(maxmempool).GetFeePerK())));
-    ret.push_back(Pair("instantsendlocks", (int64_t)llmq::quorumInstaPACManager->GetInstaPACLockCount()));
+    ret.push_back(Pair("instantsendlocks", (int64_t)llmq::quorumInstantSendManager->GetInstantSendLockCount()));
 
     return ret;
 }

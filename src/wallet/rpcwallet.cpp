@@ -65,8 +65,8 @@ void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
 {
     AssertLockHeld(cs_main); // for mapBlockIndex
     int confirms = wtx.GetDepthInMainChain();
-    bool fLocked = instantsend.IsLockedInstaPACTransaction(wtx.GetHash());
-    bool fLLMQLocked = llmq::quorumInstaPACManager->IsLocked(wtx.GetHash());
+    bool fLocked = instantsend.IsLockedInstantSendTransaction(wtx.GetHash());
+    bool fLLMQLocked = llmq::quorumInstantSendManager->IsLocked(wtx.GetHash());
     bool chainlock = false;
     if (confirms > 0) {
         chainlock = llmq::chainLocksHandler->HasChainLock(mapBlockIndex[wtx.hashBlock]->nHeight, wtx.hashBlock);
@@ -354,7 +354,7 @@ UniValue getaddressesbyaccount(const JSONRPCRequest& request)
     return ret;
 }
 
-static void SendMoney(CWallet * const pwallet, const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, CWalletTx& wtxNew, bool fUseInstaPAC = false, bool fUsePrivateSend = false)
+static void SendMoney(CWallet * const pwallet, const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, CWalletTx& wtxNew, bool fUseInstantSend = false, bool fUsePrivateSend = false)
 {
     CAmount curBalance = pwallet->GetBalance();
 
@@ -381,7 +381,7 @@ static void SendMoney(CWallet * const pwallet, const CTxDestination &address, CA
     CRecipient recipient = {scriptPubKey, nValue, fSubtractFeeFromAmount};
     vecSend.push_back(recipient);
     if (!pwallet->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet,
-                                         strError, NULL, true, fUsePrivateSend ? ONLY_DENOMINATED : ALL_COINS, fUseInstaPAC)) {
+                                         strError, NULL, true, fUsePrivateSend ? ONLY_DENOMINATED : ALL_COINS, fUseInstantSend)) {
         if (!fSubtractFeeFromAmount && nValue + nFeeRequired > curBalance)
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s", FormatMoney(nFeeRequired));
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
@@ -389,7 +389,7 @@ static void SendMoney(CWallet * const pwallet, const CTxDestination &address, CA
     CValidationState state;
     // the new IX system does not require explicit IX messages
     std::string strCommand = NetMsgType::TX;
-    if (fUseInstaPAC && llmq::IsOldInstaPACEnabled()) {
+    if (fUseInstantSend && llmq::IsOldInstantSendEnabled()) {
         strCommand = NetMsgType::TXLOCKREQUEST;
     }
     if (!pwallet->CommitTransaction(wtxNew, reservekey, g_connman.get(), state, strCommand)) {
@@ -453,16 +453,16 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     if (request.params.size() > 4)
         fSubtractFeeFromAmount = request.params[4].get_bool();
 
-    bool fUseInstaPAC = false;
+    bool fUseInstantSend = false;
     bool fUsePrivateSend = false;
     if (request.params.size() > 5)
-        fUseInstaPAC = request.params[5].get_bool();
+        fUseInstantSend = request.params[5].get_bool();
     if (request.params.size() > 6)
         fUsePrivateSend = request.params[6].get_bool();
 
     EnsureWalletIsUnlocked(pwallet);
 
-    SendMoney(pwallet, address.Get(), nAmount, fSubtractFeeFromAmount, wtx, fUseInstaPAC, fUsePrivateSend);
+    SendMoney(pwallet, address.Get(), nAmount, fSubtractFeeFromAmount, wtx, fUseInstantSend, fUsePrivateSend);
 
     return wtx.GetHash().GetHex();
 }
@@ -1130,21 +1130,21 @@ UniValue sendmany(const JSONRPCRequest& request)
     CAmount nFeeRequired = 0;
     int nChangePosRet = -1;
     std::string strFailReason;
-    bool fUseInstaPAC = false;
+    bool fUseInstantSend = false;
     bool fUsePrivateSend = false;
     if (request.params.size() > 6)
-        fUseInstaPAC = request.params[6].get_bool();
+        fUseInstantSend = request.params[6].get_bool();
     if (request.params.size() > 7)
         fUsePrivateSend = request.params[7].get_bool();
 
     bool fCreated = pwallet->CreateTransaction(vecSend, wtx, keyChange, nFeeRequired, nChangePosRet, strFailReason,
-                                               NULL, true, fUsePrivateSend ? ONLY_DENOMINATED : ALL_COINS, fUseInstaPAC);
+                                               NULL, true, fUsePrivateSend ? ONLY_DENOMINATED : ALL_COINS, fUseInstantSend);
     if (!fCreated)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
     CValidationState state;
     // the new IX system does not require explicit IX messages
     std::string strCommand = NetMsgType::TX;
-    if (fUseInstaPAC && llmq::IsOldInstaPACEnabled()) {
+    if (fUseInstantSend && llmq::IsOldInstantSendEnabled()) {
         strCommand = NetMsgType::TXLOCKREQUEST;
     }
     if (!pwallet->CommitTransaction(wtx, keyChange, g_connman.get(), state, strCommand)) {

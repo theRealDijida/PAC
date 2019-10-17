@@ -229,7 +229,7 @@ void PrepareShutdown()
     /// for example if the data directory was found to be locked.
     /// Be sure that anything that writes files or flushes caches only does this if the respective
     /// module was initialized.
-    RenameThread("dash-shutoff");
+    RenameThread("pacglobal-shutoff");
     mempool.AddTransactionsUpdated(1);
     StopHTTPRPC();
     StopREST();
@@ -268,9 +268,9 @@ void PrepareShutdown()
         flatdb3.Dump(governance);
         CFlatDB<CNetFulfilledRequestManager> flatdb4("netfulfilled.dat", "magicFulfilledCache");
         flatdb4.Dump(netfulfilledman);
-        if(fEnableInstaPAC)
+        if(fEnableInstantSend)
         {
-            CFlatDB<CInstaPAC> flatdb5("instantsend.dat", "magicInstaPACCache");
+            CFlatDB<CInstantSend> flatdb5("instantsend.dat", "magicInstaPACCache");
             flatdb5.Dump(instantsend);
         }
         CFlatDB<CSporkManager> flatdb6("sporks.dat", "magicSporkCache");
@@ -749,7 +749,7 @@ void CleanupBlockRevFiles()
 void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 {
     const CChainParams& chainparams = Params();
-    RenameThread("dash-loadblk");
+    RenameThread("pacglobal-loadblk");
 
     {
     CImportingNow imp;
@@ -1969,7 +1969,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // ********************************************************* Step 10b: setup InstaPAC
 
-    fEnableInstaPAC = GetBoolArg("-enableinstantsend", 1);
+    fEnableInstantSend = GetBoolArg("-enableinstantsend", 1);
 
     // ********************************************************* Step 10c: Load cache data
 
@@ -2002,13 +2002,13 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
             return InitError(_("Failed to load fulfilled requests cache from") + "\n" + (pathDB / strDBName).string());
         }
 
-        if(fEnableInstaPAC)
+        if(fEnableInstantSend)
         {
             strDBName = "instantsend.dat";
             uiInterface.InitMessage(_("Loading InstaPAC data cache..."));
-            CFlatDB<CInstaPAC> flatdb5(strDBName, "magicInstaPACCache");
+            CFlatDB<CInstantSend> flatdb5(strDBName, "magicInstaPACCache");
             if(!flatdb5.Load(instantsend)) {
-                return InitError(_("Failed to load InstaPAC data cache from") + "\n" + (pathDB / strDBName).string());
+                return InitError(_("Failed to load InstantSend data cache from") + "\n" + (pathDB / strDBName).string());
             }
         }
     }
@@ -2022,7 +2022,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
 
         scheduler.scheduleEvery(boost::bind(&CGovernanceManager::DoMaintenance, boost::ref(governance), boost::ref(*g_connman)), 60 * 5 * 1000);
 
-        scheduler.scheduleEvery(boost::bind(&CInstaPAC::DoMaintenance, boost::ref(instantsend)), 60 * 1000);
+        scheduler.scheduleEvery(boost::bind(&CInstantSend::DoMaintenance, boost::ref(instantsend)), 60 * 1000);
 
         if (fMasternodeMode)
             scheduler.scheduleEvery(boost::bind(&CPrivateSendServer::DoMaintenance, boost::ref(privateSendServer), boost::ref(*g_connman)), 1 * 1000);

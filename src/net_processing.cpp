@@ -1024,7 +1024,7 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
     case MSG_CLSIG:
         return llmq::chainLocksHandler->AlreadyHave(inv);
     case MSG_ISLOCK:
-        return llmq::quorumInstaPACManager->AlreadyHave(inv);
+        return llmq::quorumInstantSendManager->AlreadyHave(inv);
     }
     // Don't know what it is, just say we already got one
     return true;
@@ -1357,8 +1357,8 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
             }
 
             if (!push && (inv.type == MSG_ISLOCK)) {
-                llmq::CInstaPACLock o;
-                if (llmq::quorumInstaPACManager->GetInstaPACLockByHash(inv.hash, o)) {
+                llmq::CInstantSendLock o;
+                if (llmq::quorumInstantSendManager->GetInstantSendLockByHash(inv.hash, o)) {
                     connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::ISLOCK, o));
                     push = true;
                 }
@@ -2133,12 +2133,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         if(strCommand == NetMsgType::TX) {
             vRecv >> ptx;
             txLockRequest = CTxLockRequest(ptx);
-            fCanAutoLock = llmq::IsOldInstaPACEnabled() && CInstaPAC::CanAutoLock() && txLockRequest.IsSimple();
+            fCanAutoLock = llmq::IsOldInstantSendEnabled() && CInstantSend::CanAutoLock() && txLockRequest.IsSimple();
         } else if(strCommand == NetMsgType::TXLOCKREQUEST) {
             vRecv >> txLockRequest;
             ptx = txLockRequest.tx;
             nInvType = MSG_TXLOCK_REQUEST;
-            if (llmq::IsNewInstaPACEnabled()) {
+            if (llmq::IsNewInstantSendEnabled()) {
                 // the new system does not require explicit lock requests
                 // changing the inv type to MSG_TX also results in re-broadcasting the TX as normal TX
                 nInvType = MSG_TX;
@@ -3105,7 +3105,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             llmq::quorumSigSharesManager->ProcessMessage(pfrom, strCommand, vRecv, connman);
             llmq::quorumSigningManager->ProcessMessage(pfrom, strCommand, vRecv, connman);
             llmq::chainLocksHandler->ProcessMessage(pfrom, strCommand, vRecv, connman);
-            llmq::quorumInstaPACManager->ProcessMessage(pfrom, strCommand, vRecv, connman);
+            llmq::quorumInstantSendManager->ProcessMessage(pfrom, strCommand, vRecv, connman);
         }
         else
         {

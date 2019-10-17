@@ -165,10 +165,10 @@ size_t ClientModel::getMempoolDynamicUsage() const
 
 size_t ClientModel::getInstantSentLockCount() const
 {
-    if (!llmq::quorumInstaPACManager) {
+    if (!llmq::quorumInstantSendManager) {
         return 0;
     }
-    return llmq::quorumInstaPACManager->GetInstaPACLockCount();
+    return llmq::quorumInstantSendManager->GetInstantSendLockCount();
 }
 
 double ClientModel::getVerificationProgress(const CBlockIndex *tipIn) const

@@ -242,7 +242,7 @@ bool CPrivateSend::IsCollateralValid(const CTransaction& txCollateral)
         Coin coin;
         auto mempoolTx = mempool.get(txin.prevout.hash);
         if (mempoolTx != nullptr) {
-            if (mempool.isSpent(txin.prevout) || !llmq::quorumInstaPACManager->IsLocked(txin.prevout.hash)) {
+            if (mempool.isSpent(txin.prevout) || !llmq::quorumInstantSendManager->IsLocked(txin.prevout.hash)) {
                 LogPrint("privatesend", "CPrivateSend::IsCollateralValid -- spent or non-locked mempool input! txin=%s\n", txin.ToString());
                 return false;
             }
