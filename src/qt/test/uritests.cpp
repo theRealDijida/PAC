@@ -70,7 +70,7 @@ void URITests::uriTests()
     QVERIFY(rv.amount == 10000000000LL);
     QVERIFY(rv.label == QString("Some Example"));
     QVERIFY(rv.message == QString("Some Example Message"));
-    QVERIFY(rv.fUseInstaPAC == 1);
+    QVERIFY(rv.fUseInstantSend == 1);
 
     uri.setUrl(QString("pac:XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg?amount=100&label=Some Example&message=Some Example Message&IS=Something Invalid"));
     QVERIFY(GUIUtil::parseBitcoinURI(uri, &rv));
@@ -78,17 +78,17 @@ void URITests::uriTests()
     QVERIFY(rv.amount == 10000000000LL);
     QVERIFY(rv.label == QString("Some Example"));
     QVERIFY(rv.message == QString("Some Example Message"));
-    QVERIFY(rv.fUseInstaPAC != 1);
+    QVERIFY(rv.fUseInstantSend != 1);
 
     uri.setUrl(QString("pac:XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg?IS=1"));
     QVERIFY(GUIUtil::parseBitcoinURI(uri, &rv));
-    QVERIFY(rv.fUseInstaPAC == 1);
+    QVERIFY(rv.fUseInstantSend == 1);
 
     uri.setUrl(QString("pac:XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg?IS=0"));
     QVERIFY(GUIUtil::parseBitcoinURI(uri, &rv));
-    QVERIFY(rv.fUseInstaPAC != 1);
+    QVERIFY(rv.fUseInstantSend != 1);
 
     uri.setUrl(QString("pac:XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg"));
     QVERIFY(GUIUtil::parseBitcoinURI(uri, &rv));
-    QVERIFY(rv.fUseInstaPAC != 1);
+    QVERIFY(rv.fUseInstantSend != 1);
 }

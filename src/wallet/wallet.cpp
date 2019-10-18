@@ -1911,7 +1911,7 @@ bool CWalletTx::RelayWalletTransaction(CConnman* connman, const std::string& str
             LogPrintf("Relaying wtx %s\n", hash.ToString());
 
             if ((strCommand == NetMsgType::TXLOCKREQUEST) ||
-                ((CTxLockRequest(*this).IsSimple()) && CInstaPAC::CanAutoLock())) {
+                ((CTxLockRequest(*this).IsSimple()) && CInstantSend::CanAutoLock())) {
                 if (instantsend.ProcessTxLockRequest((CTxLockRequest)*this, *connman)) {
                     instantsend.AcceptLockRequest((CTxLockRequest)*this);
                 } else {
@@ -2489,13 +2489,13 @@ CAmount CWallet::GetImmatureWatchOnlyBalance() const
     return nTotal;
 }
 
-void CWallet::AvailableCoins(std::vector<COutput>& vCoins, bool fOnlySafe, const CCoinControl *coinControl, bool fIncludeZeroValue, AvailableCoinsType nCoinType, bool fUseInstaPAC) const
+void CWallet::AvailableCoins(std::vector<COutput>& vCoins, bool fOnlySafe, const CCoinControl *coinControl, bool fIncludeZeroValue, AvailableCoinsType nCoinType, bool fUseInstantSend) const
 {
     vCoins.clear();
 
     {
         LOCK2(cs_main, cs_wallet);
-        int nInstaPACConfirmationsRequired = Params().GetConsensus().nInstaPACConfirmationsRequired;
+        int nInstantSendConfirmationsRequired = Params().GetConsensus().nInstantSendConfirmationsRequired;
 
         for (std::map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
         {
@@ -2509,8 +2509,8 @@ void CWallet::AvailableCoins(std::vector<COutput>& vCoins, bool fOnlySafe, const
                 continue;
 
             int nDepth = pcoin->GetDepthInMainChain();
-            // do not use IX for inputs that have less then nInstaPACConfirmationsRequired blockchain confirmations
-            if (fUseInstaPAC && nDepth < nInstaPACConfirmationsRequired)
+            // do not use IX for inputs that have less then nInstantSendConfirmationsRequired blockchain confirmations
+            if (fUseInstantSend && nDepth < nInstantSendConfirmationsRequired)
                 continue;
 
             // We should not consider coins which aren't at least in our mempool
@@ -2555,17 +2555,17 @@ void CWallet::AvailableCoins(std::vector<COutput>& vCoins, bool fOnlySafe, const
 }
 
 static void ApproximateBestSubset(std::vector<std::pair<CAmount, std::pair<const CWalletTx*,unsigned int> > >vValue, const CAmount& nTotalLower, const CAmount& nTargetValue,
-                                  std::vector<char>& vfBest, CAmount& nBest, bool fUseInstaPAC = false, int iterations = 1000)
+                                  std::vector<char>& vfBest, CAmount& nBest, bool fUseInstantSend = false, int iterations = 1000)
 {
     std::vector<char> vfIncluded;
 
     vfBest.assign(vValue.size(), true);
     nBest = nTotalLower;
 
-    if (!llmq::IsOldInstaPACEnabled()) {
-        // The new system does not require special handling for InstaPAC as this is all done in CInstaPACManager.
+    if (!llmq::IsOldInstantSendEnabled()) {
+        // The new system does not require special handling for InstaPAC as this is all done in CInstantSendManager.
         // There is also no need for an extra fee anymore.
-        fUseInstaPAC = false;
+        fUseInstantSend = false;
     }
 
     FastRandomContext insecure_rand;
@@ -2579,7 +2579,7 @@ static void ApproximateBestSubset(std::vector<std::pair<CAmount, std::pair<const
         {
             for (unsigned int i = 0; i < vValue.size(); i++)
             {
-                if (fUseInstaPAC && nTotal + vValue[i].first > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
+                if (fUseInstantSend && nTotal + vValue[i].first > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
                     continue;
                 }
                 //The solver here uses a randomized algorithm,
@@ -2635,20 +2635,20 @@ bool less_then_denom (const COutput& out1, const COutput& out2)
 }
 
 bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const int nConfMine, const int nConfTheirs, const uint64_t nMaxAncestors, std::vector<COutput> vCoins,
-                                 std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet, AvailableCoinsType nCoinType, bool fUseInstaPAC) const
+                                 std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet, AvailableCoinsType nCoinType, bool fUseInstantSend) const
 {
     setCoinsRet.clear();
     nValueRet = 0;
 
-    if (!llmq::IsOldInstaPACEnabled()) {
-        // The new system does not require special handling for InstaPAC as this is all done in CInstaPACManager.
+    if (!llmq::IsOldInstantSendEnabled()) {
+        // The new system does not require special handling for InstaPAC as this is all done in CInstantSendManager.
         // There is also no need for an extra fee anymore.
-        fUseInstaPAC = false;
+        fUseInstantSend = false;
     }
 
     // List of values less than target
     std::pair<CAmount, std::pair<const CWalletTx*,unsigned int> > coinLowestLarger;
-    coinLowestLarger.first = fUseInstaPAC
+    coinLowestLarger.first = fUseInstantSend
                                         ? sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN
                                         : std::numeric_limits<CAmount>::max();
     coinLowestLarger.second.first = NULL;
@@ -2762,9 +2762,9 @@ bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const int nConfMin
     std::vector<char> vfBest;
     CAmount nBest;
 
-    ApproximateBestSubset(vValue, nTotalLower, nTargetValue, vfBest, nBest, fUseInstaPAC);
+    ApproximateBestSubset(vValue, nTotalLower, nTargetValue, vfBest, nBest, fUseInstantSend);
     if (nBest != nTargetValue && nTotalLower >= nTargetValue + nMinChange)
-        ApproximateBestSubset(vValue, nTotalLower, nTargetValue + nMinChange, vfBest, nBest, fUseInstaPAC);
+        ApproximateBestSubset(vValue, nTotalLower, nTargetValue + nMinChange, vfBest, nBest, fUseInstantSend);
 
     // If we have a bigger coin and (either the stochastic approximation didn't find a good solution,
     //                                   or the next bigger coin is closer), return the bigger coin
@@ -2793,7 +2793,7 @@ bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const int nConfMin
     return nCoinType == ONLY_DENOMINATED ? (nValueRet - nTargetValue <= maxTxFee) : true;
 }
 
-bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet, const CCoinControl* coinControl, AvailableCoinsType nCoinType, bool fUseInstaPAC) const
+bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet, const CCoinControl* coinControl, AvailableCoinsType nCoinType, bool fUseInstantSend) const
 {
     // Note: this function should never be used for "always free" tx types like dstx
 
@@ -2866,13 +2866,13 @@ bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAm
     bool fRejectLongChains = GetBoolArg("-walletrejectlongchains", DEFAULT_WALLET_REJECT_LONG_CHAINS);
 
     bool res = nTargetValue <= nValueFromPresetInputs ||
-        SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 6, 0, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstaPAC) ||
-        SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 1, 0, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstaPAC) ||
-        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, 2, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstaPAC)) ||
-        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, std::min((size_t)4, nMaxChainLength/3), vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstaPAC)) ||
-        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, nMaxChainLength/2, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstaPAC)) ||
-        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, nMaxChainLength, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstaPAC)) ||
-        (bSpendZeroConfChange && !fRejectLongChains && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, std::numeric_limits<uint64_t>::max(), vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstaPAC));
+        SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 6, 0, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstantSend) ||
+        SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 1, 0, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstantSend) ||
+        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, 2, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstantSend)) ||
+        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, std::min((size_t)4, nMaxChainLength/3), vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstantSend)) ||
+        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, nMaxChainLength/2, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstantSend)) ||
+        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, nMaxChainLength, vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstantSend)) ||
+        (bSpendZeroConfChange && !fRejectLongChains && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, std::numeric_limits<uint64_t>::max(), vCoins, setCoinsRet, nValueRet, nCoinType, fUseInstantSend));
 
     // because SelectCoinsMinConf clears the setCoinsRet, we now add the possible inputs to the coinset
     setCoinsRet.insert(setPresetCoins.begin(), setPresetCoins.end());
@@ -3273,7 +3273,7 @@ bool CWallet::CreateCollateralTransaction(CMutableTransaction& txCollateral, std
     return true;
 }
 
-bool CWallet::GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, CAmount amount, bool fUseInstaPAC, const COutPoint& outpoint)
+bool CWallet::GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, CAmount amount, bool fUseInstantSend, const COutPoint& outpoint)
 {
     // make our change address
     CReserveKey reservekey(this);
@@ -3291,7 +3291,7 @@ bool CWallet::GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, CAmount a
     if (!outpoint.IsNull()) {
         coinControl.Select(outpoint);
     }
-    bool success = CreateTransaction(vecSend, tx, reservekey, nFeeRet, nChangePosRet, strFail, &coinControl, true, ALL_COINS, fUseInstaPAC);
+    bool success = CreateTransaction(vecSend, tx, reservekey, nFeeRet, nChangePosRet, strFail, &coinControl, true, ALL_COINS, fUseInstantSend);
     if(!success){
         LogPrintf("CWallet::GetBudgetSystemCollateralTX -- Error: %s\n", strFail);
         return false;
@@ -3319,12 +3319,12 @@ bool CWallet::ConvertList(std::vector<CTxIn> vecTxIn, std::vector<CAmount>& vecA
 }
 
 bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
-                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstaPAC, int nExtraPayloadSize)
+                                int& nChangePosInOut, std::string& strFailReason, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstantSend, int nExtraPayloadSize)
 {
-    if (!llmq::IsOldInstaPACEnabled()) {
-        // The new system does not require special handling for InstaPAC as this is all done in CInstaPACManager.
+    if (!llmq::IsOldInstantSendEnabled()) {
+        // The new system does not require special handling for InstaPAC as this is all done in CInstantSendManager.
         // There is also no need for an extra fee anymore.
-        fUseInstaPAC = false;
+        fUseInstantSend = false;
     }
 
     if (nExtraPayloadSize > 0 && chainActive.Height() < Params().GetConsensus().DIP0003Height) {
@@ -3332,7 +3332,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
         return false;
     }
 
-    CAmount nFeePay = fUseInstaPAC ? CTxLockRequest().GetMinFee(true) : 0;
+    CAmount nFeePay = fUseInstantSend ? CTxLockRequest().GetMinFee(true) : 0;
 
     CAmount nValue = 0;
     int nChangePosRequest = nChangePosInOut;
@@ -3404,8 +3404,8 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
         LOCK2(cs_main, cs_wallet);
         {
             std::vector<COutput> vAvailableCoins;
-            AvailableCoins(vAvailableCoins, true, coinControl, false, nCoinType, fUseInstaPAC);
-            int nInstaPACConfirmationsRequired = Params().GetConsensus().nInstaPACConfirmationsRequired;
+            AvailableCoins(vAvailableCoins, true, coinControl, false, nCoinType, fUseInstantSend);
+            int nInstantSendConfirmationsRequired = Params().GetConsensus().nInstantSendConfirmationsRequired;
 
             nFeeRet = 0;
             if(nFeePay > 0) nFeeRet = nFeePay;
@@ -3456,7 +3456,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                 // Choose coins to use
                 CAmount nValueIn = 0;
                 setCoins.clear();
-                if (!SelectCoins(vAvailableCoins, nValueToSelect, setCoins, nValueIn, coinControl, nCoinType, fUseInstaPAC))
+                if (!SelectCoins(vAvailableCoins, nValueToSelect, setCoins, nValueIn, coinControl, nCoinType, fUseInstantSend))
                 {
                     if (nCoinType == ONLY_NONDENOMINATED) {
                         strFailReason = _("Unable to locate enough PrivateSend non-denominated funds for this transaction.");
@@ -3465,15 +3465,15 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                         strFailReason += " " + _("PrivateSend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.");
                     } else if (nValueIn < nValueToSelect) {
                         strFailReason = _("Insufficient funds.");
-                        if (fUseInstaPAC) {
+                        if (fUseInstantSend) {
                             // could be not true but most likely that's the reason
-                            strFailReason += " " + strprintf(_("InstaPAC requires inputs with at least %d confirmations, you might need to wait a few minutes and try again."), nInstaPACConfirmationsRequired);
+                            strFailReason += " " + strprintf(_("InstaPAC requires inputs with at least %d confirmations, you might need to wait a few minutes and try again."), nInstantSendConfirmationsRequired);
                         }
                     }
 
                     return false;
                 }
-                if (fUseInstaPAC && nValueIn > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
+                if (fUseInstantSend && nValueIn > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
                     strFailReason += " " + strprintf(_("InstaPAC doesn't support sending values that high yet. Transactions are currently limited to %1 PAC."), sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE));
                     return false;
                 }
@@ -3648,7 +3648,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
                 if (coinControl && nFeeNeeded > 0 && coinControl->nMinimumTotalFee > nFeeNeeded) {
                     nFeeNeeded = coinControl->nMinimumTotalFee;
                 }
-                if(fUseInstaPAC) {
+                if(fUseInstantSend) {
                     nFeeNeeded = std::max(nFeeNeeded, CTxLockRequest(txNew).GetMinFee(true));
                 }
                 if (coinControl && coinControl->fOverrideFeeRate)
@@ -5578,12 +5578,12 @@ int CMerkleTx::GetDepthInMainChain(const CBlockIndex* &pindexRet) const
 
 bool CMerkleTx::IsLockedByInstaPAC() const
 {
-    return instantsend.IsLockedInstaPACTransaction(GetHash()) || llmq::quorumInstaPACManager->IsLocked(GetHash());
+    return instantsend.IsLockedInstantSendTransaction(GetHash()) || llmq::quorumInstantSendManager->IsLocked(GetHash());
 }
 
 bool CMerkleTx::IsLockedByLLMQInstaPAC() const
 {
-    return llmq::quorumInstaPACManager->IsLocked(GetHash());
+    return llmq::quorumInstantSendManager->IsLocked(GetHash());
 }
 
 bool CMerkleTx::IsChainLocked() const

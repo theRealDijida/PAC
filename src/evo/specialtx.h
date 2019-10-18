@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PAC_SPECIALTX_H
-#define PAC_SPECIALTX_H
+#ifndef DASH_SPECIALTX_H
+#define DASH_SPECIALTX_H
 
 #include "primitives/transaction.h"
 #include "streams.h"

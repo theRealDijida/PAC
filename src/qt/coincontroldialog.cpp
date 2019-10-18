@@ -541,7 +541,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
         else nBytesInputs += 148;
 
         // Add inputs to calculate InstaPAC Fee later
-        if(coinControl->fUseInstaPAC)
+        if(coinControl->fUseInstantSend)
             txDummy.vin.push_back(CTxIn());
     }
 
@@ -561,8 +561,8 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
         if (nPayFee > 0 && coinControl->nMinimumTotalFee > nPayFee)
             nPayFee = coinControl->nMinimumTotalFee;
 
-        // InstaPAC Fee
-        if (coinControl->fUseInstaPAC) nPayFee = std::max(nPayFee, CTxLockRequest(txDummy).GetMinFee(true));
+        // InstantSend Fee
+        if (coinControl->fUseInstantSend) nPayFee = std::max(nPayFee, CTxLockRequest(txDummy).GetMinFee(true));
 
         if (nPayAmount > 0)
         {

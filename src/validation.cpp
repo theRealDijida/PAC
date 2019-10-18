@@ -714,12 +714,12 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
                             REJECT_INVALID, "tx-txlock-conflict");
     }
 
-    llmq::CInstaPACLockPtr conflictLock = llmq::quorumInstaPACManager->GetConflictingLock(tx);
+    llmq::CInstantSendLockPtr conflictLock = llmq::quorumInstantSendManager->GetConflictingLock(tx);
     if (conflictLock) {
         CTransactionRef txConflict;
         uint256 hashBlock;
         if (GetTransaction(conflictLock->txid, txConflict, Params().GetConsensus(), hashBlock)) {
-            GetMainSignals().NotifyInstaPACDoubleSpendAttempt(tx, *txConflict);
+            GetMainSignals().NotifyInstantSendDoubleSpendAttempt(tx, *txConflict);
         }
         return state.DoS(10, error("AcceptToMemoryPool : Transaction %s conflicts with locked TX %s",
                                    hash.ToString(), conflictLock->txid.ToString()),
@@ -736,7 +736,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
         {
             const CTransaction *ptxConflicting = itConflicting->second;
 
-            // InstaPAC txes are not replacable
+            // InstantSend txes are not replacable
             if(instantsend.HasTxLockRequest(ptxConflicting->GetHash())) {
                 // this tx conflicts with a Transaction Lock Request candidate
                 return state.DoS(0, error("AcceptToMemoryPool : Transaction %s conflicts with Transaction Lock Request %s",
@@ -1841,7 +1841,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigne
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("dash-scriptch");
+    RenameThread("pacglobal-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -2280,13 +2280,13 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                                      REJECT_INVALID, "conflict-tx-lock");
                 }
             }
-            llmq::CInstaPACLockPtr conflictLock = llmq::quorumInstaPACManager->GetConflictingLock(*tx);
+            llmq::CInstantSendLockPtr conflictLock = llmq::quorumInstantSendManager->GetConflictingLock(*tx);
             if (!conflictLock) {
                 continue;
             }
             if (llmq::chainLocksHandler->HasChainLock(pindex->nHeight, pindex->GetBlockHash())) {
-                llmq::quorumInstaPACManager->RemoveChainLockConflictingLock(::SerializeHash(*conflictLock), *conflictLock);
-                assert(llmq::quorumInstaPACManager->GetConflictingLock(*tx) == nullptr);
+                llmq::quorumInstantSendManager->RemoveChainLockConflictingLock(::SerializeHash(*conflictLock), *conflictLock);
+                assert(llmq::quorumInstantSendManager->GetConflictingLock(*tx) == nullptr);
             } else {
                 // The node which relayed this should switch to correct chain.
                 // TODO: relay instantsend data/proof.

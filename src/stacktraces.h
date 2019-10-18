@@ -2,8 +2,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PAC_STACKTRACES_H
-#define PAC_STACKTRACES_H
+#ifndef DASH_STACKTRACES_H
+#define DASH_STACKTRACES_H
 
 #include <string>
 #include <sstream>

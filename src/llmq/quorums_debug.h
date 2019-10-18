@@ -2,8 +2,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PAC_QUORUMS_DEBUG_H
-#define PAC_QUORUMS_DEBUG_H
+#ifndef DASH_QUORUMS_DEBUG_H
+#define DASH_QUORUMS_DEBUG_H
 
 #include "consensus/params.h"
 #include "sync.h"

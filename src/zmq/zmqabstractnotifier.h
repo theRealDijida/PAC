@@ -40,7 +40,7 @@ public:
     virtual bool NotifyTransactionLock(const CTransaction &transaction);
     virtual bool NotifyGovernanceVote(const CGovernanceVote &vote);
     virtual bool NotifyGovernanceObject(const CGovernanceObject &object);
-    virtual bool NotifyInstaPACDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx);
+    virtual bool NotifyInstantSendDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx);
 
 
 protected:

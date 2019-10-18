@@ -216,9 +216,9 @@ int WalletModel::getNumISLocks() const
     return cachedNumISLocks;
 }
 
-bool WalletModel::IsOldInstaPACEnabled() const
+bool WalletModel::IsOldInstantSendEnabled() const
 {
-    return llmq::IsOldInstaPACEnabled();
+    return llmq::IsOldInstantSendEnabled();
 }
 
 void WalletModel::updateAddressBook(const QString &address, const QString &label,
@@ -319,7 +319,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         return AmountExceedsBalance;
     }
 
-    if(recipients[0].fUseInstaPAC && IsOldInstaPACEnabled() && total > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
+    if(recipients[0].fUseInstantSend && IsOldInstantSendEnabled() && total > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
         Q_EMIT message(tr("Send Coins"), tr("InstaPAC doesn't support sending values that high yet. Transactions are currently limited to %1 PAC.").arg(sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)),
                      CClientUIInterface::MSG_ERROR);
         return TransactionCreationFailed;
@@ -340,7 +340,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         CWalletTx* newTx = transaction.getTransaction();
         CReserveKey *keyChange = transaction.getPossibleKeyChange();
 
-        fCreated = wallet->CreateTransaction(vecSend, *newTx, *keyChange, nFeeRequired, nChangePosRet, strFailReason, coinControl, true, recipients[0].inputType, recipients[0].fUseInstaPAC);
+        fCreated = wallet->CreateTransaction(vecSend, *newTx, *keyChange, nFeeRequired, nChangePosRet, strFailReason, coinControl, true, recipients[0].inputType, recipients[0].fUseInstantSend);
         transaction.setTransactionFee(nFeeRequired);
         if (fSubtractFeeFromAmount && fCreated)
             transaction.reassignAmounts();
@@ -349,7 +349,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         nVinSize = newTx->tx->vin.size();
     }
 
-    if(recipients[0].fUseInstaPAC && IsOldInstaPACEnabled()) {
+    if(recipients[0].fUseInstantSend && IsOldInstantSendEnabled()) {
         if(nValueOut > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
             Q_EMIT message(tr("Send Coins"), tr("InstaPAC doesn't support sending values that high yet. Transactions are currently limited to %1 PAC.").arg(sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)),
                          CClientUIInterface::MSG_ERROR);
@@ -415,7 +415,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
         CValidationState state;
         // the new IX system does not require explicit IX messages
         std::string strCommand = NetMsgType::TX;
-        if (recipients[0].fUseInstaPAC && IsOldInstaPACEnabled()) {
+        if (recipients[0].fUseInstantSend && IsOldInstantSendEnabled()) {
             strCommand = NetMsgType::TXLOCKREQUEST;
         }
         if(!wallet->CommitTransaction(*newTx, *keyChange, g_connman.get(), state, strCommand))

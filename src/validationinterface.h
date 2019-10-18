@@ -43,7 +43,7 @@ protected:
     virtual void NotifyChainLock(const CBlockIndex* pindex) {}
     virtual void NotifyGovernanceVote(const CGovernanceVote &vote) {}
     virtual void NotifyGovernanceObject(const CGovernanceObject &object) {}
-    virtual void NotifyInstaPACDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx) {}
+    virtual void NotifyInstantSendDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx) {}
     virtual void NotifyMasternodeListChanged(bool undo, const CDeterministicMNList& oldMNList, const CDeterministicMNListDiff& diff) {}
     virtual void SetBestChain(const CBlockLocator &locator) {}
     virtual bool UpdatedTransaction(const uint256 &hash) { return false;}
@@ -85,7 +85,7 @@ struct CMainSignals {
     /** Notifies listeners of a new governance object. */
     boost::signals2::signal<void (const CGovernanceObject &)> NotifyGovernanceObject;
     /** Notifies listeners of a attempted InstaPAC double spend*/
-    boost::signals2::signal<void(const CTransaction &currentTx, const CTransaction &previousTx)> NotifyInstaPACDoubleSpendAttempt;
+    boost::signals2::signal<void(const CTransaction &currentTx, const CTransaction &previousTx)> NotifyInstantSendDoubleSpendAttempt;
     /** Notifies listeners that the MN list changed */
     boost::signals2::signal<void(bool undo, const CDeterministicMNList& oldMNList, const CDeterministicMNListDiff& diff)> NotifyMasternodeListChanged;
     /** Notifies listeners of an updated transaction without new data (for now: a coinbase potentially becoming visible). */

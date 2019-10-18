@@ -14,9 +14,9 @@ class CTxLockVote;
 class COutPointLock;
 class CTxLockRequest;
 class CTxLockCandidate;
-class CInstaPAC;
+class CInstantSend;
 
-extern CInstaPAC instantsend;
+extern CInstantSend instantsend;
 
 /*
     At 15 signatures, 1/2 of the masternode network can be owned by
@@ -37,12 +37,12 @@ static const int INSTANTSEND_LOCK_TIMEOUT_SECONDS   = 15;
 /// must be greater than INSTANTSEND_LOCK_TIMEOUT_SECONDS
 static const int INSTANTSEND_FAILED_TIMEOUT_SECONDS = 60;
 
-extern bool fEnableInstaPAC;
+extern bool fEnableInstantSend;
 
 /**
  * Manages InstaPAC. Processes lock requests, candidates, and votes.
  */
-class CInstaPAC
+class CInstantSend
 {
 public:
     /// Automatic locks of "simple" transactions are only allowed
@@ -136,7 +136,7 @@ public:
     bool GetLockedOutPointTxHash(const COutPoint& outpoint, uint256& hashRet);
 
     /// Verify if transaction is currently locked
-    bool IsLockedInstaPACTransaction(const uint256& txHash);
+    bool IsLockedInstantSendTransaction(const uint256& txHash);
     /// Get the actual number of accepted lock signatures
     int GetTransactionLockSignatures(const uint256& txHash);
 

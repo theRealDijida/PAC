@@ -112,7 +112,7 @@ public Q_SLOTS:
     /** Set size (number of transactions and memory usage) of the mempool in the UI */
     void setMempoolSize(long numberOfTxs, size_t dynUsage);
     /** Set number of InstaPAC locks */
-    void setInstaPACLockCount(size_t count);
+    void setInstantSendLockCount(size_t count);
     /** Go forward or back in history */
     void browseHistory(int offset);
     /** Scroll console view to end */
