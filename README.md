@@ -17,6 +17,45 @@ For more information, as well as an immediately useable, binary version of
 the PACGlobal software, see https://www.pacglobal.io/
 
 
+How do I build the software?
+----------------------------
+
+The examples below presume you have a basic build environment installed:
+
+
+### Static compile
+
+    git clone https://github.com/PACGlobalOfficial/PAC
+    cd PAC/depends
+    make HOST=x86_64-linux-gnu
+    cd ..
+    ./autogen.sh
+    ./configure --prefix=`pwd`/depends/x86_64-linux-gnu
+    make
+
+### Shared binary
+
+    wget https://github.com/codablock/bls-signatures/archive/v20181101.zip
+    unzip v20181101.zip
+    cd bls-signatures-20181101
+    mkdir build
+    cd build
+    cmake ..
+    make install
+
+    (if you receive an error here, you need to run as the root user; as the system is trying to install a library)
+
+    cd ../..
+    git clone https://github.com/PACGlobalOfficial/PAC
+    cd PAC
+    ./autogen.sh
+    ./configure
+    make
+
+    * note: if you do not have libdb4.8 installed, no issues will be created by using 5.1 or 5.3; but the wallets
+             will not be portable! to achieve this; simply append --with-incompatible-bdb to the configure statement.
+
+
 License
 -------
 
