@@ -486,8 +486,15 @@ bool GetAddressUnspent(uint160 addressHash, int type,
 
 /** Functions for disk access for blocks */
 bool WriteBlockToDisk(const CBlock& block, CDiskBlockPos& pos, const CMessageHeader::MessageStartChars& messageStart);
+
+// note - clang doesnt like __builtin_FUNCTION()
+#if __APPLE__
 bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus::Params& consensusParams);
 bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus::Params& consensusParams);
+#else
+bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus::Params& consensusParams, const char* str = __builtin_FUNCTION());
+bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus::Params& consensusParams, const char* str = __builtin_FUNCTION());
+#endif
 
 /** Functions for validating blocks and updating the block tree */
 

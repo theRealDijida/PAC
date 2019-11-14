@@ -107,7 +107,6 @@ std::atomic<bool> fDIP0001ActiveAtTip{false};
 std::atomic<bool> fDIP0003ActiveAtTip{false};
 
 uint256 hashAssumeValid;
-std::map<COutPoint, int> mapStakeSpent;
 
 CAmount maxTxFee = DEFAULT_TRANSACTION_MAXFEE;
 
@@ -1095,8 +1094,12 @@ bool WriteBlockToDisk(const CBlock& block, CDiskBlockPos& pos, const CMessageHea
     return true;
 }
 
-bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus::Params& consensusParams)
-{
+#if __APPLE__
+bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus::Params& consensusParams) {
+#else
+bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus::Params& consensusParams, const char* str) {
+    LogPrintf("ReadBlockFromDisk(CDiskBlockPos)::called by %s\n", str);
+#endif
     LOCK(cs_main);
     block.SetNull();
 
@@ -1120,8 +1123,12 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus:
     return true;
 }
 
-bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus::Params& consensusParams)
-{
+#if __APPLE__
+bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus::Params& consensusParams) {
+#else
+bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus::Params& consensusParams, const char* str) {
+    LogPrintf("ReadBlockFromDisk(CBlockIndex)::called by %s\n", str);
+#endif
     CDiskBlockPos blockPos;
     {
         LOCK(cs_main);
@@ -1743,9 +1750,6 @@ static DisconnectResult DisconnectBlock(const CBlock& block, CValidationState& s
                 int res = ApplyTxInUndo(std::move(txundo.vprevout[j]), view, out);
                 if (res == DISCONNECT_FAILED) return DISCONNECT_FAILED;
                 fClean = fClean && res != DISCONNECT_UNCLEAN;
-
-                // erase the spent input
-                mapStakeSpent.erase(out);
 
                 const CTxIn input = tx.vin[j];
 
@@ -2369,30 +2373,6 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     if (fTxIndex)
         if (!pblocktree->WriteTxIndex(vPos))
             return AbortNode(state, "Failed to write transaction index");
-
-    if (pindex->nHeight > Params().GetConsensus().nLastPoWBlock)
-    {
-       // add new entries
-       for (const CTransactionRef ptx: block.vtx) {
-           const CTransaction& tx = *ptx;
-           if (tx.IsCoinBase())
-               continue;
-           for (const CTxIn in: tx.vin) {
-               LogPrintf("mapStakeSpent: Insert %s | %u\n", in.prevout.ToString(), pindex->nHeight);
-               mapStakeSpent.insert(std::make_pair(in.prevout, pindex->nHeight));
-           }
-       }
-
-       // delete old entries
-       for (auto it = mapStakeSpent.begin(); it != mapStakeSpent.end();) {
-           if (it->second < pindex->nHeight - Params().MaxReorganizationDepth()) {
-               LogPrintf("mapStakeSpent: Erase %s | %u\n", it->first.ToString(), it->second);
-               it = mapStakeSpent.erase(it);
-           }else {
-               it++;
-           }
-       }
-    }
 
     if (fAddressIndex) {
         if (!pblocktree->WriteAddressIndex(addressIndex)) {
@@ -3681,6 +3661,7 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
 
     CBlockIndex *pindexDummy = NULL;
     CBlockIndex *&pindex = ppindex ? *ppindex : pindexDummy;
+
     if (!AcceptBlockHeader(block, state, chainparams, &pindex))
         return false;
 
@@ -3725,68 +3706,12 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
     if (!IsInitialBlockDownload() && chainActive.Tip() == pindex->pprev)
         GetMainSignals().NewPoWValidBlock(pindex, pblock);
 
-    int nHeight = pindex->nHeight;
-
-    if (block.IsProofOfStake()) {
-        LOCK(cs_main);
-
-        CCoinsViewCache coins(pcoinsTip);
-
-        const CTransaction& tx = *block.vtx[1];
-        if (!coins.HaveInputs(tx)) {
-            // the inputs are spent at the chain tip so we should look at the recently spent outputs
-
-            for (CTxIn in : tx.vin) {
-                auto it = mapStakeSpent.find(in.prevout);
-                if (it == mapStakeSpent.end()) {
-                    return false;
-                }
-                if (it->second < pindex->pprev->nHeight) {
-                    return false;
-                }
-            }
-        }
-
-        // if this is on fork
-        if (!chainActive.Contains(pindex->pprev) && pindex->pprev != nullptr) {
-            // start at the block we're adding on to
-            CBlockIndex *last = pindex->pprev;
-
-            // while that block is not on the main chain
-            while (!chainActive.Contains(last) && last != NULL) {
-                CBlock bl;
-                ReadBlockFromDisk(bl, last, Params().GetConsensus());
-                // loop through every spent input from said block
-
-                for (CTransactionRef tRef : bl.vtx) {
-                    const CTransaction& t = *tRef;
-                    for (CTxIn in : t.vin) {
-                        // loop through every spent input in the staking transaction of the new block
-
-                        const CTransaction& tx = *block.vtx[1];
-                        for (CTxIn stakeIn : tx.vin) {
-
-                            // if they spent the same input
-                            if (stakeIn.prevout == in.prevout) {
-                                // reject the block
-                                return false;
-                            }
-                        }
-                    }
-                }
-
-                // go to the parent block
-                last = last->pprev;
-            }
-        }
-    }
-
-    // test if hashproofofstake matches
+    //// hashproof test
     uint256 hashProofOfStake = uint256();
     if (block.IsProofOfStake())
     {
-	if(block.GetHash() == hashProofOfStake)
-	   return state.DoS(100, error("CheckBlock(): invalid proof of stake block\n"));
+        if(block.GetHash() == hashProofOfStake)
+           return state.DoS(100, error("CheckBlock(): invalid proof of stake block\n"));
 
         if(!CheckProofOfStake(block, hashProofOfStake))
            return state.DoS(100, error("CheckBlock(): check proof-of-stake failed for block %s\n", hashProofOfStake.ToString().c_str()));
@@ -3805,7 +3730,7 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
         CDiskBlockPos blockPos;
         if (dbp != NULL)
             blockPos = *dbp;
-        if (!FindBlockPos(state, blockPos, nBlockSize+8, nHeight, block.GetBlockTime(), dbp != NULL))
+        if (!FindBlockPos(state, blockPos, nBlockSize+8, pindex->nHeight, block.GetBlockTime(), dbp != NULL))
             return error("AcceptBlock(): FindBlockPos failed");
         if (dbp == NULL)
             if (!WriteBlockToDisk(block, blockPos, chainparams.MessageStart()))
