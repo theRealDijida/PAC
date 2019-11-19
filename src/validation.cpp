@@ -1200,7 +1200,10 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
 	    return 1000000 * COIN;
         }
 
-        return GetMasternodePayment(nPrevHeight + 1, 0) + (1 * COIN);
+        if (nPrevHeight + 1 < Params().GetConsensus().DIP0003EnforcementHeight)
+            return GetMasternodePayment(nPrevHeight + 1, 0) + (1 * COIN);
+        else
+            return GetMasternodePayment(nPrevHeight + 1, 0) + (100 * COIN);
     }
 
     // proof of work
@@ -2323,7 +2326,9 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     int64_t nTime5_3 = GetTimeMicros(); nTimeValueValid += nTime5_3 - nTime5_2;
     LogPrint("bench", "      - IsBlockValueValid: %.2fms [%.2fs]\n", 0.001 * (nTime5_3 - nTime5_2), nTimeValueValid * 0.000001);
 
-    if (!IsBlockPayeeValid(*block.vtx[0], pindex->nHeight, blockReward)) {
+    bool isProofOfStake = !block.IsProofOfWork();
+    const auto& coinbaseTransaction = block.vtx[isProofOfStake];
+    if (!IsBlockPayeeValid(*block.vtx[isProofOfStake], pindex->nHeight, blockReward)) {
         mapRejectedBlocks.insert(std::make_pair(block.GetHash(), GetTime()));
         return state.DoS(0, error("ConnectBlock(PAC): couldn't find masternode or superblock payments"),
                                 REJECT_INVALID, "bad-cb-payee");
@@ -2332,12 +2337,8 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     int64_t nTime5_4 = GetTimeMicros(); nTimePayeeValid += nTime5_4 - nTime5_3;
     LogPrint("bench", "      - IsBlockPayeeValid: %.2fms [%.2fs]\n", 0.001 * (nTime5_4 - nTime5_3), nTimePayeeValid * 0.000001);
 
-    bool isProofOfStake = !block.IsProofOfWork();
-    const auto& coinbaseTransaction = block.vtx[isProofOfStake];
-
     if (!ProcessSpecialTxsInBlock(block, pindex, state, fJustCheck, fScriptChecks)) {
-        return error("ConnectBlock(PAC): ProcessSpecialTxsInBlock for block %s failed with %s",
-                     pindex->GetBlockHash().ToString(), FormatStateMessage(state));
+        return error("ConnectBlock(PAC): ProcessSpecialTxsInBlock for block failed with %s", FormatStateMessage(state));
     }
 
     int64_t nTime5_5 = GetTimeMicros(); nTimeProcessSpecial += nTime5_5 - nTime5_4;
@@ -4846,6 +4847,11 @@ bool IsPoS() {
 int ConfirmationsPerNetwork() {
     return (Params().NetworkIDString() ==
             CBaseChainParams::TESTNET ? 20 : 100);
+}
+
+//! Returns whether full DIP3 enforcement is active
+bool FullDIP0003Mode() {
+    return (chainActive.Height() > Params().GetConsensus().DIP0003EnforcementHeight);
 }
 
 class CMainCleanup
