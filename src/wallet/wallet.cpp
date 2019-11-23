@@ -2807,8 +2807,10 @@ bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAm
             if(!out.fSpendable)
                 continue;
 
-            // never select from collateral type amounts
-            if (out.tx->tx->vout[out.i].nValue == Params().GetConsensus().nMasternodeCollateral)
+            // never select collateral type amounts that are locked
+            if ((out.tx->tx->vout[out.i].nValue ==
+                Params().GetConsensus().nMasternodeCollateral) &&
+                IsLockedCoin(out.tx->GetHash(), out.i))
                 continue;
 
             if(nCoinType == ONLY_DENOMINATED) {
