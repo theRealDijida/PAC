@@ -360,6 +360,10 @@ bool CheckProofOfStake(const CBlock &block, uint256& hashProofOfStake, CBlockInd
     // Kernel (input 0) must match the stake hash target per coin age (nBits)
     const CTxIn& txin = tx->vin[0];
 
+    // Transaction index is required to get to block header
+    if (!fTxIndex)
+        return error("CheckProofOfStake() : transaction index not available");
+
     // Get transaction index for the previous transaction
     CDiskTxPos postx;
     if (!pblocktree->ReadTxIndex(txin.prevout.hash, postx))
