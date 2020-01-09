@@ -15,6 +15,7 @@
 #include "consensus/merkle.h"
 #include "consensus/validation.h"
 #include "hash.h"
+#include "init.h"
 #include "validation.h"
 #include "net.h"
 #include "policy/policy.h"
@@ -576,7 +577,8 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
     std::shared_ptr<CReserveScript> coinbaseScript;
     pwallet->GetScriptForMining(coinbaseScript);
 
-    while (true) {
+    while (IsStakingEnabled())
+    {
         try {
 
             MilliSleep(1000);
@@ -735,18 +737,33 @@ void GenerateBitcoins(bool fGenerate,
         minerThreads->create_thread(boost::bind(&BitcoinMiner, boost::cref(chainparams), boost::ref(connman), pwalletMain, false));
 }
 
-void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman)
+void RunStakeMinter(const CChainParams &chainparams, CConnman &connman)
 {
     boost::this_thread::interruption_point();
     LogPrintf("ThreadStakeMinter started\n");
     try {
         BitcoinMiner(chainparams, connman, pwalletMain, true);
         boost::this_thread::interruption_point();
-    } catch (std::exception& e) {
+    }
+    catch (std::exception& e) {
         LogPrintf("ThreadStakeMinter() exception %s\n", e.what());
-    } catch (...) {
+    }
+    catch (...) {
         LogPrintf("ThreadStakeMinter() error \n");
     }
-    LogPrintf("ThreadStakeMinter exiting,\n");
+}
 
+void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman)
+{
+    while (true)
+    {
+        bool fStaking = IsStakingEnabled();
+
+	if (fStaking)
+	    RunStakeMinter(chainparams, connman);
+
+        if (ShutdownRequested()) break;
+
+        sleep(1.5);
+    }
 }

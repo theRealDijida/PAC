@@ -17,6 +17,7 @@
 #include "transactiontablemodel.h"
 #include "utilitydialog.h"
 #include "walletmodel.h"
+#include "validation.h"
 
 #include "instantx.h"
 #include "masternode-sync.h"
@@ -157,6 +158,9 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
+
+    // Hook the staking button to an event
+    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(stakingButtonPressed()));
 
     // that's it for litemode
     if(fLiteMode) return;
@@ -671,4 +675,17 @@ void OverviewPage::DisablePrivateSendCompletely() {
         ui->labelPrivateSendEnabled->setText("<span style='color:red;'>(" + tr("Disabled") + ")</span>");
     }
     privateSendClient.fEnablePrivateSend = false;
+}
+
+void OverviewPage::stakingButtonPressed()
+{
+    bool fStakingStatus = !IsStakingEnabled();
+    SetStakingEnabled(fStakingStatus);
+    LogPrintf("%s - event (fStakingStatus: %d)\n", __func__, fStakingStatus);
+
+    if (fStakingStatus) {
+        ui->pushButton->setText(tr("Staking Enabled"));
+    } else {
+        ui->pushButton->setText(tr("Staking Disabled"));
+    }
 }

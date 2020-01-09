@@ -188,6 +188,7 @@ extern int64_t nMaxTipAge;
 extern CFeeRate minRelayTxFee;
 extern bool fLargeWorkForkFound;
 extern bool fLargeWorkInvalidChainFound;
+extern bool fGlobalStakingToggle;
 
 extern std::map<uint256, int64_t> mapRejectedBlocks;
 
@@ -612,5 +613,9 @@ CFeeRate CurrentRelayFee();
 
 //! Returns confirmations required to spend coinbase
 int ConfirmationsPerNetwork();
+
+//! Functions controlling the Staking toggle
+void SetStakingEnabled(bool fStaking);
+bool IsStakingEnabled();
 
 #endif // BITCOIN_VALIDATION_H

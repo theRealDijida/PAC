@@ -198,7 +198,11 @@ bool CBlockTreeDB::HasTxIndex(const uint256& txid) {
 }
 
 bool CBlockTreeDB::ReadTxIndex(const uint256 &txid, CDiskTxPos &pos) {
-    return Read(std::make_pair(DB_TXINDEX, txid), pos);
+    bool fResult = Read(std::make_pair(DB_TXINDEX, txid), pos);
+    if (!fResult) {
+        LogPrintf("Couldn't retrieve %s\n", txid.ToString().c_str());
+    }
+    return fResult;
 }
 
 bool CBlockTreeDB::WriteTxIndex(const std::vector<std::pair<uint256, CDiskTxPos> >&vect) {

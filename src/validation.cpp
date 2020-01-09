@@ -86,6 +86,7 @@ CWaitableCriticalSection csBestBlock;
 CConditionVariable cvBlockChange;
 int nScriptCheckThreads = 0;
 std::atomic_bool fImporting(false);
+bool fGlobalStakingToggle = false;
 bool fReindex = false;
 bool fTxIndex = true;
 bool fAddressIndex = false;
@@ -4863,6 +4864,18 @@ int ConfirmationsPerNetwork() {
 //! Returns whether full DIP3 enforcement is active
 bool FullDIP0003Mode() {
     return (chainActive.Height() >= Params().GetConsensus().DIP0003EnforcementHeight);
+}
+
+//! Set whether staking is currently enabled
+void SetStakingEnabled(bool fStaking)
+{
+    fGlobalStakingToggle = fStaking;
+}
+
+//! Return if staking is enabled
+bool IsStakingEnabled()
+{
+    return fGlobalStakingToggle;
 }
 
 class CMainCleanup
