@@ -1868,7 +1868,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
                 // Download if this is a nice peer, or we have no nice peers and this one might do.
                 bool fFetch = state->fPreferredDownload || (nPreferredDownload == 0 && !pfrom->fOneShot);
                 // Only actively request headers from a single peer, unless we're close to end of initial download.
-                if ((nSyncStarted == 0 && fFetch) || pindexBestHeader->GetBlockTime() > GetAdjustedTime() - nMaxTipAge) {
+                if ((nSyncStarted < 3 && fFetch) || pindexBestHeader->GetBlockTime() > GetAdjustedTime() - nMaxTipAge) {
                     // Make sure to mark this peer as the one we are currently syncing with etc.
                     state->fSyncStarted = true;
                     state->nHeadersSyncTimeout = GetTimeMicros() + HEADERS_DOWNLOAD_TIMEOUT_BASE + HEADERS_DOWNLOAD_TIMEOUT_PER_HEADER * (GetAdjustedTime() - pindexBestHeader->GetBlockTime())/(chainparams.GetConsensus().nPowTargetSpacing);
