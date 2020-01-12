@@ -40,7 +40,7 @@ color:#333;
 }
 
 QToolBar {
-    background-color: #3398cc;
+    background-color: qlineargradient(y1:0, y2: 1, stop: 0 #9de3ff, stop: 1 #33ccff);
 }
 
 QToolBar > QToolButton {
