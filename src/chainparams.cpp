@@ -221,13 +221,15 @@ public:
         consensus.nSuperblockCycle = 16616;
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
+        consensus.nHardenedStakeCheckHeight = 387900;
         ///////////////////////////////////////////////
         consensus.nGenerationAmount = 700000000 * COIN;
         consensus.nGenerationHeight = 362250;
+        consensus.nGenerationAmount2 = 1000000000 * COIN;
+        consensus.nGenerationHeight2 = consensus.nHardenedStakeCheckHeight + 50;
         ///////////////////////////////////////////////
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.nMasternodeCollateral = 500000 * COIN;
-	consensus.nHardenedStakeCheckHeight = 387900;
         consensus.BIP34Height = 951;
         consensus.BIP34Hash = uint256S("0x000001f35e70f7c5705f64c6c5cc3dea9449e74d5b5c7cf74dad1bcca14a8012");
         consensus.BIP65Height = 619382;

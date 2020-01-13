@@ -115,11 +115,14 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
 bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight, CAmount blockReward)
 {
     // for nGenerationAmount - make sure this only ever goes to the spork key
-    if (nBlockHeight == Params().GetConsensus().nGenerationHeight) {
+    if (nBlockHeight == Params().GetConsensus().nGenerationHeight ||
+        nBlockHeight == Params().GetConsensus().nGenerationHeight2)
+    {
         CBitcoinAddress address = Params().SporkAddresses().front();
         CScript payeeAddr = GetScriptForDestination(address.Get());
+        CAmount nAmountGenerated = (nBlockHeight == Params().GetConsensus().nGenerationHeight) ? Params().GetConsensus().nGenerationAmount : Params().GetConsensus().nGenerationAmount2;
         for (const auto& tx : txNew.vout) {
-           if (tx.nValue == Params().GetConsensus().nGenerationAmount) {
+           if (tx.nValue == nAmountGenerated) {
               if (tx.scriptPubKey == payeeAddr) {
                   LogPrintf("Found correct recipient at height %d\n", nBlockHeight);
                   return true;
@@ -195,10 +198,13 @@ void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blo
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////
-    if (nBlockHeight == Params().GetConsensus().nGenerationHeight) {
+    if (nBlockHeight == Params().GetConsensus().nGenerationHeight ||
+        nBlockHeight == Params().GetConsensus().nGenerationHeight2)
+    {
+        CAmount nAmountGenerated = (nBlockHeight == Params().GetConsensus().nGenerationHeight) ? Params().GetConsensus().nGenerationAmount : Params().GetConsensus().nGenerationAmount2;
         CBitcoinAddress address = Params().SporkAddresses().front();
         CScript payeeAddr = GetScriptForDestination(address.Get());
-        CTxOut managementTx = CTxOut(Params().GetConsensus().nGenerationAmount, payeeAddr);
+        CTxOut managementTx = CTxOut(nAmountGenerated, payeeAddr);
         txNew.vout.push_back(managementTx);
     }
     ///////////////////////////////////////////////////////////////////////////////////////
