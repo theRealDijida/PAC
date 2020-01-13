@@ -1946,6 +1946,17 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
            (*pindex->phashBlock == block.GetHash()));
     int64_t nTimeStart = GetTimeMicros();
 
+    // Damage control
+    if (sporkManager.IsSporkActive(SPORK_7_CHOKE_CONTROL)) {
+        // during choke, mark any new blocks as invalid
+        uint256 invalidHash = block.GetHash();
+        CBlockIndex* pblockindex = mapBlockIndex[invalidHash];
+        InvalidateBlock(state, chainparams, pblockindex);
+        // .. and as you were
+        ActivateBestChain(state, chainparams);
+        return false;
+    }
+
     // Check it again in case a previous version let a bad block in
     if (!CheckBlock(block, state, chainparams.GetConsensus(), !fJustCheck, !fJustCheck))
         return error("%s: Consensus::CheckBlock: %s", __func__, FormatStateMessage(state));
