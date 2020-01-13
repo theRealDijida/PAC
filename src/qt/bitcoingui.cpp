@@ -59,6 +59,7 @@
 #include <QStackedWidget>
 #include <QStatusBar>
 #include <QStyle>
+#include <QStyleFactory>
 #include <QTimer>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -133,6 +134,8 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
     spinnerFrame(0),
     platformStyle(_platformStyle)
 {
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
+
     /* Open CSS when configured */
     this->setStyleSheet(GUIUtil::loadStyleSheet());
 
@@ -596,6 +599,7 @@ void BitcoinGUI::createToolBars()
         spacerBottomIcon->setFixedHeight(5);
 
         QToolBar *toolbar = new QToolBar(tr("Tabs toolbar"));
+        toolbar->setStyleSheet("QToolBar { background-color: qlineargradient(y1:0, y2: 1, stop: 0 #9de3ff, stop: 1 #33ccff); color: qlineargradient(y1:0, y2: 1, stop: 0 #9de3ff, stop: 1 #33ccff); border-bottom: 0px solid black; border-top: 0px solid black; } ");
         toolbar->setObjectName("toolBar");
         toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
         toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);

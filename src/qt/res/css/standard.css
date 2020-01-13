@@ -1,6 +1,6 @@
 WalletFrame {
 border-image: url(':/images/walletFrame_bg') 0 0 0 0 stretch stretch;
-border-top:0px solid #000;
+border-top:0px solid #ddd;
 margin:0;
 padding:0;
 }
@@ -40,7 +40,7 @@ color:#333;
 }
 
 QToolBar {
-    background-color: #3398cc;
+    background-color: qlineargradient(y1:0, y2: 1, stop: 0 #9de3ff, stop: 1 #33ccff);
 }
 
 QToolBar > QToolButton {
