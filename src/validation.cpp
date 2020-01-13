@@ -4865,6 +4865,11 @@ bool FullDIP0003Mode() {
     return (chainActive.Height() >= Params().GetConsensus().DIP0003EnforcementHeight);
 }
 
+//! Returns whether hardened stake checks are enabled
+bool HardenedStakeChecks() {
+    return (chainActive.Height() >= Params().GetConsensus().nHardenedStakeCheckHeight);
+}
+
 //! Set whether staking is currently enabled
 void SetStakingEnabled(bool fStaking)
 {

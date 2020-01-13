@@ -227,6 +227,7 @@ public:
         ///////////////////////////////////////////////
         consensus.nMasternodeMinimumConfirmations = 15;
         consensus.nMasternodeCollateral = 500000 * COIN;
+	consensus.nHardenedStakeCheckHeight = 387900;
         consensus.BIP34Height = 951;
         consensus.BIP34Hash = uint256S("0x000001f35e70f7c5705f64c6c5cc3dea9449e74d5b5c7cf74dad1bcca14a8012");
         consensus.BIP65Height = 619382;
@@ -236,13 +237,13 @@ public:
         consensus.DIP0003EnforcementHeight = consensus.nGenerationHeight + 50;
         consensus.DIP0003EnforcementHash = uint256();
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.posLimit = uint256S("0007ffff00000000000000000000000000000000000000000000000000000000");
+        consensus.posLimit = uint256S("07ffff0000000000000000000000000000000000000000000000000000000000");
         consensus.nLastPoWBlock = consensus.DIP0003Height - 1;
         consensus.nPowTargetTimespan = 24 * 60 * 60;
         consensus.nPowTargetSpacing = 2.5 * 60;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
-        consensus.nMinimumStakeValue = 10000 * COIN;
+        consensus.nMinimumStakeValue = 250 * COIN;
         consensus.nStakeMinAge = 10 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
         consensus.nModifierInterval = 60 * 20;

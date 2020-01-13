@@ -608,6 +608,9 @@ bool IsPoS();
 //! Returns whether full DIP3 enforcement is active
 bool FullDIP0003Mode();
 
+//! Returns whether hardened stake checks are enabled
+bool HardenedStakeChecks();
+
 //! Return the current minimum relay tx fee
 CFeeRate CurrentRelayFee();
 

@@ -316,9 +316,23 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
     ss << nStakeModifier;
     ss << nTimeBlockFrom << nTxPrevOffset << txPrevTime << prevout.n << nTimeTx;
     hashProofOfStake = Hash(ss.begin(), ss.end());
+    arith_uint256 nTarget = bnCoinDayWeight * bnTargetPerCoinDay;
+
+    // Set a minimum for nTarget
+    if (HardenedStakeChecks()) {
+
+        if (nTarget < UintToArith256(Params().GetConsensus().posLimit))
+            nTarget = UintToArith256(Params().GetConsensus().posLimit);
+
+        if (UintToArith256(hashProofOfStake) == 0)
+            return false;
+    }
+
+    LogPrintf("     - hashProof: %s\n", hashProofOfStake.ToString().c_str());
+    LogPrintf("     - nTarget  : %s\n", nTarget.ToString().c_str());
 
     // Now check if proof-of-stake hash meets target protocol
-    if (UintToArith256(hashProofOfStake) > bnCoinDayWeight * bnTargetPerCoinDay)
+    if (UintToArith256(hashProofOfStake) > nTarget)
         return false;
 
     return true;
