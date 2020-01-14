@@ -2346,10 +2346,12 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
     bool isProofOfStake = !block.IsProofOfWork();
     const auto& coinbaseTransaction = block.vtx[isProofOfStake];
-    if (FullDIP0003Mode() || pindex->nHeight == Params().GetConsensus().nGenerationHeight) {
-       if (!IsBlockPayeeValid(*block.vtx[isProofOfStake], pindex->nHeight, blockReward)) {
-           mapRejectedBlocks.insert(std::make_pair(block.GetHash(), GetTime()));
-           return state.DoS(0, error("ConnectBlock(PAC): couldn't find masternode or superblock payments"), REJECT_INVALID, "bad-cb-payee");
+    if (FullDIP0003Mode() ||
+        pindex->nHeight == Params().GetConsensus().nGenerationHeight ||
+        pindex->nHeight == Params().GetConsensus().nGenerationHeight2) {
+        if (!IsBlockPayeeValid(*block.vtx[isProofOfStake], pindex->nHeight, blockReward)) {
+            mapRejectedBlocks.insert(std::make_pair(block.GetHash(), GetTime()));
+            return state.DoS(0, error("ConnectBlock(PAC): couldn't find masternode or superblock payments"), REJECT_INVALID, "bad-cb-payee");
        }
     }
 

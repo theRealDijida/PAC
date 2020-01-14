@@ -53,7 +53,7 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
 
     LogPrintf("        - blockValue %lld <= nSuperblockMaxValue %lld\n", blockValue, nSuperblockMaxValue);
 
-    bool isGenerationHeight = (nBlockHeight == Params().GetConsensus().nGenerationHeight);
+    bool isGenerationHeight = (nBlockHeight == Params().GetConsensus().nGenerationHeight || nBlockHeight == Params().GetConsensus().nGenerationHeight2);
     if (isGenerationHeight)
         return true;
 
