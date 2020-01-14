@@ -278,33 +278,49 @@ static bool GetKernelStakeModifier(CBlockIndex* pindexPrev, uint256 hashBlockFro
     return true;
 }
 
+bool StakeKernelMode(CBlockIndex* pindexPrev)
+{
+    if (pindexPrev->nHeight < Params().GetConsensus().nHardenedStakeCheckHeight)
+        return false;
+    return true;
+}
+
 bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBlockHeader& blockFrom, unsigned int nTxPrevOffset, const CTransactionRef& txPrev, const COutPoint& prevout, unsigned int nTimeTx, uint256& hashProofOfStake, bool fMinting, bool fValidate)
 {
+    // sanity checks
     auto txPrevTime = blockFrom.GetBlockTime();
     if (nTimeTx < txPrevTime)  // Transaction timestamp violation
         return error("CheckStakeKernelHash() : nTime violation");
-
     auto nStakeMinAge = Params().GetConsensus().nStakeMinAge;
     auto nStakeMaxAge = Params().GetConsensus().nStakeMaxAge;
     unsigned int nTimeBlockFrom = blockFrom.GetBlockTime();
-    if (nTimeBlockFrom + nStakeMinAge > nTimeTx) // Min age requirement
+    if (nTimeBlockFrom + nStakeMinAge > nTimeTx)
         return error("CheckStakeKernelHash() : min age violation");
 
+    // determine if we're running old or new mode
+    bool fKernelMode = StakeKernelMode(pindexPrev);
+
+    // old algorithm parameters
     arith_uint256 bnTargetPerCoinDay;
     bnTargetPerCoinDay.SetCompact(nBits);
     CAmount nValueIn = txPrev->vout[prevout.n].nValue;
-
-    // discard stakes generated from inputs of less than 10000 PAC
-    if (nValueIn < Params().GetConsensus().nMinimumStakeValue)
-        return error("CheckStakeKernelHash() : min amount violation");
-
-    // v0.3 protocol kernel hash weight starts from 0 at the 30-day min age
-    // this change increases active coins participating the hash and helps
-    // to secure the network when proof-of-stake difficulty is low
     int64_t nTimeWeight = std::min<int64_t>(nTimeTx - txPrevTime, nStakeMaxAge - nStakeMinAge);
     arith_uint256 bnCoinDayWeight = nValueIn * nTimeWeight / COIN / 200;
 
-    // Calculate hash
+    // discard stakes generated from inputs of less than x PAC
+    if (nValueIn < Params().GetConsensus().nMinimumStakeValue)
+        return error("CheckStakeKernelHash() : min amount violation");
+
+    // new algorithm parameters
+
+    arith_uint256 bnTarget;
+    if (fKernelMode) {
+        bnTarget.SetCompact(nBits);
+        arith_uint256 bnWeight = arith_uint256(nValueIn);
+        bnTarget *= bnWeight;
+    }
+
+    // calculate hash
     CDataStream ss(SER_GETHASH, 0);
     uint64_t nStakeModifier = 0;
     int nStakeModifierHeight = 0;
@@ -316,20 +332,25 @@ bool CheckStakeKernelHash(unsigned int nBits, CBlockIndex* pindexPrev, const CBl
     ss << nStakeModifier;
     ss << nTimeBlockFrom << nTxPrevOffset << txPrevTime << prevout.n << nTimeTx;
     hashProofOfStake = Hash(ss.begin(), ss.end());
-    arith_uint256 nTarget = bnCoinDayWeight * bnTargetPerCoinDay;
+
+    // calculate the target we're using
+    arith_uint256 nTarget;
+    if (!fKernelMode)
+        nTarget = bnCoinDayWeight * bnTargetPerCoinDay;
+    else
+        nTarget = bnTarget;
 
     // Set a minimum for nTarget
     if (HardenedStakeChecks()) {
-
-        if (nTarget < UintToArith256(Params().GetConsensus().posLimit))
-            nTarget = UintToArith256(Params().GetConsensus().posLimit);
-
         if (UintToArith256(hashProofOfStake) == 0)
             return false;
     }
 
-    LogPrintf("     - hashProof: %s\n", hashProofOfStake.ToString().c_str());
-    LogPrintf("     - nTarget  : %s\n", nTarget.ToString().c_str());
+    if (fDebug) {
+        LogPrintf("     - kernmode : %s\n", fKernelMode ? "NEW" : "OLD");
+        LogPrintf("     - hashProof: %s\n", hashProofOfStake.ToString().c_str());
+        LogPrintf("     - nTarget  : %s\n", nTarget.ToString().c_str());
+    }
 
     // Now check if proof-of-stake hash meets target protocol
     if (UintToArith256(hashProofOfStake) > nTarget)

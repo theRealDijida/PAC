@@ -221,7 +221,7 @@ public:
         consensus.nSuperblockCycle = 16616;
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
-        consensus.nHardenedStakeCheckHeight = 387900;
+        consensus.nHardenedStakeCheckHeight = 387939;
         ///////////////////////////////////////////////
         consensus.nGenerationAmount = 700000000 * COIN;
         consensus.nGenerationHeight = 362250;
