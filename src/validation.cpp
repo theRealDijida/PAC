@@ -849,13 +849,10 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "mempool min fee not met", false, strprintf("%d < %d", nFees, mempoolRejectFee));
         }
 
-	// No transactions are allowed below minRelayTxFee except from disconnected blocks
-	if (tx.nType == TRANSACTION_NORMAL) {
-	   if (fLimitFree && nModifiedFees < MinRelayFee().GetFee(nSize))
-	      return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "min relay fee not met");
-	   if (nAbsurdFee && nFees > nAbsurdFee)
-	      return state.Invalid(false, REJECT_HIGHFEE, "absurdly-high-fee", strprintf("%d > %d", nFees, nAbsurdFee));
-	}
+        // No transactions are allowed below minRelayTxFee except from disconnected blocks
+        if (fLimitFree && nModifiedFees < MinRelayFee().GetFee(nSize)) {
+            return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "min relay fee not met");
+        }
 
         // Calculate in-mempool ancestors, up to a limit.
         CTxMemPool::setEntries setAncestors;
