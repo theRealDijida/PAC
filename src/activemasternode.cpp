@@ -134,8 +134,8 @@ void CActiveMasternodeManager::UpdatedBlockTip(const CBlockIndex* pindexNew, con
     if (!FullDIP0003Mode()) return;
 
     if (state == MASTERNODE_READY) {
-        auto oldMNList = deterministicMNManager->GetListForBlock(pindexNew->pprev->GetBlockHash());
-        auto newMNList = deterministicMNManager->GetListForBlock(pindexNew->GetBlockHash());
+        auto oldMNList = deterministicMNManager->GetListForBlock(pindexNew->pprev);
+        auto newMNList = deterministicMNManager->GetListForBlock(pindexNew);
         if (!newMNList.IsMNValid(activeMasternodeInfo.proTxHash)) {
             // MN disappeared from MN list
             state = MASTERNODE_REMOVED;
