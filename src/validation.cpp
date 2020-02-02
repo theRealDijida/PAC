@@ -1118,8 +1118,15 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus:
     }
 
     // Check the header
-    if (block.IsProofOfWork() && !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
-        return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
+    if (block.IsProofOfWork()) {
+        if (!CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
+            return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
+    } else {
+        uint256 hashProofOfStake = uint256();
+        if (!CheckProofOfStake(block, hashProofOfStake, chainActive.Tip()))
+            return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
+        LogPrintf("block has hashProof of %s\n", hashProofOfStake.ToString().c_str());
+    }
 
     return true;
 }
